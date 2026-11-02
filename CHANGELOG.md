@@ -2,6 +2,9 @@
 
 ## 2 November 2026
 
+- Serve the scaffold preview through Caddy at the server's HTTP IP address, with a persistent local PostgreSQL volume.
+- Pin telemetry to the release paired with core 0.222.2.
+- Track template features that must be removed before launch.
 - Add a container that runs the server as a regular user.
 - Add deployment settings that keep the application bound to localhost and require database and signing settings.
 - Check account creation, sign-in, action access, database identity and recovery using a separate PostgreSQL database.

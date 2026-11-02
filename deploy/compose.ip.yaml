@@ -1,0 +1,23 @@
+services:
+  app:
+    depends_on:
+      database:
+        condition: service_healthy
+  database:
+    image: postgres:17-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: eighty
+      POSTGRES_USER: eighty
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.production}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eighty -d eighty"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+volumes:
+  postgres_data:
