@@ -2,7 +2,7 @@
 
 ## 2 November 2026
 
-- Serve the scaffold preview through Caddy at the server's HTTP IP address, with a persistent local PostgreSQL volume.
+- Serve the scaffold preview through Caddy with HTTPS on a temporary sslip.io address and an IP redirect, with a persistent local PostgreSQL volume.
 - Pin telemetry to the release paired with core 0.222.2.
 - Track template features that must be removed before launch.
 - Add a container that runs the server as a regular user.

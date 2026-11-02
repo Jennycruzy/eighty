@@ -2,7 +2,7 @@
 
 Eighty is intended to help Medicaid members collect evidence of work, school and service, check it against cited rules, and prepare proof for their state.
 
-A scaffold preview runs at [http://38.49.219.205](http://38.49.219.205). The member workflows, document reader and complete rules engine are not available yet. Do not upload personal documents. HTTPS will replace the IP address when the domain is configured.
+A scaffold preview runs at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The member workflows, document reader and complete rules engine are not available yet. Do not upload personal documents. The purchased domain will replace this temporary address.
 
 ## Setup
 

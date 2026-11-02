@@ -69,21 +69,21 @@ The container is bound to localhost. Its health check requires both server readi
 
 Compose reads `.env.production` by default. `EIGHTY_ENV_FILE` can select a different service environment file, such as a separate preview configuration. Use an absolute path when overriding it. The production check uses its own empty temporary file and supplies its test database and signing key through the process environment; it never creates or edits `.env.production`.
 
-## Current IP preview
+## Current server preview
 
-The preview is served over HTTP at `38.49.219.205`. Caddy forwards to the production container on localhost. The app runs as a regular user with login enabled and public upload fallback disabled.
+The preview is served over HTTPS at `38.49.219.205.sslip.io`. The HTTP IP address redirects there. Caddy forwards to the production container on localhost and manages the certificate. The app runs as a regular user with login enabled and public upload fallback disabled.
 
 For this preview, `deploy/compose.ip.yaml` adds PostgreSQL with the persistent `eighty_postgres_data` volume. The database port is bound to localhost. This is a local database on the VPS, not the planned managed database. Do not remove its volume when updating the application.
 
 ```sh
 docker compose --env-file .env.production -f deploy/compose.yaml -f deploy/compose.ip.yaml up -d
 docker compose --env-file .env.production -f deploy/compose.yaml -f deploy/compose.ip.yaml ps
-curl --fail 'http://38.49.219.205/_agent-native/health?strict=1'
+curl --fail 'https://38.49.219.205.sslip.io/_agent-native/health?strict=1'
 ```
 
 The server has a 4 GiB swap file at `/swapfile`, with permissions `600`. Its entry in `/etc/fstab` enables it after reboot. Check it with `swapon --show` and `findmnt --verify --tab-file /etc/fstab`. No reboot was needed to enable it.
 
-Once the chosen domain resolves to this server, set `BETTER_AUTH_URL` in the private production settings to the HTTPS origin. Change `EIGHTY_HOST` in `/etc/systemd/system/caddy.service.d/eighty.conf` from the HTTP IP address to that domain without an HTTP prefix. Validate the Caddyfile, recreate the app with the updated environment, reload the service settings, and restart Caddy. Caddy can then obtain and renew the HTTPS certificate. Verify HTTPS and sign-in before directing members to it.
+Once the purchased domain resolves to this server, set `BETTER_AUTH_URL` in the private production settings to its HTTPS origin. Change `EIGHTY_HOST` in `/etc/systemd/system/caddy.service.d/eighty.conf` to that domain without an HTTP prefix; keep `EIGHTY_IP` set to the server IP for the redirect. Validate the Caddyfile, recreate the app with the updated environment, reload the service settings, and restart Caddy. Caddy can then obtain and renew the HTTPS certificate. Verify HTTPS and sign-in before directing members to it.
 
 `@agent-native/otel` is pinned to `0.1.29`. Its published package records core `0.222.2` as its development dependency and declares a core peer range that includes that version. The lockfile records the exact installed pair.
 

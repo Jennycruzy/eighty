@@ -10,3 +10,7 @@
 
 	reverse_proxy 127.0.0.1:3000
 }
+
+http://{$EIGHTY_IP:127.0.0.1} {
+	redir https://{$EIGHTY_HOST}{uri} permanent
+}
