@@ -1,10 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-
-// This rule uses JavaScript syntax valid in TypeScript, with no build step.
-const source = await readFile(new URL('../../server/rules/notice-deadline.ts', import.meta.url), 'utf8');
-const { noticeDeadline } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import { noticeDeadline } from '../../server/rules/notice-deadline.ts';
 
 const cases = [
   ['2026-01-01', '2026-01-06', '2026-02-05'],
