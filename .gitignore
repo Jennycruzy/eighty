@@ -19,6 +19,7 @@ coverage/
 build/
 dist-ssr/
 .netlify/
+.deploy-tmp/
 .vercel/
 data/pglite/
 data/uploads/
