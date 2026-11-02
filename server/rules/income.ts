@@ -8,12 +8,79 @@ import {
 import { shiftMonth, validMonth } from "./dates.ts";
 import type {
   DerivedIncomeFacts,
+  Finding,
   IncomeFacts,
   SeasonalFacts,
   StateOptions,
 } from "./types.ts";
 
-export function incomeTest(facts: IncomeFacts) {
+export function incomeTest(facts: IncomeFacts): Finding {
+  const wageCitation = "42 CFR 435.552(a)(6), (f)(2); 435.603(e)";
+  if (facts.basis === "taxable-wages") {
+    const missing: string[] = [];
+    if (!cents(facts.grossPayCents) || facts.grossPayCents < 0)
+      missing.push("income.grossPayCents");
+    if (!cents(facts.preTaxDeductionsCents) || facts.preTaxDeductionsCents < 0)
+      missing.push("income.preTaxDeductionsCents");
+    if (missing.length)
+      return finding(
+        null,
+        "Check gross pay and the pre-tax deductions shown on the stub.",
+        wageCitation,
+        missing,
+      );
+    if (facts.preTaxDeductionsCents! > facts.grossPayCents!)
+      return finding(
+        null,
+        "The pre-tax deductions exceed gross pay. Check the stub.",
+        wageCitation,
+        ["income.preTaxDeductionsCents"],
+      );
+    const amountCents = facts.grossPayCents! - facts.preTaxDeductionsCents!;
+    const counted = incomeTest({
+      ...facts,
+      amountCents,
+      basis: "medicaid-magi",
+    });
+    return {
+      ...counted,
+      citation: wageCitation,
+      basis: "Pay you showed us; the state may count it differently.",
+      math: {
+        ...counted.math,
+        grossPayCents: facts.grossPayCents,
+        preTaxDeductionsCents: facts.preTaxDeductionsCents,
+        stateCountMayDiffer: true,
+      },
+    };
+  }
+  if (facts.basis === "self-employment") {
+    const missing: string[] = [];
+    if (!cents(facts.netEarningsCents)) missing.push("income.netEarningsCents");
+    if (facts.costsConfirmed !== true) missing.push("income.costsConfirmed");
+    if (missing.length)
+      return finding(
+        null,
+        "Confirm net earnings after business costs. A gig screenshot alone is not enough.",
+        wageCitation,
+        missing,
+      );
+    const counted = incomeTest({
+      ...facts,
+      amountCents: facts.netEarningsCents as number,
+      basis: "medicaid-magi",
+    });
+    return {
+      ...counted,
+      citation: wageCitation,
+      basis: "Pay you showed us; the state may count it differently.",
+      math: {
+        ...counted.math,
+        costsConfirmed: true,
+        stateCountMayDiffer: true,
+      },
+    };
+  }
   const citation = "42 CFR 435.552(a)(6), (f)(1)–(2)";
   const missing: string[] = [];
   if (!cents(facts.amountCents)) missing.push("income.amountCents");
@@ -147,7 +214,8 @@ export function incomeDerivedHours(
       0,
       "Use the recorded work hours. Do not add hours from the same pay.",
     );
-  if (cents(facts.amountCents) && facts.amountCents >= REQUIRED_INCOME_CENTS)
+  const counted = incomeTest(facts);
+  if (counted.matched === true)
     return finish(
       false,
       0,
@@ -161,7 +229,6 @@ export function incomeDerivedHours(
   if (state.incomeDerivedHours !== true)
     missing.push("state.incomeDerivedHours");
   if (facts.hoursDocumented !== false) missing.push("income.hoursDocumented");
-  const counted = incomeTest(facts);
   missing.push(...counted.missing);
   if (
     !Number.isInteger(facts.householdWorkers) ||
@@ -175,7 +242,8 @@ export function incomeDerivedHours(
       "More facts are needed before the state can count hours from income.",
       missing,
     );
-  if ((facts.amountCents as number) < 0)
+  const amountCents = counted.math?.amountCents as number;
+  if (amountCents < 0)
     return finish(
       null,
       null,
@@ -183,7 +251,7 @@ export function incomeDerivedHours(
       ["income.actualHours"],
     );
   const potentialUnits = Math.floor(
-    ((facts.amountCents as number) * HOUR_SCALE) / FEDERAL_WAGE.cents,
+    (amountCents * HOUR_SCALE) / FEDERAL_WAGE.cents,
   );
   if ((facts.householdWorkers as number) > 1) {
     const allocated = units(facts.stateAllocatedHours, HOUR_SCALE);

@@ -8,6 +8,8 @@ import { promisify } from "node:util";
 
 import postgres from "postgres";
 
+import { checkPublicPages } from "./check-public-pages.mjs";
+
 const execute = promisify(execFile);
 const image = process.argv[2] || "eighty:local";
 const runId = `eighty-check-${randomUUID()}`;
@@ -18,6 +20,11 @@ const authSecret = randomBytes(32).toString("hex");
 const logPath = new URL("../.private/production-check.log", import.meta.url);
 const environmentFile = new URL(`../.private/${runId}.env`, import.meta.url);
 const secrets = [databasePassword, authSecret];
+const browserEndpoint = new URL(
+  "../.private/browser-endpoint.json",
+  import.meta.url,
+);
+let browserEndpointCreated = false;
 const resources = { network: false, database: false, app: false };
 let sql;
 let step = "prepare the check";
@@ -218,65 +225,19 @@ try {
   await waitUntil(health, "application and database readiness");
   console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
 
-  step = "check the public page and protected application";
-  const home = await fetch(baseUrl, { signal: AbortSignal.timeout(10_000) });
-  assert.equal(home.status, 200);
-  const anonymousShell = await fetch(`${baseUrl}/home`, {
-    redirect: "manual",
-    headers: { accept: "text/html" },
-    signal: AbortSignal.timeout(10_000),
+  step = "check signed-out public pages and closed starter routes";
+  await checkPublicPages(baseUrl);
+  step = "check the public tools in a phone browser";
+  await writeFile(browserEndpoint, JSON.stringify({ baseURL: baseUrl }), {
+    mode: 0o600,
+    flag: "wx",
   });
-  assert.equal(anonymousShell.status, 200);
-  const privateAction = await fetch(
-    `${baseUrl}/_agent-native/actions/hello?name=Eighty`,
-    {
-      headers: { accept: "application/json" },
-      signal: AbortSignal.timeout(10_000),
-    },
-  );
-  assert.equal(privateAction.status, 401);
-  console.log("PASS Public page loads and the application requires login.");
-
-  step = "check account creation and sign-in";
+  browserEndpointCreated = true;
+  const browserOutput = await command("pnpm", ["test:browser"]);
+  await unlink(browserEndpoint);
+  browserEndpointCreated = false;
+  console.log(browserOutput);
   const email = `${runId}@example.test`;
-  const authRequest = async (action, body) =>
-    fetch(`${baseUrl}/_agent-native/auth/ba/${action}/email`, {
-      method: "POST",
-      headers: { "content-type": "application/json", origin: baseUrl },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(15_000),
-    });
-  const signup = await authRequest("sign-up", {
-    email,
-    password: authSecret,
-    name: "Test account",
-  });
-  assert(signup.ok, `Sign-up returned ${signup.status}`);
-  const signin = await authRequest("sign-in", { email, password: authSecret });
-  assert(signin.ok, `Sign-in returned ${signin.status}`);
-  const sessionCookie = signin.headers
-    .getSetCookie()
-    .map((value) => value.split(";")[0])
-    .join("; ");
-  assert(sessionCookie.length > 0);
-  const signedIn = await fetch(`${baseUrl}/home`, {
-    redirect: "manual",
-    headers: { cookie: sessionCookie, accept: "text/html" },
-    signal: AbortSignal.timeout(10_000),
-  });
-  assert.equal(signedIn.status, 200);
-  const signedInAction = await fetch(
-    `${baseUrl}/_agent-native/actions/hello?name=Eighty`,
-    {
-      headers: { cookie: sessionCookie, accept: "application/json" },
-      signal: AbortSignal.timeout(10_000),
-    },
-  );
-  assert.equal(signedInAction.status, 200);
-  assert.deepEqual(await signedInAction.json(), { message: "Hello, Eighty!" });
-  console.log(
-    "PASS A temporary account can sign up, sign in and open the application.",
-  );
 
   step = "check the scheduled runner without a model";
   const runnerOutput = await command(
@@ -316,15 +277,7 @@ try {
     rows.map((row) => row.id),
     [runId],
   );
-  const recoveredSignin = await authRequest("sign-in", {
-    email,
-    password: authSecret,
-  });
-  assert(
-    recoveredSignin.ok,
-    `Sign-in after restart returned ${recoveredSignin.status}`,
-  );
-  assert.equal((await recoveredSignin.json()).user.email, email);
+  await checkPublicPages(baseUrl);
   console.log("PASS Test data survives database and application restarts.");
 } catch (error) {
   process.exitCode = 1;
@@ -338,6 +291,7 @@ try {
   }
   console.error(`FAIL Could not ${step}. See .private/production-check.log.`);
 } finally {
+  if (browserEndpointCreated) await unlink(browserEndpoint);
   if (sql) {
     try {
       await sql.end({ timeout: 5 });

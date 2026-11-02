@@ -1,85 +1,39 @@
-import { configureTracking } from "@agent-native/core/client/analytics";
-import { appPath } from "@agent-native/core/client/api-path";
-import { useDbSync } from "@agent-native/core/client/hooks";
-import { createAgentNativeQueryClient } from "@agent-native/core/client/hooks";
-import { getLocaleInitScript, useT } from "@agent-native/core/client/i18n";
-import { getThemeInitScript } from "@agent-native/core/client/theme";
-import { AppProviders } from "@agent-native/toolkit/app/providers";
-import { useCommandMenuShortcut } from "@agent-native/toolkit/app/shared";
-import { CommandMenu } from "@agent-native/toolkit/app/shared";
-import { useQueryClient } from "@tanstack/react-query";
-import { useTheme } from "next-themes";
-import { useCallback, useState } from "react";
 import {
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation,
-  useNavigate,
+  useLoaderData,
+  useRouteLoaderData,
 } from "react-router";
-import type { LinksFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 
-import { Layout as AppLayout } from "@/components/layout/Layout";
-import { AppToolkitProvider } from "@/components/ui/toolkit-provider";
-import { useNavigationState } from "@/hooks/use-navigation-state";
-import { APP_TITLE } from "@/lib/app-config";
-import {
-  HOME_PATH,
-  isChatPathname,
-  NEW_CHAT_PATH,
-  skeletonLayoutForPath,
-  threadIdFromPath,
-} from "@/lib/chat-paths";
-import { TAB_ID } from "@/lib/tab-id";
+import { ConnectionNotice } from "./components/public/ConnectionNotice";
+import { LanguageContext, languageLink } from "./lib/language";
 
-import { i18nCatalog } from "./i18n";
-
-import stylesheet from "./global.css?url";
-
-configureTracking({
-  getDefaultProps: (_name, properties) => ({
-    ...properties,
-    app: "eighty-scaffold",
-    template: "chat",
-  }),
-});
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
-];
-
-const THEME_INIT_SCRIPT = getThemeInitScript();
-const LOCALE_INIT_SCRIPT = getLocaleInitScript();
-
+import stylesheet from "./public.css?url";
+export const links = () => [{ rel: "stylesheet", href: stylesheet }];
+export function loader({ request }: LoaderFunctionArgs) {
+  return {
+    lang:
+      new URL(request.url).searchParams.get("lang") === "es"
+        ? ("es" as const)
+        : ("en" as const),
+  };
+}
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useRouteLoaderData("root") as { lang?: string } | undefined;
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={data?.lang === "es" ? "es-US" : "en-US"}>
       <head>
         <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content"
-        />
-        <script
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-        />
-        <script
-          data-agent-native-locale-init
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: LOCALE_INIT_SCRIPT }}
-        />
-        <meta name="theme-color" content="#18181B" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
-        <meta name="apple-mobile-web-app-title" content={APP_TITLE} />
-        <link rel="icon" type="image/svg+xml" href={appPath("/favicon.svg")} />
-        <link rel="apple-touch-icon" href={appPath("/icon-180.svg")} />
+        <title>
+          {data?.lang === "es"
+            ? "Eighty · Pruebas para Medicaid"
+            : "Eighty · Medicaid proof, in plain words"}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
@@ -91,107 +45,64 @@ export function Layout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
-function DbSyncSetup() {
-  const qc = useQueryClient();
-  useNavigationState();
-  useDbSync({
-    queryClient: qc,
-    ignoreSource: TAB_ID,
-  });
-  return null;
-}
-
-function ThemeToggleItem() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const t = useT();
-  const isDark = resolvedTheme === "dark";
-  return (
-    <CommandMenu.Item
-      onSelect={() => setTheme(isDark ? "light" : "dark")}
-      keywords={["theme", "dark", "light", "mode"]}
-    >
-      {t("root.toggleTheme")}
-    </CommandMenu.Item>
-  );
-}
-
-function AppContent() {
-  const [cmdkOpen, setCmdkOpen] = useState(false);
-  const navigate = useNavigate();
-  const t = useT();
-  const location = useLocation();
-  const isChatThread = threadIdFromPath(location.pathname) !== null;
-  useCommandMenuShortcut(useCallback(() => setCmdkOpen(true), []));
-  return (
-    <>
-      <CommandMenu
-        open={cmdkOpen}
-        onOpenChange={setCmdkOpen}
-        chatStorageKey="chat"
-      >
-        <CommandMenu.Group heading={t("root.commandActions")}>
-          {isChatThread ? (
-            <CommandMenu.Item
-              onSelect={() =>
-                window.dispatchEvent(new Event("agent-chat:new-chat"))
-              }
-            >
-              {t("chat.newChat")}
-            </CommandMenu.Item>
-          ) : null}
-          {location.pathname !== HOME_PATH ? (
-            <CommandMenu.Item onSelect={() => navigate(HOME_PATH)}>
-              {t("navigation.home")}
-            </CommandMenu.Item>
-          ) : null}
-          {!isChatPathname(location.pathname) ? (
-            <CommandMenu.Item onSelect={() => navigate(NEW_CHAT_PATH)}>
-              {t("navigation.chat")}
-            </CommandMenu.Item>
-          ) : null}
-          <CommandMenu.Item
-            onSelect={() => navigate("/settings/agent")}
-            keywords={[
-              "agent",
-              "context",
-              "files",
-              "connections",
-              "jobs",
-              "access",
-            ]}
-          >
-            {t("settings.openAgentSettings")}
-          </CommandMenu.Item>
-        </CommandMenu.Group>
-        <CommandMenu.Group heading={t("root.commandAppearance")}>
-          <ThemeToggleItem />
-        </CommandMenu.Group>
-      </CommandMenu>
-      <AppLayout>
-        <Outlet />
-      </AppLayout>
-    </>
-  );
-}
-
 export default function Root() {
-  const [queryClient] = useState(() => createAgentNativeQueryClient());
-  // The path, not the visitor, picks the shell, so the SSR shell stays one
-  // cached page per URL.
-  const { pathname } = useLocation();
+  const { lang } = useLoaderData<typeof loader>();
+  const link = (path: string) => languageLink(path, lang);
   return (
-    <AppToolkitProvider>
-      <AppProviders
-        queryClient={queryClient}
-        skeletonLayout={skeletonLayoutForPath(pathname)}
-        i18n={{ catalog: i18nCatalog }}
-      >
-        <DbSyncSetup />
-        <AppContent />
-      </AppProviders>
-    </AppToolkitProvider>
+    <LanguageContext value={lang}>
+      <a className="skip-link" href="#main">
+        {lang === "es" ? "Ir al contenido" : "Skip to content"}
+      </a>
+      <header>
+        <a className="brand" href={link("/")} aria-label="Eighty">
+          eighty<span aria-hidden="true">.</span>
+        </a>
+        <nav aria-label={lang === "es" ? "Menú principal" : "Main menu"}>
+          <a href={link("/help")}>{lang === "es" ? "Ayuda" : "Help"}</a>
+          <a
+            href={lang === "en" ? "?lang=es" : "?lang=en"}
+            lang={lang === "en" ? "es" : "en"}
+          >
+            {lang === "en" ? "Español" : "English"}
+          </a>
+        </nav>
+      </header>
+      <main id="main">
+        <ConnectionNotice />
+        <Outlet />
+      </main>
+      <footer>
+        <p>
+          {lang === "es"
+            ? "Eighty no es el estado. Tu estado decide. Tú envías tus pruebas al estado."
+            : "Eighty is not the state. Your state decides. You send your proof to the state."}
+        </p>
+        <nav
+          aria-label={lang === "es" ? "Más información" : "More information"}
+        >
+          {[
+            ["/about", "About", "Acerca de"],
+            ["/privacy", "Privacy", "Privacidad"],
+            ["/terms", "Terms", "Términos"],
+            ["/accessibility", "Access", "Acceso"],
+            ["/security", "Security", "Seguridad"],
+            ["/proof", "Proof", "Pruebas"],
+          ].map(([path, en, es]) => (
+            <a key={path} href={link(path!)}>
+              {lang === "es" ? es : en}
+            </a>
+          ))}
+        </nav>
+      </footer>
+    </LanguageContext>
   );
 }
-
-export { ErrorBoundary } from "@agent-native/toolkit/app/shared/ErrorBoundary";
+export function ErrorBoundary() {
+  return (
+    <main>
+      <h1>We could not load this page / No se pudo abrir la página</h1>
+      <p>Try again. / Inténtalo de nuevo.</p>
+      <a href="/">Eighty</a>
+    </main>
+  );
+}

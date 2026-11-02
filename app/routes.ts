@@ -1,6 +1,21 @@
-import { type RouteConfig } from "@react-router/dev/routes";
-import { flatRoutes } from "@react-router/fs-routes";
-
-export default flatRoutes({
-  ignoredRouteFiles: ["**/*.test.{ts,tsx}", "**/*.spec.{ts,tsx}"],
-}) satisfies RouteConfig;
+import { index, route, type RouteConfig } from "@react-router/dev/routes";
+export default [
+  index("routes/public.tsx", { id: "landing" }),
+  ...[
+    "how-it-works",
+    "help",
+    "proof",
+    "for-navigators",
+    "about",
+    "privacy",
+    "terms",
+    "accessibility",
+    "security",
+  ].map((path) => route(path, "routes/public.tsx", { id: path })),
+  route("try", "routes/try.tsx"),
+  route("check", "routes/check.tsx"),
+  route("share", "routes/share.tsx"),
+  route("states", "routes/states.tsx"),
+  route("states/:code", "routes/state.tsx"),
+  route("*", "routes/not-found.tsx"),
+] satisfies RouteConfig;

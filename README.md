@@ -2,7 +2,7 @@
 
 Eighty is intended to help Medicaid members collect evidence of work, school and service, check it against cited rules, and prepare proof for their state.
 
-A scaffold preview runs at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The member workflows and document reader are not available yet. The federal rules engine is implemented separately and awaits independent review. Do not upload personal documents. The purchased domain will replace this temporary address.
+The public tools run at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The manual month check, screener and public help pages need no account. Sign-up, uploads and member workflows remain closed. Do not send personal documents. The purchased domain will replace this temporary address.
 
 ## Setup
 
@@ -31,4 +31,6 @@ The [server guide](docs/self-hosting.md) explains the container setup and its se
 
 The setup check exits with a failure when a required tool is absent. It does not check service credentials, network access or deployment readiness.
 
-The federal rules engine has [336 cited answer cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). `pnpm test` enforces those coverage thresholds. See [the rules, source text and limits](docs/rules.md). These checks do not establish legal approval, document-reading accuracy, privacy, accessibility or readiness for members.
+The federal rules engine has [365 cited answer cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). `pnpm test` enforces those coverage thresholds. See [the rules, source text and limits](docs/rules.md). These checks do not establish legal approval, document-reading accuracy, privacy, accessibility or readiness for members.
+
+The [public-page checks](docs/tests/results/public-pages.md) cover signed-out English and Spanish pages, closed starter routes and phone-browser flows. Private document storage, document reading and real email delivery are still unconfigured; sign-up and uploads remain closed.

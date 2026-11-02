@@ -1,6 +1,6 @@
 # Run Eighty on a server
 
-Eighty currently has the framework scaffold and a tested federal rules engine awaiting independent review. It does not have member workflows. The public address is a scaffold preview. Do not upload personal documents.
+Eighty has public information pages, a manual work/pay check, a screener and a tested federal rules engine. Sign-up, document upload and signed-in member workflows remain closed. Do not upload personal documents.
 
 ## Tools
 
@@ -16,6 +16,7 @@ The check proves that the commands run. It does not prove that Docker is running
 
 ```sh
 pnpm install --frozen-lockfile
+pnpm exec playwright install --with-deps chromium
 pnpm typecheck
 pnpm test
 pnpm agent-native:doctor
@@ -23,13 +24,13 @@ docker build --tag eighty:local .
 pnpm check:production eighty:local
 ```
 
-The production check creates its own Docker network, PostgreSQL container, application container and temporary account. Published ports bind to localhost. Passwords are generated for the run and are not printed. The check uses no model or email service.
+The production check creates its own Docker network, PostgreSQL container and application container. Published ports bind to localhost. Passwords are generated for the run and are not printed. The check uses no model or email service.
 
-It checks database readiness after release migrations, the public page, the login requirement, account creation, sign-in, a scheduled job without a model, and data persistence after database and application restarts. The job must write a receipt and a successful history row, without creating a chat thread. Finally, the check removes only its own containers, database volume and network. Redacted diagnostics stay in `.private/production-check.log`, outside Git and the image.
+It checks database readiness after release migrations, all public pages and all state pages signed out in both languages, closed starter routes and sign-up, protected member pages, phone-sized browser flows, a scheduled job without a model, and data persistence after database and application restarts. The job must write a receipt and a successful history row, without creating a chat thread. Finally, the check removes only its own containers, database volume and network. Redacted diagnostics stay in `.private/production-check.log`, outside Git and the image.
 
-The web server runs in production mode throughout. The scheduler subcheck uses the framework's local deployment setting: the framework intentionally blocks reserved test email addresses from running jobs in production. This subcheck proves the runner's work and stored result in the test database; it does not prove a real account's production reminder delivery. Page shells are public, so access is tested at the action: an anonymous request must be denied, and a signed-in request must succeed.
+The web server runs in production mode throughout. The scheduler subcheck uses the framework's local deployment setting: the framework intentionally blocks reserved test email addresses from running jobs in production. This subcheck proves the runner's work and stored result in the test database; it does not prove a real account's production reminder delivery. Only the explicit public page list bypasses login. Member pages require a cookie session. Unknown services, including starter actions, are denied. Caddy adds a separate published-path allowlist.
 
-This checks the scaffold. It is not a test of Medicaid decisions, member journeys, email verification, backups or restore, document storage, or a public deployment. PostgreSQL runs locally for this check; production should use the planned managed database.
+This checks the public application and container. It is not a complete test of member journeys, email verification, backups or restore, document storage, or a public deployment. PostgreSQL runs locally for this check; production should use the planned managed database.
 
 The [framework's Docker guide](https://www.agent-native.com/docs/docker/) describes the underlying server. The image uses two stages: the first installs and builds; the second holds the server output and runs as a regular user. Credentials are supplied when the container starts. They are not build arguments. `.dockerignore` excludes environment files, private notes, development data and local build output.
 
@@ -90,3 +91,11 @@ Once the purchased domain resolves to this server, set `BETTER_AUTH_URL` in the 
 ## Before serving members
 
 Independent rules review, member workflows, private storage access checks, working email, deletion, navigator consent, backups, restore, monitoring and accessibility checks remain to be completed. A successful container check alone does not make this a member service.
+
+## Public route boundary
+
+`shared/access.ts` names the public pages. `app/routes.ts` mounts only Eighty’s own pages. The request middleware rejects unknown services and requires a cookie session for member pages. Public sign-up is denied; email verification is required before registration can be enabled.
+
+Caddy adds a separate published-path allowlist. Update that list deliberately when a real member endpoint is ready. Do not open the framework namespace to make a page load. The current site provides no public chat, terminal, database console, extension manager, team page or observability page. The starter manifest and logos are not published.
+
+The [public-page check results](tests/results/public-pages.md) record the current verification.

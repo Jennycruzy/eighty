@@ -62,6 +62,12 @@
       "file": "435.558.xml",
       "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.558",
       "sha256": "b279c11d570f0fcd86aedffad1b523b9d087b402e615a6e19fb55fa3af7fc298"
+    },
+    {
+      "section": "435.603",
+      "file": "435.603.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.603",
+      "sha256": "5a9a6de00621bac2e9ef580b213e31ea2bd04b2de87c22d6cb9f12230751ba33"
     }
   ]
 }

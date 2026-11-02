@@ -2,6 +2,12 @@
 
 ## 2 November 2026
 
+- Close public sign-up and starter pages and services.
+- Add public English and Spanish pages, a manual work/pay check and the screener.
+- Add sourced state contacts and expansion status for every state and DC.
+- Count confirmed taxable wages and confirmed net self-employment earnings, with additional answer cases.
+- Check every public page without a login in the production container.
+
 - Add the federal rules engine, archived official source text and a cited answer key.
 - Require complete rules coverage in the application checks.
 

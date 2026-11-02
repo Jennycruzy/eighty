@@ -14,4 +14,4 @@ These files came from the starting template. Do not use them as Medicaid feature
 | Starter agent instructions and tools | `server/plugins/agent-chat.ts`, `actions/run.ts`, `actions/provider-api-request.ts` | Keep only the capabilities Eighty needs; use the same permission checks across all callers |
 | Template navigation and metadata | `app/components/layout/`, `public/manifest.json`, `public/favicon.svg`, `app/routes/home.tsx` | Remove dead links and starter descriptions; supply Eighty's own public metadata and icons |
 
-The current IP deployment is a scaffold preview. The rules, document reader, member screens and production email and storage are not ready for members. The list above is not a list of completed Medicaid features.
+The public routes use a separate Eighty layout. Starter routes and services are blocked by the request filter, and the route list excludes starter pages. Sign-up is closed and email verification is required. The document reader, member screens and production email and storage are not ready for members. The list above is not a list of completed Medicaid features.

@@ -163,7 +163,16 @@ export interface EvidenceLine {
 export interface IncomeFacts {
   amountCents?: number | null;
   confirmed?: Flag;
-  basis?: "medicaid-magi" | "pay-shown" | null;
+  basis?:
+    | "medicaid-magi"
+    | "pay-shown"
+    | "taxable-wages"
+    | "self-employment"
+    | null;
+  grossPayCents?: number | null;
+  preTaxDeductionsCents?: number | null;
+  netEarningsCents?: number | null;
+  costsConfirmed?: Flag;
 }
 export interface SeasonalFacts {
   qualifiesUnder45R?: Flag;

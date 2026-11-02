@@ -1,0 +1,2221 @@
+[
+  {
+    "code": "AL",
+    "name": "Alabama",
+    "agency": "Alabama Medicaid",
+    "contactUrl": "https://www.medicaid.alabama.gov/content/10.0_Contact/10.1_Medicaid_Contacts.aspx",
+    "enrollmentUrl": "https://medicaid.alabama.gov/content/3.0_Apply/",
+    "phones": [
+      {
+        "number": "334-242-5000",
+        "href": "tel:+13342425000"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AL",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AL",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AL",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AL",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AL",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "AK",
+    "name": "Alaska",
+    "agency": "Alaska Medicaid",
+    "contactUrl": "https://health.alaska.gov/en/resources/department-contacts/",
+    "enrollmentUrl": "https://www.medicaidalaska.com/portals/wps/portal/enterprise/memberpublic/",
+    "phones": [
+      {
+        "number": "800-780-9972",
+        "href": "tel:+18007809972"
+      },
+      {
+        "number": "800-478-7778",
+        "href": "tel:+18004787778"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AK",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AK",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AK",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AK",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AK",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "AZ",
+    "name": "Arizona",
+    "agency": "Arizona Health Care Cost Containment System (AHCCCS)",
+    "contactUrl": "https://www.azahcccs.gov/shared/AHCCCScontacts.html",
+    "enrollmentUrl": "https://azahcccs.gov/Members/GetCovered/apply.html",
+    "phones": [
+      {
+        "number": "602-417-4000",
+        "href": "tel:+16024174000"
+      },
+      {
+        "number": "800-654-8713",
+        "href": "tel:+18006548713"
+      },
+      {
+        "number": "800-523-0231",
+        "href": "tel:+18005230231"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AZ",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AZ",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AZ",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AZ",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AZ",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "AR",
+    "name": "Arkansas",
+    "agency": "Arkansas Medicaid",
+    "contactUrl": "https://humanservices.arkansas.gov/contact-us/",
+    "enrollmentUrl": "https://humanservices.arkansas.gov/apply-for-services/",
+    "phones": [
+      {
+        "number": "800-482-5431",
+        "href": "tel:+18004825431"
+      },
+      {
+        "number": "800-482-8988",
+        "href": "tel:+18004828988"
+      },
+      {
+        "number": "501-682-8233",
+        "href": "tel:+15016828233"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AR",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AR",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AR",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AR",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#AR",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "CA",
+    "name": "California",
+    "agency": "Department of Health Care Services",
+    "contactUrl": "https://www.dhcs.ca.gov/Pages/dhcs_contact.aspx",
+    "enrollmentUrl": "https://www.dhcs.ca.gov/Pages/Keep-Your-Medi-Cal.aspx",
+    "phones": [
+      {
+        "number": "800-541-5555",
+        "href": "tel:+18005415555"
+      },
+      {
+        "number": "916-636-1980",
+        "href": "tel:+19166361980"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "CO",
+    "name": "Colorado",
+    "agency": "Health First Colorado",
+    "contactUrl": "https://www.colorado.gov/hcpf/contact-hcpf",
+    "enrollmentUrl": "https://www.healthfirstcolorado.com/apply-now/",
+    "phones": [
+      {
+        "number": "800-221-3943",
+        "href": "tel:18002213943"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CO",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CO",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CO",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CO",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CO",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "CT",
+    "name": "Connecticut",
+    "agency": "Connecticut Medicaid",
+    "contactUrl": "https://www.huskyhealthct.org/members/contact_us.html",
+    "enrollmentUrl": "https://portal.ct.gov/DSS/Common-Elements/How-to-Apply-for-Services/How-to-Apply-for-Services",
+    "phones": [
+      {
+        "number": "855-805-4325",
+        "href": "tel:+18558054325"
+      },
+      {
+        "number": "855-626-6632",
+        "href": "tel:+18556266632"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CT",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CT",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CT",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CT",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#CT",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "DE",
+    "name": "Delaware",
+    "agency": "Delaware Medicaid & Medical Assistance",
+    "contactUrl": "https://dhss.delaware.gov/dhss/dmma/contact.html",
+    "enrollmentUrl": "https://assist.dhss.delaware.gov/",
+    "phones": [
+      {
+        "number": "866-843-7212",
+        "href": "tel:+18668437212"
+      },
+      {
+        "number": "800-999-3371",
+        "href": "tel:+18009993371"
+      },
+      {
+        "number": "800-996-9969",
+        "href": "tel:+18009969969"
+      },
+      {
+        "number": "(302) 571-4900",
+        "href": "tel:+13025714900"
+      },
+      {
+        "number": "1-855-889-4325",
+        "href": "tel:18558894325"
+      },
+      {
+        "number": "1-866-843-7212",
+        "href": "tel:18668437212"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DE",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DE",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DE",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DE",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DE",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "DC",
+    "name": "District of Columbia",
+    "agency": "DC Medicaid",
+    "contactUrl": "https://districtdirect.dc.gov/ua/contactus",
+    "enrollmentUrl": "https://www.dchealthlink.com/individuals/medicaid",
+    "phones": [
+      {
+        "number": "855-532-5465",
+        "href": "tel:+18555325465"
+      },
+      {
+        "number": "(202) 727-5355",
+        "href": "tel:+12027275355"
+      },
+      {
+        "number": "(800) 877-8339",
+        "href": "tel:+18008778339"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DC",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DC",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DC",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DC",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#DC",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "FL",
+    "name": "Florida",
+    "agency": "Florida Agency for Health Care Administration",
+    "contactUrl": "https://ahca.myflorida.com/contact-ahca.html",
+    "enrollmentUrl": "https://www.myflfamilies.com/services/public-assistance",
+    "phones": [
+      {
+        "number": "888-419-3456",
+        "href": "tel:8884193456"
+      },
+      {
+        "number": "800-955-8771",
+        "href": "tel:+18009558771"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#FL",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#FL",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#FL",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#FL",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#FL",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "GA",
+    "name": "Georgia",
+    "agency": "Georgia Medicaid",
+    "contactUrl": "http://dch.georgia.gov/contact-us",
+    "enrollmentUrl": "https://medicaid.georgia.gov/how-apply",
+    "phones": [
+      {
+        "number": "866-211-0950",
+        "href": "tel:+18662110950"
+      },
+      {
+        "number": "1-877-423-4746",
+        "href": "tel:18774234746"
+      },
+      {
+        "number": "1-877-423-4746",
+        "href": "tel:+18774234746"
+      },
+      {
+        "number": "1-866-211-0950",
+        "href": "tel:+18662110950"
+      },
+      {
+        "number": "1-800-766-4456",
+        "href": "tel:+18007664456"
+      },
+      {
+        "number": "1-800-772-1213",
+        "href": "tel:+18007721213"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#GA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#GA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#GA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#GA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#GA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "HI",
+    "name": "Hawaii",
+    "agency": "Hawaii Med-QUEST Division",
+    "contactUrl": "https://medquest.hawaii.gov/en/contact-us.html",
+    "enrollmentUrl": "https://medquest.hawaii.gov/staywell",
+    "phones": [
+      {
+        "number": "808-524-3370",
+        "href": "tel:+18085243370"
+      },
+      {
+        "number": "800-316-8005",
+        "href": "tel:+18003168005"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#HI",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#HI",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#HI",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#HI",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#HI",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "ID",
+    "name": "Idaho",
+    "agency": "Idaho Department of Health & Welfare",
+    "contactUrl": "http://www.healthandwelfare.idaho.gov/ContactUs/tabid/127/Default.aspx",
+    "enrollmentUrl": "https://healthandwelfare.idaho.gov/services-programs/medicaid-health",
+    "phones": [
+      {
+        "number": "877-456-1233",
+        "href": "tel:+18774561233"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ID",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ID",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ID",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ID",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ID",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "IL",
+    "name": "Illinois",
+    "agency": "Illinois Department of Healthcare and Family Services",
+    "contactUrl": "http://www.illinois.gov/hfs/About/Pages/PhoneDirectory.aspx",
+    "enrollmentUrl": "https://abe.illinois.gov/access/",
+    "phones": [
+      {
+        "number": "800-843-6154",
+        "href": "tel:+18008436154"
+      },
+      {
+        "number": "1-866-324-5553",
+        "href": "tel:+18663245553"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IL",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IL",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IL",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IL",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IL",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "IN",
+    "name": "Indiana",
+    "agency": "Indiana Family and Social Services Administration",
+    "contactUrl": "http://www.in.gov/fssa/2404.htm",
+    "enrollmentUrl": "https://fssabenefits.in.gov/bp/#/",
+    "phones": [
+      {
+        "number": "800-403-0864",
+        "href": "tel:+18004030864"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IN",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IN",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IN",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IN",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IN",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "IA",
+    "name": "Iowa",
+    "agency": "Iowa Department of Human Services",
+    "contactUrl": "https://forms.office.com/g/aiMCDVkcYh",
+    "enrollmentUrl": "https://hhsservices.iowa.gov/apspssp/ssp.portal",
+    "phones": [
+      {
+        "number": "1-800-338-8366",
+        "href": "tel:18003388366"
+      },
+      {
+        "number": "515-256-4606",
+        "href": "tel:+15152564606"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#IA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "KS",
+    "name": "Kansas",
+    "agency": "KanCare",
+    "contactUrl": "https://www.kancare.ks.gov/contact-us",
+    "enrollmentUrl": "https://www.kancare.ks.gov/apply-now",
+    "phones": [
+      {
+        "number": "800-792-4884",
+        "href": "tel:+18337652003"
+      },
+      {
+        "number": "866-305-5147",
+        "href": "tel:+18663055147"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KS",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KS",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KS",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KS",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KS",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "KY",
+    "name": "Kentucky",
+    "agency": "Kentucky Cabinet for Health and Family Services",
+    "contactUrl": "https://chfs.ky.gov/Pages/contact.aspx",
+    "enrollmentUrl": "https://kynect.ky.gov/benefits/s/?language=en_US",
+    "phones": [
+      {
+        "number": "855-306-8959",
+        "href": "tel:+18553068959"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KY",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KY",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KY",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KY",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#KY",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "LA",
+    "name": "Louisiana",
+    "agency": "Healthy Louisiana",
+    "contactUrl": "https://ldh.la.gov/index.cfm/directory/category/158",
+    "enrollmentUrl": "https://ldh.la.gov/subhome/48",
+    "phones": [
+      {
+        "number": "888-342-6207",
+        "href": "tel:+18883426207"
+      },
+      {
+        "number": "855-526-3346",
+        "href": "tel:+18555263346"
+      },
+      {
+        "number": "800-220-5404",
+        "href": "tel:+18002205404"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#LA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#LA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#LA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#LA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#LA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "ME",
+    "name": "Maine",
+    "agency": "Maine Department of Health and Human Services",
+    "contactUrl": "https://www.maine.gov/dhhs/ofi/about-us/contact",
+    "enrollmentUrl": "https://apps1.web.maine.gov/benefits/account/login.html",
+    "phones": [
+      {
+        "number": "855-797-4357",
+        "href": "tel:+18557974357"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ME",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ME",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ME",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ME",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ME",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MD",
+    "name": "Maryland",
+    "agency": "Maryland Department of Health",
+    "contactUrl": "https://health.maryland.gov/Pages/officeofsecretary.aspx",
+    "enrollmentUrl": "https://health.maryland.gov/mmcp/eligibility/Pages/apply.aspx",
+    "phones": [
+      {
+        "number": "855-642-8572",
+        "href": "tel:+18556428572"
+      },
+      {
+        "number": "877-623-7773",
+        "href": "tel:+18776237773"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MD",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MD",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MD",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MD",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MD",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MA",
+    "name": "Massachusetts",
+    "agency": "MassHealth",
+    "contactUrl": "https://www.mass.gov/info-details/contact-masshealth-information-for-members#masshealth-member-customer-service-center-",
+    "enrollmentUrl": "https://www.mass.gov/information-for-masshealth-applicants",
+    "phones": [
+      {
+        "number": "800-841-2900",
+        "href": "tel:+18008412900"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MI",
+    "name": "Michigan",
+    "agency": "Michigan Department of Health & Human Services",
+    "contactUrl": "https://www.michigan.gov/mdhhs/assistance-programs/medicaid",
+    "enrollmentUrl": "https://newmibridges.michigan.gov/s/isd-landing-page?language=en_US",
+    "phones": [
+      {
+        "number": "833-599-6444",
+        "href": "tel:+18335996444"
+      },
+      {
+        "number": "866-501-5656",
+        "href": "tel:+18665015656"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MI",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MI",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MI",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MI",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MI",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MN",
+    "name": "Minnesota",
+    "agency": "Minnesota Department of Human Services",
+    "contactUrl": "https://mn.gov/dhs/general-public/about-dhs/contact-us/",
+    "enrollmentUrl": "https://mn.gov/dhs/renewmycoverage/",
+    "phones": [
+      {
+        "number": "800-657-3672",
+        "href": "tel:+18006573672"
+      },
+      {
+        "number": "800-366-5411",
+        "href": "tel:+18003665411"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MN",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MN",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MN",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MN",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MN",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MS",
+    "name": "Mississippi",
+    "agency": "Mississippi Division of Medicaid",
+    "contactUrl": "http://medicaid.ms.gov/contact/",
+    "enrollmentUrl": "https://medicaid.ms.gov/medicaid-coverage/how-to-apply/",
+    "phones": [
+      {
+        "number": "800-421-2408",
+        "href": "tel:+18004212408"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MS",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MS",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MS",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MS",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MS",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MO",
+    "name": "Missouri",
+    "agency": "Missouri Department of Social Services",
+    "contactUrl": "https://dss.mo.gov/toll.htm",
+    "enrollmentUrl": "https://mydss.mo.gov/renew",
+    "phones": [
+      {
+        "number": "573-751-3425",
+        "href": "tel:+15737513425"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MO",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MO",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MO",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MO",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MO",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "MT",
+    "name": "Montana",
+    "agency": "Montana Department of Public Health and Human Services",
+    "contactUrl": "https://apply.mt.gov/",
+    "enrollmentUrl": "https://apply.mt.gov/",
+    "phones": [
+      {
+        "number": "800-362-8312",
+        "href": "tel:+18003628312"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MT",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MT",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MT",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MT",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#MT",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NE",
+    "name": "Nebraska",
+    "agency": "Nebraska Department of Health and Human Services",
+    "contactUrl": "https://dhhs.ne.gov/pages/accessnebraska.aspx",
+    "enrollmentUrl": "https://dhhs.ne.gov/pages/accessnebraska.aspx",
+    "phones": [
+      {
+        "number": "855-632-7633",
+        "href": "tel:+18556327633"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NE",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NE",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NE",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NE",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NE",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NV",
+    "name": "Nevada",
+    "agency": "Nevada Department of Health and Human Services",
+    "contactUrl": "http://dhhs.nv.gov/Contact/DHHS/",
+    "enrollmentUrl": "https://accessnevada.nv.gov/public/landing-page",
+    "phones": [
+      {
+        "number": "877-638-3472",
+        "href": "tel:+18776383472"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NV",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NV",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NV",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NV",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NV",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NH",
+    "name": "New Hampshire",
+    "agency": "New Hampshire Department of Health and Human Services",
+    "contactUrl": "https://www.dhhs.nh.gov/contact",
+    "enrollmentUrl": "https://www.dhhs.nh.gov/medicaid-changes",
+    "phones": [
+      {
+        "number": "844-275-3447 (844-ASK-DHHS), select option #3",
+        "href": "tel:+18442753447"
+      },
+      {
+        "number": "1-800-735-2964",
+        "href": "tel:+18007352964"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NH",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NH",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NH",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NH",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NH",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NJ",
+    "name": "New Jersey",
+    "agency": "New Jersey Department of Human Services",
+    "contactUrl": "https://njfamilycare.dhs.state.nj.us/",
+    "enrollmentUrl": "https://www.njhelps.gov/",
+    "phones": [
+      {
+        "number": "800-701-0710",
+        "href": "tel:+18007010710"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NJ",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NJ",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NJ",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NJ",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NJ",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NM",
+    "name": "New Mexico",
+    "agency": "New Mexico Human Services Department",
+    "contactUrl": "https://www.hsd.state.nm.us/contact_us/",
+    "enrollmentUrl": "https://www.yes.state.nm.us/yesnm/home/index",
+    "phones": [
+      {
+        "number": "800-283-4465",
+        "href": "tel:+18002834465"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NM",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NM",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NM",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NM",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NM",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NY",
+    "name": "New York",
+    "agency": "New York State Department of Health",
+    "contactUrl": "https://www.health.ny.gov/health_care/medicaid/",
+    "enrollmentUrl": "https://www.health.ny.gov/health_care/medicaid/",
+    "phones": [
+      {
+        "number": "855-355-5777",
+        "href": "tel:+18553555777"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NY",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NY",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NY",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NY",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NY",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "NC",
+    "name": "North Carolina",
+    "agency": "North Carolina Medicaid",
+    "contactUrl": "https://medicaid.ncdhhs.gov/contact",
+    "enrollmentUrl": "https://ncgov.servicenowservices.com/sp_beneficiary?id=bnf_index",
+    "phones": [
+      {
+        "number": "888-245-0179",
+        "href": "tel:+18882450179"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NC",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NC",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NC",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NC",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#NC",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "ND",
+    "name": "North Dakota",
+    "agency": "North Dakota Department of Human Services",
+    "contactUrl": "https://www.hhs.nd.gov/contact",
+    "enrollmentUrl": "https://www.hhs.nd.gov/healthcare/medicaid/apply",
+    "phones": [
+      {
+        "number": "800-755-2604",
+        "href": "tel:+18007552604"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ND",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ND",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ND",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ND",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#ND",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "OH",
+    "name": "Ohio",
+    "agency": "Ohio Department of Medicaid",
+    "contactUrl": "https://medicaid.ohio.gov/home/contact-us/contact-us",
+    "enrollmentUrl": "https://benefits.ohio.gov/",
+    "phones": [
+      {
+        "number": "800-324-8680",
+        "href": "tel:+18003248680"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OH",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OH",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OH",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OH",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OH",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "OK",
+    "name": "Oklahoma",
+    "agency": "Oklahoma Health Care Authority",
+    "contactUrl": "https://oklahoma.gov/ohca/contact-us.html",
+    "enrollmentUrl": "https://oklahoma.gov/ohca/individuals/mysoonercare/apply-for-soonercare-online/where-to-apply.html",
+    "phones": [
+      {
+        "number": "800-987-7767",
+        "href": "tel:+18003248680"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OK",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OK",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OK",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OK",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OK",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "OR",
+    "name": "Oregon",
+    "agency": "OregONEligibility",
+    "contactUrl": "https://www.oregon.gov/dhs/ABOUTDHS/Pages/contact.aspx",
+    "enrollmentUrl": "https://one.oregon.gov/UserRegistration/SettingUpAccount",
+    "phones": [
+      {
+        "number": "800-699-9075",
+        "href": "tel:+18006999075"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OR",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OR",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OR",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OR",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#OR",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "PA",
+    "name": "Pennsylvania",
+    "agency": "Pennsylvania Department of Human Services",
+    "contactUrl": "https://www.dhs.pa.gov/contact/Pages/Helpful%20Phone%20Numbers.aspx",
+    "enrollmentUrl": "https://www.compass.dhs.pa.gov/",
+    "phones": [
+      {
+        "number": "800-692-7462",
+        "href": "tel:+18006927462"
+      },
+      {
+        "number": "800-451-5886",
+        "href": "tel:+18004515886"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#PA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#PA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#PA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#PA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#PA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "RI",
+    "name": "Rhode Island",
+    "agency": "Rhode Island Executive Office of Health and Human Services",
+    "contactUrl": "http://www.eohhs.ri.gov/ContactUs/ContactInformation.aspx",
+    "enrollmentUrl": "https://healthyrhode.ri.gov/HIXWebI3/CreateGenericUserAccount.action?accountFlow=true&request_locale=enUS",
+    "phones": [
+      {
+        "number": "855-840-4774",
+        "href": "tel:+18558404774"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#RI",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#RI",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#RI",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#RI",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#RI",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "SC",
+    "name": "South Carolina",
+    "agency": "South Carolina Health Connections Medicaid",
+    "contactUrl": "https://www.scdhhs.gov/Contact-Info",
+    "enrollmentUrl": "https://apply.scdhhs.gov/CitizenPortal/application.do",
+    "phones": [
+      {
+        "number": "(888) 549-0820",
+        "href": "tel:+18885490820"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SC",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SC",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SC",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SC",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SC",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "SD",
+    "name": "South Dakota",
+    "agency": "South Dakota Department of Social Services",
+    "contactUrl": "https://dss.sd.gov/contactus/",
+    "enrollmentUrl": "https://dss.sd.gov/applyonline/default.aspx",
+    "phones": [
+      {
+        "number": "800-597-1603",
+        "href": "tel:+18005971603"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SD",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SD",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SD",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SD",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#SD",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "TN",
+    "name": "Tennessee",
+    "agency": "Tennessee Department of Health",
+    "contactUrl": "https://www.tn.gov/tenncare/contact-us.html",
+    "enrollmentUrl": "https://tenncareconnect.tn.gov",
+    "phones": [
+      {
+        "number": "855-259-0701",
+        "href": "tel:+18552590701"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TN",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TN",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TN",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TN",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TN",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "TX",
+    "name": "Texas",
+    "agency": "Texas Health and Human Services",
+    "contactUrl": "https://hhs.texas.gov/about-hhs/find-us",
+    "enrollmentUrl": "https://yourtexasbenefits.com/Learn/Home#login",
+    "phones": [
+      {
+        "number": "800-335-8957",
+        "href": "tel:+18003358957"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TX",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TX",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TX",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TX",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#TX",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "UT",
+    "name": "Utah",
+    "agency": "Utah Department of Health Medicaid",
+    "contactUrl": "https://medicaid.utah.gov/contact/",
+    "enrollmentUrl": "https://medicaid.utah.gov/apply-medicaid/",
+    "phones": [
+      {
+        "number": "866-435-7414",
+        "href": "tel:+18668664357414"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#UT",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#UT",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#UT",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#UT",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#UT",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "VT",
+    "name": "Vermont",
+    "agency": "Vermont Health Connect",
+    "contactUrl": "https://dvha.vermont.gov/department-vermont-health-access-contact-information",
+    "enrollmentUrl": "https://portal.healthconnect.vermont.gov/VTHBELand/welcome.action",
+    "phones": [
+      {
+        "number": "855-899-9600",
+        "href": "tel:+18558999600"
+      },
+      {
+        "number": "888-834-7898",
+        "href": "tel:+18888347898"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VT",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VT",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VT",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VT",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VT",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "VA",
+    "name": "Virginia",
+    "agency": "Virginia Department of Medical Assistance Services",
+    "contactUrl": "https://coverva.dmas.virginia.gov/contact/",
+    "enrollmentUrl": "https://www.dmas.virginia.gov/for-applicants/applying-for-medicaid/",
+    "phones": [
+      {
+        "number": "833-522-5582",
+        "href": "tel:+18335225582"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#VA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "WA",
+    "name": "Washington",
+    "agency": "Washington State Health Care Authority",
+    "contactUrl": "https://www.hca.wa.gov/contact-hca",
+    "enrollmentUrl": "https://www.hca.wa.gov/health-care-services-supports/apple-health-medicaid-coverage/apply-or-renew-coverage",
+    "phones": [
+      {
+        "number": "800-562-3022",
+        "href": "tel:8005623022"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WA",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WA",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WA",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WA",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WA",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "WV",
+    "name": "West Virginia",
+    "agency": "West Virginia Department of Health and Human Resources",
+    "contactUrl": "https://dohs.wv.gov/contact-us",
+    "enrollmentUrl": "https://www.wvpath.wv.gov/application",
+    "phones": [
+      {
+        "number": "877-716-1212",
+        "href": "tel:+18777161212"
+      }
+    ],
+    "expandedMedicaid": true,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WV",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WV",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WV",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WV",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WV",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "WI",
+    "name": "Wisconsin",
+    "agency": "Wisconsin Department of Health Services",
+    "contactUrl": "https://www.dhs.wisconsin.gov/forwardhealth/imagency/index.htm",
+    "enrollmentUrl": "https://access.wi.gov/",
+    "phones": [
+      {
+        "number": "800-362-3002",
+        "href": "tel:+18003623002"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WI",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WI",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WI",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WI",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WI",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  },
+  {
+    "code": "WY",
+    "name": "Wyoming",
+    "agency": "Wyoming Department of Health",
+    "contactUrl": "https://health.wyo.gov/contact/",
+    "enrollmentUrl": "https://health.wyo.gov/healthcarefin/apply/",
+    "phones": [
+      {
+        "number": "855-294-2127",
+        "href": "tel:+18552942127"
+      }
+    ],
+    "expandedMedicaid": false,
+    "profileStatus": "federal-baseline",
+    "fieldSources": {
+      "name": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WY",
+        "checkedOn": "2026-11-02"
+      },
+      "agency": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WY",
+        "checkedOn": "2026-11-02"
+      },
+      "contactUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WY",
+        "checkedOn": "2026-11-02"
+      },
+      "enrollmentUrl": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WY",
+        "checkedOn": "2026-11-02"
+      },
+      "phones": {
+        "source": "https://www.medicaid.gov/about-us/where-can-people-get-help-medicaid-chip#WY",
+        "checkedOn": "2026-11-02"
+      },
+      "expandedMedicaid": {
+        "source": "https://www.medicaid.gov/sites/default/files/2026-10/October2026-enrollment-by-state888_0.json",
+        "checkedOn": "2026-11-02"
+      }
+    }
+  }
+]

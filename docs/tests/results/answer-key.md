@@ -2,11 +2,11 @@
 
 Rule version: 42-CFR-435-2026-10-29.
 
-Result: **336 of 336 cases passed**.
+Result: **365 of 365 cases passed**.
 
 Run `pnpm test:answer-key` to reproduce this report. Inputs and expected answers are in `tests/answer-key/cases.mjs`; those answers are not generated from the engine output.
 
-These synthetic cases check the federal rule and the app’s stated safety policies. They are not a legal review, a state approval, a document-reading test or a test with real members. Income cases use a confirmed Medicaid MAGI count unless the case explicitly tests pay-only uncertainty.
+These synthetic cases check the federal rule and the app’s stated safety policies. They are not a legal review, a state approval, a document-reading test or a test with real members. Income cases use a confirmed Medicaid MAGI count unless the case explicitly tests taxable wages, net self-employment earnings or pay-only uncertainty.
 
 Each case cites the paragraph it tests. The original official XML and source hashes are in `data/regulations/2026-10-29/`. Procedural helpers keep a grey status because they do not decide whether a month meets the rule.
 
@@ -348,3 +348,32 @@ Each case cites the paragraph it tests. The original official XML and source has
 | activity-service-missing-metadata | Volunteer title alone does not prove the service definition | combineHours | [42 CFR 435.552(b)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
 | activity-program-missing-metadata | Program title alone does not prove an approved program | combineHours | [42 CFR 435.552(b)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
 | activity-unknown-school-and-hours-record | Unknown school and work-record facts are not a confirmed zero | combineHours | [42 CFR 435.552(c), (e)(2)(i)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-at-line | Confirmed taxable wages meet exactly at $580 | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Meets | Pass |
+| wages-below-line | Pre-tax deductions put wages one cent below the line | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| wages-zero-deductions | Confirmed zero pre-tax deductions use gross wages | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Meets | Pass |
+| wages-zero-pay | Confirmed zero wages do not meet | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| wages-unconfirmed | Proposed wage details cannot meet | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-too-many-deductions | Deductions greater than gross pay need review | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-confirmed-net | Confirmed gig net earnings after costs meet | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Meets | Pass |
+| gig-net-below | Gig net earnings below the line are Short | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| gig-loss | Confirmed business loss does not meet | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| gig-unconfirmed-costs | Net amount without confirmed costs stays unsure | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-gross-only | Gig gross receipts alone cannot meet | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-net-unconfirmed | Proposed net earnings do not count | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-grossPayCents-missing | Wages need valid grossPayCents: missing | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-grossPayCents-negative | Wages need valid grossPayCents: negative | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-grossPayCents-fractional-cent | Wages need valid grossPayCents: fractional-cent | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-grossPayCents-overflow | Wages need valid grossPayCents: overflow | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-preTaxDeductionsCents-missing | Wages need valid preTaxDeductionsCents: missing | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-preTaxDeductionsCents-negative | Wages need valid preTaxDeductionsCents: negative | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-preTaxDeductionsCents-fractional-cent | Wages need valid preTaxDeductionsCents: fractional-cent | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| wages-preTaxDeductionsCents-overflow | Wages need valid preTaxDeductionsCents: overflow | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-net-missing | Net earnings need whole valid cents: missing | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-net-fractional | Net earnings need whole valid cents: fractional | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| gig-net-overflow | Net earnings need whole valid cents: overflow | incomeTest | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| month-confirmed-stub | Confirmed taxable wages can establish a Meets month | assessMonth | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Meets | Pass |
+| month-gig-before-costs | A month with gross gig earnings alone stays unsure | assessMonth | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| derived-wages-below-line | State income-derived hours use taxable wages after deductions | incomeDerivedHours | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| derived-wages-at-line | Taxable wages at threshold use income instead of derived hours | incomeDerivedHours | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Not sure yet | Pass |
+| derived-wage-gross-is-not-count | Gross wage total cannot replace the after-deduction count | incomeDerivedHours | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |
+| derived-gig-gross-is-not-net | Gig gross receipts cannot replace confirmed net earnings | incomeDerivedHours | [42 CFR 435.552(a)(6), (f)(2); 435.603(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Short | Pass |

@@ -8,6 +8,10 @@
 		-Server
 	}
 
+	# Keep the starter services closed even if application routing changes.
+	@unpublished not path / /try /check /states /states/* /how-it-works /help /proof /proof/answer-key.md /proof/answer-cases.json /share /for-navigators /about /privacy /terms /accessibility /security /assets/* /favicon.svg /icon-180.svg /robots.txt /sitemap.xml /months /months/* /add /review /plan /notice /settings /settings/* /proof/packets /navigator /navigator/* /admin /admin/*
+	respond @unpublished "Not found" 404
+
 	reverse_proxy 127.0.0.1:3000
 }
 

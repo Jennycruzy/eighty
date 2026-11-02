@@ -82,7 +82,7 @@ after(async () => {
     "",
     "Run `pnpm test:answer-key` to reproduce this report. Inputs and expected answers are in `tests/answer-key/cases.mjs`; those answers are not generated from the engine output.",
     "",
-    "These synthetic cases check the federal rule and the app’s stated safety policies. They are not a legal review, a state approval, a document-reading test or a test with real members. Income cases use a confirmed Medicaid MAGI count unless the case explicitly tests pay-only uncertainty.",
+    "These synthetic cases check the federal rule and the app’s stated safety policies. They are not a legal review, a state approval, a document-reading test or a test with real members. Income cases use a confirmed Medicaid MAGI count unless the case explicitly tests taxable wages, net self-employment earnings or pay-only uncertainty.",
     "",
     "Each case cites the paragraph it tests. The original official XML and source hashes are in `data/regulations/2026-10-29/`. Procedural helpers keep a grey status because they do not decide whether a month meets the rule.",
     "",
@@ -95,5 +95,39 @@ after(async () => {
       `| ${row.id} | ${row.title} | ${row.rule} | [${row.citation}](https://www.ecfr.gov/current/title-42/section-${section}) | ${row.expected.status} | ${row.passed ? "Pass" : "Fail"} |`,
     );
   }
-  await writeFile(new URL("answer-key.md", directory), `${lines.join("\n")}\n`);
+  const report = `${lines.join("\n")}\n`;
+  await writeFile(new URL("answer-key.md", directory), report);
+  const publicDirectory = new URL("../../public/proof/", import.meta.url);
+  await mkdir(publicDirectory, { recursive: true });
+  await writeFile(new URL("answer-key.md", publicDirectory), report);
+  await writeFile(
+    new URL("answer-cases.json", publicDirectory),
+    JSON.stringify(
+      {
+        encoding:
+          "Objects with $undefined or $number preserve undefined and non-finite number inputs.",
+        cases,
+      },
+      (_key, value) =>
+        value === undefined
+          ? { $undefined: true }
+          : typeof value === "number" && !Number.isFinite(value)
+            ? { $number: String(value) }
+            : value,
+      2,
+    ) + "\n",
+  );
+  await writeFile(
+    new URL("../../data/proof.json", import.meta.url),
+    JSON.stringify(
+      {
+        cases: cases.length,
+        passed,
+        ruleVersion: rules.RULE_VERSION,
+        checkedOn: new Date().toISOString().slice(0, 10),
+      },
+      null,
+      2,
+    ) + "\n",
+  );
 });

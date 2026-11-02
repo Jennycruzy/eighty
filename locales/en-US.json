@@ -1,0 +1,162 @@
+{
+  "how-it-works": {
+    "title": "The AI reads. The rules decide.",
+    "intro": "A model can misread a document. A person must check each line before it counts.",
+    "sections": [
+      [
+        "What counts",
+        "The federal rule asks for 80 hours a month, enough income, school at least half-time, or a reason the rule does not apply. Work, school and service can count in different ways."
+      ],
+      [
+        "Your proof matters",
+        "Keep the dates, hours and pay for each month. Ask a service group to keep your hours and the name of a person who can confirm them."
+      ],
+      [
+        "How we check",
+        "Fixed rules do the math. Each answer names the rule and the facts still needed. An unknown fact stays ‘Not sure yet’. Your state makes the real decision."
+      ]
+    ]
+  },
+  "help": {
+    "title": "Help with the rule",
+    "intro": "You can ask for help. Keep each state letter and the date you got it.",
+    "sections": [
+      [
+        "Does job searching count?",
+        "Job searching on its own does not count. Work, service, school or a qualifying work program may count."
+      ],
+      [
+        "I do gig work",
+        "Keep your pay records and your business costs. We need net earnings after costs, or a record of your work hours."
+      ],
+      [
+        "I am in school",
+        "Half-time school or more can meet the rule. Below half-time, credits can count as hours. Six credits give 77.94 hours a month under the federal formula."
+      ],
+      [
+        "I care for a family member",
+        "You may be exempt. You do not always need 80 hours of care. The rules depend on who you care for, where you live and the care you give."
+      ],
+      [
+        "I got a notice",
+        "The rule treats a notice as received five days after its printed date. It then allows 30 calendar days to reply. Keep proof if it arrived later. Ask the state or legal aid about your date."
+      ],
+      [
+        "I need a person to help",
+        "Call 211 for local help. Use the official help finder below for help with health coverage. You can reapply for Medicaid at any time."
+      ]
+    ]
+  },
+  "for-navigators": {
+    "title": "Help someone keep their proof",
+    "intro": "Start with the person’s state letter. Ask what it requests and when it is due.",
+    "sections": [
+      [
+        "Ask before sharing",
+        "Get the person’s consent before you handle or share a document. Use only what is needed. Do not ask for a Social Security number here."
+      ],
+      [
+        "Check one month at a time",
+        "Help the person list work, pay, school and service for each month. Check if an exclusion or hardship may apply. Follow the state’s own steps."
+      ],
+      [
+        "Use the public tools",
+        "The screener and month check work without an account. Nothing typed into those tools is saved. The state directory links to official help."
+      ]
+    ]
+  },
+  "about": {
+    "title": "About Eighty",
+    "intro": "Eighty helps people understand the federal Medicaid work rule and the proof it asks for.",
+    "sections": [
+      [
+        "Why Eighty?",
+        "The name comes from the 80 hours a month in the federal rule. Health coverage should not be lost because a person cannot make sense of the paperwork."
+      ],
+      [
+        "What you can use here",
+        "You can read the rule, check a month by hand, use the screener and find official state help. Account tools and document uploads are closed while their privacy and email checks are finished."
+      ],
+      [
+        "Who decides?",
+        "Your state makes the real decision. Eighty is not part of any state or CMS. It does not give legal advice or send proof to the state. It runs on Agent-Native, which provides the app’s server tools."
+      ]
+    ]
+  },
+  "privacy": {
+    "title": "Your privacy",
+    "intro": "You do not need an account to use the public tools.",
+    "sections": [
+      [
+        "Typed answers",
+        "The month check and screener run in your browser. We do not save their answers. Do not put your name, case number or Social Security number in them."
+      ],
+      [
+        "Documents and accounts",
+        "Public sign-up and document upload are closed. These pages do not send documents to a model. We will explain any document reader before you use it."
+      ],
+      [
+        "Basic web requests",
+        "The server receives normal web requests, including an IP address. Do not put personal details in page links. There are no ads or third-party tracking cookies on these public pages."
+      ],
+      [
+        "Shared links",
+        "The share tool uses your phone’s share menu or copies a message. It does not send messages itself or record who receives them."
+      ]
+    ]
+  },
+  "terms": {
+    "title": "Terms of use",
+    "intro": "Use Eighty to help understand and prepare. Your state makes the decision.",
+    "sections": [
+      [
+        "Check with your state",
+        "This is not legal advice. State choices and dates can differ. Read the cited rule and ask your state or a navigator when you are not sure."
+      ],
+      [
+        "Your responsibility",
+        "Check the numbers you type. Keep your original proof. Send any required proof through your state’s own channel."
+      ],
+      [
+        "Current scope",
+        "The public tools use the dated federal rules shown with each result. They do not decide all Medicaid eligibility rules. They do not submit forms or appeal a decision for you."
+      ]
+    ]
+  },
+  "accessibility": {
+    "title": "Access for everyone",
+    "intro": "You should be able to use Eighty on a small phone, with a keyboard or with a screen reader.",
+    "sections": [
+      [
+        "What these pages offer",
+        "You can use English or Spanish. Forms have labels. Status text uses words, not color alone. You can zoom the page and skip to the main content."
+      ],
+      [
+        "What we are checking",
+        "Our target is WCAG 2.2 AA. A full screen-reader review is still needed. We do not claim that every access check has passed."
+      ],
+      [
+        "If a page does not work",
+        "You can use the official state help links or call 211. Try the language switch or a different way to enter a number. Do not miss a state deadline while waiting for this site."
+      ]
+    ]
+  },
+  "security": {
+    "title": "Security",
+    "intro": "Do not send personal documents or passwords to report a problem.",
+    "sections": [
+      [
+        "Protect your information",
+        "Public sign-up and document upload are closed. Starter chat, terminal and database pages are blocked. The public tools do not need your name or Social Security number."
+      ],
+      [
+        "If you find a problem",
+        "Stop using the affected page. Keep only the page address and steps that show the problem. Do not open another person’s data or include their details in a report."
+      ],
+      [
+        "Until a report channel is open",
+        "Use your state’s official channel for urgent coverage needs. This site has no working security-report inbox yet. Do not send private details to an address you have guessed."
+      ]
+    ]
+  }
+}

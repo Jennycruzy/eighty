@@ -2899,3 +2899,6 @@ add(
     missingIncludes: ["education.enrollment", "income.hoursDocumented"],
   },
 );
+
+import { confirmedIncomeCases } from "./confirmed-income.mjs";
+cases.push(...confirmedIncomeCases);

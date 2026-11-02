@@ -17,6 +17,7 @@ jobs:
           node-version: '22.23.4'
       - uses: pnpm/action-setup@v4
       - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm typecheck
       - run: pnpm test | tee "$RUNNER_TEMP/eighty-tests.log"
         shell: bash
@@ -30,3 +31,11 @@ jobs:
       - run: pnpm agent-native:doctor
       - run: docker build --tag eighty:check .
       - run: pnpm check:production eighty:check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phone-browser-results
+          include-hidden-files: true
+          path: |
+            .private/browser-report/
+            .private/browser-results/

@@ -1,0 +1,162 @@
+{
+  "how-it-works": {
+    "title": "La IA lee. Las reglas deciden.",
+    "intro": "Un modelo puede leer mal un documento. Una persona debe revisar cada dato antes de que cuente.",
+    "sections": [
+      [
+        "Qué cuenta",
+        "La regla federal pide 80 horas al mes, ingresos suficientes, estudios al menos a medio tiempo o una razón para no aplicar la regla. El trabajo, los estudios y el servicio pueden contar de distintas formas."
+      ],
+      [
+        "Guarda tus pruebas",
+        "Guarda fechas, horas y pagos de cada mes. Pide al grupo de servicio que guarde tus horas y el nombre de una persona que las pueda confirmar."
+      ],
+      [
+        "Cómo revisamos",
+        "Las reglas fijas hacen las cuentas. Cada respuesta dice qué regla se usó y qué datos faltan. Si falta un dato, dice ‘Aún no sabemos’. Tu estado toma la decisión real."
+      ]
+    ]
+  },
+  "help": {
+    "title": "Ayuda con la regla",
+    "intro": "Puedes pedir ayuda. Guarda cada carta del estado y la fecha en que llegó.",
+    "sections": [
+      [
+        "¿Cuenta buscar trabajo?",
+        "Buscar trabajo por sí solo no cuenta. Pueden contar el trabajo, el servicio, los estudios o un programa de trabajo que cumpla la regla."
+      ],
+      [
+        "Trabajo por mi cuenta",
+        "Guarda tus pagos y los gastos de tu negocio. Se necesitan las ganancias netas después de los gastos, o un registro de tus horas."
+      ],
+      [
+        "Estoy estudiando",
+        "Estudiar al menos a medio tiempo puede cumplir la regla. Con menos tiempo, los créditos pueden contar como horas. Seis créditos dan 77.94 horas al mes según la fórmula federal."
+      ],
+      [
+        "Cuido a un familiar",
+        "Puede que la regla no te aplique. No siempre se piden 80 horas de cuidado. Depende de a quién cuidas, dónde vives y qué cuidado das."
+      ],
+      [
+        "Recibí un aviso",
+        "La regla cuenta el aviso como recibido cinco días después de la fecha impresa. Luego da 30 días de calendario para responder. Guarda pruebas si llegó más tarde. Pregunta al estado o a ayuda legal por tu fecha."
+      ],
+      [
+        "Necesito ayuda de una persona",
+        "Llama al 211 para buscar ayuda local. Usa el buscador oficial de abajo para ayuda con tu cobertura. Puedes volver a solicitar Medicaid en cualquier momento."
+      ]
+    ]
+  },
+  "for-navigators": {
+    "title": "Ayuda a alguien a guardar sus pruebas",
+    "intro": "Empieza por la carta del estado. Revisa qué pide y para cuándo.",
+    "sections": [
+      [
+        "Pide permiso antes de compartir",
+        "Pide permiso antes de usar o compartir un documento. Usa solo lo necesario. No pidas un número de Seguro Social aquí."
+      ],
+      [
+        "Revisa un mes a la vez",
+        "Ayuda a la persona a anotar trabajo, pagos, estudios y servicio de cada mes. Revisa si puede haber una exclusión o una dificultad que cuente. Sigue los pasos del estado."
+      ],
+      [
+        "Usa las herramientas públicas",
+        "Las preguntas y la revisión del mes funcionan sin cuenta. No guardamos lo que escribas en ellas. El directorio de estados tiene enlaces a ayuda oficial."
+      ]
+    ]
+  },
+  "about": {
+    "title": "Acerca de Eighty",
+    "intro": "Eighty ayuda a entender la regla federal de trabajo de Medicaid y las pruebas que pide.",
+    "sections": [
+      [
+        "¿Por qué Eighty?",
+        "El nombre viene de las 80 horas al mes de la regla federal. Nadie debería perder su cobertura por no entender los papeles."
+      ],
+      [
+        "Qué puedes usar aquí",
+        "Puedes leer la regla, revisar un mes a mano, responder las preguntas y buscar ayuda oficial. Las cuentas y la carga de documentos están cerradas mientras se revisan la privacidad y el correo."
+      ],
+      [
+        "¿Quién decide?",
+        "Tu estado toma la decisión real. Eighty no es parte de un estado ni de CMS. No da asesoría legal ni envía pruebas al estado. Usa Agent-Native, que aporta herramientas para el servidor."
+      ]
+    ]
+  },
+  "privacy": {
+    "title": "Tu privacidad",
+    "intro": "No necesitas una cuenta para usar las herramientas públicas.",
+    "sections": [
+      [
+        "Lo que escribes",
+        "La revisión del mes y las preguntas funcionan en tu navegador. No guardamos tus respuestas. No escribas tu nombre, número de caso o número de Seguro Social."
+      ],
+      [
+        "Documentos y cuentas",
+        "El registro y la carga de documentos están cerrados. Estas páginas no envían documentos a un modelo. Explicaremos cualquier lector antes de que lo uses."
+      ],
+      [
+        "Visitas a la web",
+        "El servidor recibe las peticiones normales de la web, como una dirección IP. No pongas datos privados en los enlaces. No hay anuncios ni cookies de rastreo de terceros en estas páginas."
+      ],
+      [
+        "Enlaces compartidos",
+        "La herramienta usa el menú de tu teléfono o copia un mensaje. No envía mensajes por sí sola ni guarda quién los recibe."
+      ]
+    ]
+  },
+  "terms": {
+    "title": "Términos de uso",
+    "intro": "Usa Eighty para entender y preparar. Tu estado decide.",
+    "sections": [
+      [
+        "Consulta con tu estado",
+        "Esto no es asesoría legal. Las opciones y fechas pueden variar por estado. Lee la regla citada y pregunta al estado o a una persona de apoyo si tienes dudas."
+      ],
+      [
+        "Tu responsabilidad",
+        "Revisa los números que escribes. Guarda las pruebas originales. Envía las pruebas por el medio oficial de tu estado."
+      ],
+      [
+        "Alcance actual",
+        "Las herramientas usan la versión de la regla federal que aparece con cada respuesta. No revisan todas las reglas de Medicaid. No envían formularios ni apelan decisiones por ti."
+      ]
+    ]
+  },
+  "accessibility": {
+    "title": "Acceso para todos",
+    "intro": "Debes poder usar Eighty con un teléfono pequeño, un teclado o un lector de pantalla.",
+    "sections": [
+      [
+        "Qué ofrecen estas páginas",
+        "Puedes usar inglés o español. Los campos tienen etiquetas. Los estados usan palabras, no solo colores. Puedes ampliar la página e ir al contenido principal."
+      ],
+      [
+        "Qué estamos revisando",
+        "Nuestra meta es WCAG 2.2 AA. Aún falta la revisión completa con un lector de pantalla. No decimos que todas las pruebas de acceso hayan pasado."
+      ],
+      [
+        "Si una página no funciona",
+        "Usa los enlaces de ayuda oficial o llama al 211. Prueba cambiar el idioma u otra forma de escribir un número. No pierdas un plazo del estado por esperar a esta página."
+      ]
+    ]
+  },
+  "security": {
+    "title": "Seguridad",
+    "intro": "No envíes documentos privados ni contraseñas para informar de un problema.",
+    "sections": [
+      [
+        "Cuida tus datos",
+        "El registro y la carga de documentos están cerrados. Las páginas iniciales de chat, terminal y base de datos están bloqueadas. No se pide tu nombre ni número de Seguro Social."
+      ],
+      [
+        "Si encuentras un problema",
+        "Deja de usar la página afectada. Guarda solo el enlace y los pasos del problema. No abras datos de otra persona ni los incluyas en un informe."
+      ],
+      [
+        "Hasta tener un canal de avisos",
+        "Usa el medio oficial de tu estado para asuntos urgentes de cobertura. Este sitio aún no tiene un buzón para avisos de seguridad. No envíes datos privados a una dirección que hayas adivinado."
+      ]
+    ]
+  }
+}
