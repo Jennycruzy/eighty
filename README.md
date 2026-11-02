@@ -2,7 +2,7 @@
 
 Eighty is intended to help Medicaid members collect evidence of work, school and service, check it against cited rules, and prepare proof for their state.
 
-A scaffold preview runs at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The member workflows, document reader and complete rules engine are not available yet. Do not upload personal documents. The purchased domain will replace this temporary address.
+A scaffold preview runs at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The member workflows and document reader are not available yet. The federal rules engine is implemented separately and awaits independent review. Do not upload personal documents. The purchased domain will replace this temporary address.
 
 ## Setup
 
@@ -31,4 +31,4 @@ The [server guide](docs/self-hosting.md) explains the container setup and its se
 
 The setup check exits with a failure when a required tool is absent. It does not check service credentials, network access or deployment readiness.
 
-The notice reply date calculation has local component tests. See [the rule and its limits](docs/rules.md). The full rules engine, privacy, accessibility and production readiness have not been verified.
+The federal rules engine has [336 cited answer cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). `pnpm test` enforces those coverage thresholds. See [the rules, source text and limits](docs/rules.md). These checks do not establish legal approval, document-reading accuracy, privacy, accessibility or readiness for members.

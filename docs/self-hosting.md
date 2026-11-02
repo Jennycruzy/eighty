@@ -1,6 +1,6 @@
 # Run Eighty on a server
 
-Eighty currently has the framework scaffold and a notice-date calculation. It does not have member workflows or a verified rules engine. Keep the server private. Do not upload personal documents.
+Eighty currently has the framework scaffold and a tested federal rules engine awaiting independent review. It does not have member workflows. The public address is a scaffold preview. Do not upload personal documents.
 
 ## Tools
 
@@ -89,4 +89,4 @@ Once the purchased domain resolves to this server, set `BETTER_AUTH_URL` in the 
 
 ## Before serving members
 
-The member workflows, exact rules and answer key, private storage access checks, working email, deletion, navigator consent, backups, restore, monitoring and accessibility checks remain to be completed. A successful container check alone does not make this a member service.
+Independent rules review, member workflows, private storage access checks, working email, deletion, navigator consent, backups, restore, monitoring and accessibility checks remain to be completed. A successful container check alone does not make this a member service.

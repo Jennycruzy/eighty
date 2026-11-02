@@ -1,0 +1,3 @@
+
+# Keep downloaded official source bytes unchanged, including whitespace.
+data/regulations/**/*.xml -whitespace

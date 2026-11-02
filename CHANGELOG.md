@@ -2,6 +2,9 @@
 
 ## 2 November 2026
 
+- Add the federal rules engine, archived official source text and a cited answer key.
+- Require complete rules coverage in the application checks.
+
 - Serve the scaffold preview through Caddy with HTTPS on a temporary sslip.io address and an IP redirect, with a persistent local PostgreSQL volume.
 - Pin telemetry to the release paired with core 0.222.2.
 - Track template features that must be removed before launch.
@@ -14,4 +17,4 @@
 - Add repeatable checks for messaging, jobs and Forms, with their limits recorded.
 - Calculate notice reply dates, including a possible later arrival while keeping the earlier reminder date.
 
-The member workflows and complete rules engine are not available yet.
+The member workflows are not available yet. The rules engine awaits independent review.

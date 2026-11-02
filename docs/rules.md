@@ -1,21 +1,59 @@
-# Rules
+# Federal rules
 
-These functions do not call a model, network or database. They are not yet a complete assessment of any person's month.
+The rules in `server/rules/` are pure TypeScript. They use no model, network, database or system clock. Callers supply the assessment date and confirmed facts. The engine returns a status, basis, citation, math and missing fields. It does not make the state's eligibility decision.
 
-## Notice reply dates
+The [answer key](tests/results/answer-key.md) contains 336 synthetic cases with explicit expected answers and paragraph citations. The [coverage report](tests/results/rules-coverage.txt) records full line, branch and function coverage. Run `pnpm test` for the required checks, `pnpm test:rules` for rules and notice tests, or `pnpm test:answer-key` to regenerate the answer-key report. Tests freeze inputs to check that rules do not change them. Coverage proves that branches ran; it does not replace independent legal review.
 
-Source: [42 CFR 435.558(a)(2) and (c)(4)](https://www.ecfr.gov/current/title-42/section-435.558), checked 2 November 2026. eCFR displayed Title 42 as current through 29 October 2026.
+## Sources and version
 
-`noticeDeadline` adds five calendar days to the printed date, then 30 calendar days for the reply. Weekends and holidays do not change this calculation. Dates use calendar days without local clock or daylight saving changes.
+The rule version is `42-CFR-435-2026-10-29`. Official eCFR XML, source URLs, dates and SHA-256 hashes are saved in [the source directory](../data/regulations/2026-10-29/sources.json), checked on 2 November 2026. The engine uses this dated text. It does not fetch later amendments or claim to apply rules that have not been reviewed.
 
-If a person reports a later arrival, the function also returns a possible later reply date and asks for proof. Reminders keep the earlier date. An early arrival does not shorten the period. Missing or invalid dates return no deadline and name the field to check.
+| Function | Rule | What it checks |
+| --- | --- | --- |
+| `isApplicableIndividual` | [435.551](https://www.ecfr.gov/current/title-42/section-435.551), [435.119](https://www.ecfr.gov/current/title-42/section-435.119) | Expansion or qualifying waiver group, age, pregnancy, Medicare and other coverage. For the expansion group, eligibility and enrollment in another mandatory group matter. |
+| `checkExclusions` | [435.554(c)(1)–(10)](https://www.ecfr.gov/current/title-42/section-435.554) | Former foster youth, Indian status, caregivers, disability rating, medical frailty, TANF, SNAP, treatment, inmates and pregnancy or postpartum coverage. |
+| `checkMandatoryExceptions` | [435.553](https://www.ecfr.gov/current/title-42/section-435.553) | Part-month exceptions and the incarceration window ending on the first day of the assessed month. |
+| `checkHardship` | [435.555](https://www.ecfr.gov/current/title-42/section-435.555) | Verified state elections, qualifying disasters, unemployment with CMS approval, and approved requests for care or medical travel. |
+| `educationHours` | [435.552(c)–(d)](https://www.ecfr.gov/current/title-42/section-435.552) | School-set enrollment status, term dates, breaks, exit months, credit hours and actual non-credit hours. |
+| `combineHours` | [435.552(a)–(e)](https://www.ecfr.gov/current/title-42/section-435.552) | Confirmed work, qualifying community service, work programs and less-than-half-time education. |
+| `incomeTest` | [435.552(a)(6), (f)](https://www.ecfr.gov/current/title-42/section-435.552) | Confirmed monthly Medicaid MAGI income against the federal wage times 80. |
+| `seasonalIncomeTest` | [435.552(a)(7), (g)](https://www.ecfr.gov/current/title-42/section-435.552) | Verified seasonal worker classification and income in all six preceding months. |
+| `incomeDerivedHours` | [435.552(e)(2)](https://www.ecfr.gov/current/title-42/section-435.552) | Verified state option, income below the threshold, no hours record, and any required household allocation. |
+| `assessMonth` | [435.551–.555](https://www.ecfr.gov/current/title-42/section-435.552) | Applicability, exclusions, mandatory exceptions, hardships, then activity and income tests. |
+| `lookbackWindow` | [435.556(a)](https://www.ecfr.gov/current/title-42/section-435.556) | Application months and the allowed review period for renewals, frequent checks and changed circumstances. |
+| `noticeDeadline` | [435.558(a)(2), (c)(4)](https://www.ecfr.gov/current/title-42/section-435.558) | Printed date plus five calendar days for receipt, then 30 calendar days to reply. |
+| `documentationEra` | [435.557(b)(2), (f)](https://www.ecfr.gov/current/title-42/section-435.557) | Available state data first, documentation rules before and from 2028, and special medical statements. |
 
-A reply date does not establish that a month meets the rule. This function therefore never returns a Meets status. The state makes the real decision.
+The answer-key report names the function and paragraph for every case. Its cases also cover application safety choices such as invalid dates, duplicate evidence, future evidence and arithmetic overflow; these choices are not presented as additional legal requirements.
 
-Tests: `tests/unit/notice-deadline.test.mjs`. Run:
+## Decisions and missing facts
 
-```sh
-node --test tests/unit/notice-deadline.test.mjs
-```
+There are five statuses: Meets, Exempt, Deemed, Short and Not sure yet. Only a proven compliance path returns Meets. A known exclusion returns Exempt; a mandatory exception or granted hardship returns Deemed. Unknown facts name the exact fields needed. Short requires enough known information to establish a gap. Date, documentation and lookback helpers keep a grey status because they do not establish monthly compliance.
 
-The tests cover month ends, year ends, leap days, daylight saving dates, early and late arrival, and invalid inputs. This is a component test, not the complete rules answer key or a legal review.
+A proven compliance path can satisfy the month while a possible exclusion still needs follow-up, consistent with 435.557(c)(3). The result keeps those follow-up fields. It never invents hours, approves a hardship or diagnoses a condition.
+
+Callers must load confirmed evidence and verified state choices. These are function contracts, not access controls. No member action or HTTP endpoint is exposed yet. Future actions must check identity, ownership, consent, evidence confirmation and state-profile approval inside the action. A caller's assertion that a fact is confirmed is not sufficient at that boundary.
+
+## Important calculations
+
+Money uses integer cents. Hours use integer millionths, so an amount just below a threshold cannot round up to a passing result. The dated wage constant is $7.25, effective 24 July 2009, from the [Department of Labor](https://www.dol.gov/agencies/whd/minimum-wage/faq); 80 times that rate is $580.
+
+Pay shown on a document is kept distinct from the Medicaid MAGI count required by 435.552(f)(2). A pay-only input shows the comparison but remains Not sure yet until that count is confirmed. The engine does not implement all Medicaid tax and household income rules. Seasonal inputs likewise need confirmed counts and a verified worker classification under 26 USC 45R(d)(5)(B); seasonality is not inferred from uneven earnings.
+
+Six credits below half-time produce `6 × 3 × 4.33 = 77.94` hours. Enrollment at half-time or more satisfies the education path on its own and returns no invented numeric hours. School status comes from the institution. Normal breaks require registration for the next regular term. Term start, withdrawal and end dates are checked against the supplied assessment date.
+
+Work may be paid, in kind or unpaid. Community service needs the organization's tracking and contact, along with the rule's other conditions. Standalone job searching does not count. A state-approved work program may include job searching as a subsidiary activity of less than half its time. Overlapping duplicate groups are held for review. Evidence crossing a month boundary needs a monthly split.
+
+Income-derived hours require a verified state election, income below $580 and no documented work hours. Where other household members work, the state must supply a reasonable allocation. The engine does not invent that allocation or add derived hours to documented work hours.
+
+Caregiver tests A, B and C are separate. A resident caregiver and a nonresident relative do not have an 80-hour minimum in those tests. The nonresident nonrelative test requires at least 80 hours. Qualifying care must be non-incidental. Caretaker-relative and family-caregiver definitions are checked separately. Medical frailty requires verified qualifying facts and impairment of compliance, with a note about the state's published list and review duties.
+
+For October, the incarceration window is represented as 1 July through 1 October, inclusive, following 435.553(b)'s period ending on the first day. Boundary cases are explicit in the answer key so this interpretation is visible to the independent reviewer. It is a calendar-month window, not a fixed 90-day approximation.
+
+Disaster results require presidential DR or EM declarations, matching county and incident months, or the separate qualifying national-emergency path. Fire-management declarations alone do not count. Ongoing incidents cannot establish future months. Unemployment is compared with the lesser of 8% or 1.5 times the national rate using exact arithmetic; a high rate alone does not establish CMS approval. Requested hardships require an actual grant.
+
+Notice dates use UTC calendar arithmetic. Weekends and holidays do not alter the stated calendar-day calculation. Reported late delivery produces a possible later deadline and a request for proof; reminders retain the earlier date. Accepted proof can set the later counted receipt date. Invalid dates produce no deadline.
+
+## Limits before member use
+
+Independent review remains outstanding. The current engine consumes structured facts; it does not read documents, fetch FEMA or BLS data, determine a state's start date, approve a state profile, send reminders or submit proof. State directory data and member workflows are separate work. The live preview remains the scaffold. No member screen has been built on these rules.

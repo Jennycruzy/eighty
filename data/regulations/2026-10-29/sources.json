@@ -1,0 +1,67 @@
+{
+  "title": 42,
+  "asOf": "2026-10-29",
+  "checkedOn": "2026-11-02",
+  "sections": [
+    {
+      "section": "435.119",
+      "file": "435.119.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.119",
+      "sha256": "99a873419a2e2d002e31f3333d504eaa6142680bdc53ef89bdd8ae58dcf4c657"
+    },
+    {
+      "section": "435.550",
+      "file": "435.550.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.550",
+      "sha256": "e7359cb0b9de214e66cc39e92d83e3b7bb0876217e8c4ab48faee6835be2a210"
+    },
+    {
+      "section": "435.551",
+      "file": "435.551.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.551",
+      "sha256": "13fe06199e963ccdb840c7762b10f3d70766a6aa0b54c28bea97bab87459c539"
+    },
+    {
+      "section": "435.552",
+      "file": "435.552.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.552",
+      "sha256": "3c3f5c267d7a229d8cae1b3e3842d8bb6af5706aed2609aa5a899be0fcc19f00"
+    },
+    {
+      "section": "435.553",
+      "file": "435.553.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.553",
+      "sha256": "bfe021bb27572885fa2db1abc7544a1d108a7bf52fb96ccdb9fb7da62a6ae91a"
+    },
+    {
+      "section": "435.554",
+      "file": "435.554.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.554",
+      "sha256": "5ec77b48ae1373f15bd9b02ca9a4d428f07bee842aadc48447f2f7f711ec956c"
+    },
+    {
+      "section": "435.555",
+      "file": "435.555.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.555",
+      "sha256": "d7e7796169d725b9922a84f60ac33eaa8d0c64acca6b58304774091b8463b4f2"
+    },
+    {
+      "section": "435.556",
+      "file": "435.556.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.556",
+      "sha256": "34a34c744cdb7cb3a3a658f98b1ca87c18f5de092514e9f551e8d57b90c4a419"
+    },
+    {
+      "section": "435.557",
+      "file": "435.557.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.557",
+      "sha256": "fee3d3649353e426979cd6a4811236069d0a9214d926a80078748becc103aed2"
+    },
+    {
+      "section": "435.558",
+      "file": "435.558.xml",
+      "source": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-29/title-42.xml?section=435.558",
+      "sha256": "b279c11d570f0fcd86aedffad1b523b9d087b402e615a6e19fb55fa3af7fc298"
+    }
+  ]
+}
