@@ -17,4 +17,4 @@ node --test tests/check-setup.test.mjs
 
 The setup check exits with a failure when a required tool is absent. It does not check service credentials, network access or deployment readiness.
 
-No rule accuracy, privacy, accessibility or production readiness claims have been verified yet.
+The notice reply date calculation has local component tests. See [the rule and its limits](docs/rules.md). The full rules engine, privacy, accessibility and production readiness have not been verified.
