@@ -225,6 +225,20 @@ try {
   await waitUntil(health, "application and database readiness");
   console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
 
+  step = "check private member records";
+  const memberOutput = await command(
+    "node",
+    ["scripts/check-member-records.mjs", runId],
+    {
+      ...process.env,
+      DATABASE_URL: hostDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+      NODE_ENV: "production",
+    },
+  );
+  console.log(
+    memberOutput.split("\n").find((line) => line.startsWith("PASS ")),
+  );
   step = "check signed-out public pages and closed starter routes";
   await checkPublicPages(baseUrl);
   step = "check the public tools in a phone browser";

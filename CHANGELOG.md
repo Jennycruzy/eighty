@@ -2,6 +2,10 @@
 
 ## 2 November 2026
 
+- Add private member and evidence tables with account ownership checks.
+- Validate reader proposals without accepting status changes, personal identity fields or free-text instructions.
+- Check verified browser sessions and private record ownership using a separate database.
+
 - Close public sign-up and starter pages and services.
 - Add public English and Spanish pages, a manual work/pay check and the screener.
 - Add sourced state contacts and expansion status for every state and DC.

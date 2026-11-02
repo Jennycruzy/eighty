@@ -34,3 +34,5 @@ The setup check exits with a failure when a required tool is absent. It does not
 The federal rules engine has [365 cited answer cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). `pnpm test` enforces those coverage thresholds. See [the rules, source text and limits](docs/rules.md). These checks do not establish legal approval, document-reading accuracy, privacy, accessibility or readiness for members.
 
 The [public-page checks](docs/tests/results/public-pages.md) cover signed-out English and Spanish pages, closed starter routes and phone-browser flows. Private document storage, document reading and real email delivery are still unconfigured; sign-up and uploads remain closed.
+
+Private member-record helpers and the evidence proposal schema are [documented here](docs/evidence.md). Their database and authorization checks are tested separately; they are not yet exposed as member workflows.

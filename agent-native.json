@@ -4,6 +4,9 @@
     "firstRun": "off"
   },
   "doctor": {
-    "failOnBuild": false
+    "failOnBuild": false,
+    "dbToolScopingDenylist": {
+      "eighty_ai_ledger": "Content-free model and rule counters. Anonymous try calls must not have an identity. Never expose this table through general database tools."
+    }
   }
 }
