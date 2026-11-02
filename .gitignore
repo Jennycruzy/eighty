@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+.output/
+coverage/
+*.log
+.private/
+*research*.md
+*planning*.md
+*product-spec*.md
