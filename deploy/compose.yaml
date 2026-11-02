@@ -1,0 +1,36 @@
+name: eighty
+
+services:
+  app:
+    image: eighty:${EIGHTY_IMAGE_TAG:-local}
+    build:
+      context: ..
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - ${EIGHTY_ENV_FILE:-../.env.production}
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      AUTH_DISABLED: "false"
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in .env.production}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env.production}
+      AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK: "0"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - --input-type=module
+        - -e
+        - "const r = await fetch('http://127.0.0.1:3000/_agent-native/health?strict=1'); const h = await r.json(); process.exit(r.ok && h.ready && h.db ? 0 : 1);"
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3

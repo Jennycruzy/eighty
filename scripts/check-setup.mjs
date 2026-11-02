@@ -15,7 +15,8 @@ export function checkSetup() {
     detail: process.versions.node,
   }];
   for (const command of ['git', 'pnpm', 'docker', 'caddy']) {
-    const result = spawnSync(command, ['--version'], { encoding: 'utf8', timeout: 5000 });
+    const args = command === 'caddy' ? ['version'] : ['--version'];
+    const result = spawnSync(command, args, { encoding: 'utf8', timeout: 5000 });
     checks.push({ name: command, ok: result.status === 0 });
   }
   return checks;

@@ -20,4 +20,5 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm agent-native:doctor
-      - run: pnpm build
+      - run: docker build --tag eighty:check .
+      - run: pnpm check:production eighty:check

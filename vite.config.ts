@@ -7,6 +7,8 @@ const agentNativePlugins = agentNative as unknown as (
   options?: Parameters<typeof agentNative>[0],
 ) => any[];
 export default defineConfig({
+  // Keep this package intact so the server build can resolve its React import.
+  ssr: { external: ["use-sync-external-store"] },
   optimizeDeps: {
     entries: [
       "app/entry.client.tsx",

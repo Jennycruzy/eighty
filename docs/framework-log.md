@@ -2,7 +2,7 @@
 
 Checked on 2 November 2026 against [808ef4ebb0edfe323cf7aadcc66e7a39d77cedf0](https://github.com/BuilderIO/agent-native/tree/808ef4ebb0edfe323cf7aadcc66e7a39d77cedf0). These checks execute that revision's unchanged functions. The application uses the published core package 0.222.2. Results do not establish the behavior of other revisions.
 
-No issue or pull request has been filed. Duplicate searches, live service checks and checks in other templates and underlying libraries remain open. No fix is claimed.
+No issue or pull request has been filed. Duplicate searches for the original findings, live service checks and checks in other templates and underlying libraries remain open. No upstream fix or merge is claimed.
 
 ## Run the checks
 
@@ -38,7 +38,9 @@ Test: `tests/framework/jobs.spec.ts`.
 - Expected: if it cannot run, record a skip and its reason.
 - Actual: dispatch returns `completed`, with no background run and no call to save the job's skip status. A console warning is emitted.
 
-Status: reproduced for webhook dispatch. The test does not establish the persisted status of a scheduled queue record. The scheduled path and database records still need a separate check. There is no workaround installed yet.
+Status: reproduced for webhook dispatch. The scheduled behavior of `mode: deterministic` and its queued records has not been established. That option is not used by Eighty.
+
+The scheduled runner is a separate, supported path. `scripts/check-job-runner.mjs` exercises `registerJobRunner` and `processRecurringJobs` against the production check's PostgreSQL database. It verifies one callback, the owner's request context, a stored receipt, a successful history row, the next scheduled time, and no chat thread. The callback needs no model. The scheduler subcheck uses the local deployment setting because production intentionally rejects reserved test identities. Eighty can use this supported path for fixed scheduled reminders; the reminder actions themselves are not implemented yet. This does not fix the webhook result above.
 
 ## Forms upload privacy
 
@@ -59,3 +61,16 @@ Test: `tests/framework/forms-language.spec.ts`.
 - Actual: the renderer produces the Spanish title but declares `<html lang="en">`. The output also contains English system messages.
 
 Status: page-language mismatch reproduced in rendered HTML. Browser interaction and screen-reader behavior have not been checked. There is no workaround installed yet.
+
+## Container page rendering
+
+Package: `@agent-native/core` 0.222.2, Node.js 22.23.4, Nitro `node` target. Test: `scripts/check-production.mjs`.
+
+- Build the scaffold using the framework's documented two-stage container, copying only `.output` into the runtime image.
+- Start it with PostgreSQL and a signing key. Do not give the runtime access to the host's `node_modules`.
+- Expected: database health passes and the public page returns HTTP 200.
+- Actual before the workaround: database health passes, but rendering fails with `Cannot find module 'react'` in the compiled `with-selector` chunk. The page check fails.
+
+Workaround: keep `use-sync-external-store` external during the intermediate React Router server build, through Vite's supported `ssr.external` setting. The final server build then resolves it in the server graph. The container page and signed-in action checks pass with this setting. No dependencies were patched or copied by hand.
+
+A duplicate search for `Cannot find module` and `react` on 2 November returned [issue 2982](https://github.com/BuilderIO/agent-native/issues/2982), which describes a related Node container failure involving a missing `yjs` dependency. It is not proof that the React case has the same repair. No new issue or pull request has been filed for this case.

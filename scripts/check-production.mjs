@@ -1,0 +1,376 @@
+import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { randomBytes, randomUUID } from "node:crypto";
+import { appendFile, mkdir, unlink, writeFile } from "node:fs/promises";
+import { setTimeout as delay } from "node:timers/promises";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
+
+import postgres from "postgres";
+
+const execute = promisify(execFile);
+const image = process.argv[2] || "eighty:local";
+const runId = `eighty-check-${randomUUID()}`;
+const database = `${runId}-db`;
+const app = `${runId}-app`;
+const databasePassword = randomBytes(32).toString("hex");
+const authSecret = randomBytes(32).toString("hex");
+const logPath = new URL("../.private/production-check.log", import.meta.url);
+const environmentFile = new URL(`../.private/${runId}.env`, import.meta.url);
+const secrets = [databasePassword, authSecret];
+const resources = { network: false, database: false, app: false };
+let sql;
+let step = "prepare the check";
+
+await mkdir(new URL("../.private/", import.meta.url), {
+  recursive: true,
+  mode: 0o700,
+});
+await writeFile(logPath, "", { mode: 0o600 });
+await writeFile(environmentFile, "", { mode: 0o600 });
+
+async function log(value) {
+  let text = String(value);
+  for (const secret of secrets) text = text.replaceAll(secret, "[redacted]");
+  await appendFile(logPath, `${text}\n`);
+}
+
+async function command(file, args, env = process.env) {
+  try {
+    const result = await execute(file, args, {
+      env,
+      timeout: 120_000,
+      maxBuffer: 2_000_000,
+    });
+    await log(result.stdout);
+    await log(result.stderr);
+    return result.stdout.trim();
+  } catch (error) {
+    await log(error.stdout || "");
+    await log(error.stderr || "");
+    throw error;
+  }
+}
+
+async function waitUntil(check, description) {
+  const deadline = Date.now() + 90_000;
+  while (Date.now() < deadline) {
+    try {
+      if (await check()) return;
+    } catch {
+      // A starting service may refuse connections before it is ready.
+    }
+    await delay(1000);
+  }
+  throw new Error(`Timed out: ${description}`);
+}
+
+async function publishedPort(container, port) {
+  const output = await command("docker", ["port", container, port]);
+  assert.match(output, /^127\.0\.0\.1:\d+$/);
+  return Number(output.split(":")[1]);
+}
+
+try {
+  step = "check the image";
+  const [metadata] = JSON.parse(
+    await command("docker", ["image", "inspect", image]),
+  );
+  assert.equal(metadata.Config.User, "node");
+  assert(
+    !metadata.Config.Env.some((value) =>
+      /^(DATABASE_URL|BETTER_AUTH_SECRET)=/.test(value),
+    ),
+  );
+
+  step = "start a separate test database";
+  await command("docker", ["network", "create", runId]);
+  resources.network = true;
+  await command(
+    "docker",
+    [
+      "run",
+      "--detach",
+      "--name",
+      database,
+      "--network",
+      runId,
+      "--label",
+      `care.eighty.check=${runId}`,
+      "--publish",
+      "127.0.0.1::5432",
+      "--env",
+      "POSTGRES_PASSWORD",
+      "--env",
+      "POSTGRES_USER=eighty",
+      "--env",
+      "POSTGRES_DB=eighty",
+      "postgres:17-bookworm@sha256:839fbb5a4942a7758dd93e18b42ea5649807491a0545b5eeeb8f0b8bb11857a5",
+    ],
+    { ...process.env, POSTGRES_PASSWORD: databasePassword },
+  );
+  resources.database = true;
+  await waitUntil(async () => {
+    await command("docker", [
+      "exec",
+      database,
+      "pg_isready",
+      "-U",
+      "eighty",
+      "-d",
+      "eighty",
+    ]);
+    return true;
+  }, "PostgreSQL startup");
+  const databasePort = await publishedPort(database, "5432/tcp");
+  const hostDatabaseUrl = `postgres://eighty:${databasePassword}@127.0.0.1:${databasePort}/eighty`;
+
+  step = "validate the deployment settings";
+  await command(
+    "docker",
+    [
+      "compose",
+      "--env-file",
+      "/dev/null",
+      "-f",
+      "deploy/compose.yaml",
+      "config",
+      "--no-env-resolution",
+      "--quiet",
+    ],
+    {
+      ...process.env,
+      DATABASE_URL: hostDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+      EIGHTY_ENV_FILE: fileURLToPath(environmentFile),
+    },
+  );
+
+  step = "run the release migrations";
+  await command("pnpm", ["migrate:production"], {
+    ...process.env,
+    DATABASE_URL: hostDatabaseUrl,
+    BETTER_AUTH_SECRET: authSecret,
+    NODE_ENV: "production",
+  });
+  sql = postgres(hostDatabaseUrl, { max: 1, connect_timeout: 5 });
+  await sql`CREATE TABLE eighty_deploy_check (id text PRIMARY KEY)`;
+  await sql`INSERT INTO eighty_deploy_check (id) VALUES (${runId})`;
+
+  step = "start the application with login enabled";
+  const appDatabaseUrl = `postgres://eighty:${databasePassword}@${database}:5432/eighty`;
+  await command(
+    "docker",
+    [
+      "run",
+      "--detach",
+      "--name",
+      app,
+      "--network",
+      runId,
+      "--label",
+      `care.eighty.check=${runId}`,
+      "--init",
+      "--cap-drop",
+      "ALL",
+      "--security-opt",
+      "no-new-privileges:true",
+      "--publish",
+      "127.0.0.1::3000",
+      "--env",
+      "DATABASE_URL",
+      "--env",
+      "BETTER_AUTH_SECRET",
+      "--env",
+      "AUTH_DISABLED=false",
+      "--env",
+      "AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK=0",
+      image,
+    ],
+    {
+      ...process.env,
+      DATABASE_URL: appDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+    },
+  );
+  resources.app = true;
+  const appPort = await publishedPort(app, "3000/tcp");
+  let baseUrl = `http://127.0.0.1:${appPort}`;
+  const health = async () => {
+    const response = await fetch(
+      `${baseUrl}/_agent-native/health?schema=1&strict=1`,
+      {
+        signal: AbortSignal.timeout(5000),
+      },
+    );
+    if (!response.ok) return false;
+    const result = await response.json();
+    return (
+      result.ready === true &&
+      result.db === true &&
+      result.database.configured === true &&
+      result.database.runningApp === "eighty" &&
+      result.database.identityMismatch === false &&
+      result.database.identity?.state === "recorded" &&
+      result.database.identity.app === "eighty"
+    );
+  };
+  await waitUntil(health, "application and database readiness");
+  console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
+
+  step = "check the public page and protected application";
+  const home = await fetch(baseUrl, { signal: AbortSignal.timeout(10_000) });
+  assert.equal(home.status, 200);
+  const anonymousShell = await fetch(`${baseUrl}/home`, {
+    redirect: "manual",
+    headers: { accept: "text/html" },
+    signal: AbortSignal.timeout(10_000),
+  });
+  assert.equal(anonymousShell.status, 200);
+  const privateAction = await fetch(
+    `${baseUrl}/_agent-native/actions/hello?name=Eighty`,
+    {
+      headers: { accept: "application/json" },
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+  assert.equal(privateAction.status, 401);
+  console.log("PASS Public page loads and the application requires login.");
+
+  step = "check account creation and sign-in";
+  const email = `${runId}@example.test`;
+  const authRequest = async (action, body) =>
+    fetch(`${baseUrl}/_agent-native/auth/ba/${action}/email`, {
+      method: "POST",
+      headers: { "content-type": "application/json", origin: baseUrl },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(15_000),
+    });
+  const signup = await authRequest("sign-up", {
+    email,
+    password: authSecret,
+    name: "Test account",
+  });
+  assert(signup.ok, `Sign-up returned ${signup.status}`);
+  const signin = await authRequest("sign-in", { email, password: authSecret });
+  assert(signin.ok, `Sign-in returned ${signin.status}`);
+  const sessionCookie = signin.headers
+    .getSetCookie()
+    .map((value) => value.split(";")[0])
+    .join("; ");
+  assert(sessionCookie.length > 0);
+  const signedIn = await fetch(`${baseUrl}/home`, {
+    redirect: "manual",
+    headers: { cookie: sessionCookie, accept: "text/html" },
+    signal: AbortSignal.timeout(10_000),
+  });
+  assert.equal(signedIn.status, 200);
+  const signedInAction = await fetch(
+    `${baseUrl}/_agent-native/actions/hello?name=Eighty`,
+    {
+      headers: { cookie: sessionCookie, accept: "application/json" },
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+  assert.equal(signedInAction.status, 200);
+  assert.deepEqual(await signedInAction.json(), { message: "Hello, Eighty!" });
+  console.log(
+    "PASS A temporary account can sign up, sign in and open the application.",
+  );
+
+  step = "check the scheduled runner without a model";
+  const runnerOutput = await command(
+    "node",
+    ["scripts/check-job-runner.mjs", email],
+    {
+      ...process.env,
+      DATABASE_URL: hostDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+      NODE_ENV: "production",
+      AGENT_NATIVE_DEPLOYMENT_ENVIRONMENT: "local",
+    },
+  );
+  const runnerMessage = runnerOutput
+    .split("\n")
+    .find((line) => line.startsWith("PASS "));
+  assert(runnerMessage);
+  console.log(runnerMessage);
+
+  step = "check database persistence after a restart";
+  await command("docker", ["restart", database]);
+  await waitUntil(health, "database recovery");
+  await sql.end({ timeout: 5 });
+  const recoveredDatabasePort = await publishedPort(database, "5432/tcp");
+  sql = postgres(
+    `postgres://eighty:${databasePassword}@127.0.0.1:${recoveredDatabasePort}/eighty`,
+    {
+      max: 1,
+      connect_timeout: 5,
+    },
+  );
+  await command("docker", ["restart", app]);
+  baseUrl = `http://127.0.0.1:${await publishedPort(app, "3000/tcp")}`;
+  await waitUntil(health, "application recovery");
+  const rows = await sql`SELECT id FROM eighty_deploy_check`;
+  assert.deepEqual(
+    rows.map((row) => row.id),
+    [runId],
+  );
+  const recoveredSignin = await authRequest("sign-in", {
+    email,
+    password: authSecret,
+  });
+  assert(
+    recoveredSignin.ok,
+    `Sign-in after restart returned ${recoveredSignin.status}`,
+  );
+  assert.equal((await recoveredSignin.json()).user.email, email);
+  console.log("PASS Test data survives database and application restarts.");
+} catch (error) {
+  process.exitCode = 1;
+  await log(error.message);
+  if (resources.app) {
+    try {
+      await command("docker", ["logs", "--tail", "150", app]);
+    } catch {
+      /* Keep the original failure. */
+    }
+  }
+  console.error(`FAIL Could not ${step}. See .private/production-check.log.`);
+} finally {
+  if (sql) {
+    try {
+      await sql.end({ timeout: 5 });
+    } catch {
+      process.exitCode = 1;
+    }
+  }
+  for (const [key, name] of [
+    ["app", app],
+    ["database", database],
+  ]) {
+    if (!resources[key]) continue;
+    try {
+      await command("docker", ["rm", "--force", "--volumes", name]);
+    } catch {
+      process.exitCode = 1;
+      console.error(`FAIL Cleanup did not remove ${name}.`);
+    }
+  }
+  if (resources.network) {
+    try {
+      await command("docker", ["network", "rm", runId]);
+    } catch {
+      process.exitCode = 1;
+      console.error(`FAIL Cleanup did not remove network ${runId}.`);
+    }
+  }
+  try {
+    await unlink(environmentFile);
+  } catch {
+    process.exitCode = 1;
+    console.error(
+      "FAIL Cleanup did not remove the temporary environment file.",
+    );
+  }
+}

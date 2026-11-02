@@ -27,6 +27,8 @@ pnpm build
 
 `pnpm dev` runs the application locally. The scaffold uses Agent-Native core 0.222.2. Production needs a stable authentication secret, PostgreSQL, private document storage and email before accounts can be offered to members. The example environment file contains no credentials.
 
+The [server guide](docs/self-hosting.md) explains the container setup and its separate PostgreSQL check. It also lists what remains before members can use the service.
+
 The setup check exits with a failure when a required tool is absent. It does not check service credentials, network access or deployment readiness.
 
 The notice reply date calculation has local component tests. See [the rule and its limits](docs/rules.md). The full rules engine, privacy, accessibility and production readiness have not been verified.

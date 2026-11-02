@@ -6,6 +6,7 @@ import {
 } from "@agent-native/core/server";
 
 loadEnv();
+await import("../server/plugins/agent-native-email-branding.ts");
 
 async function main(): Promise<void> {
   await withMigrationRuntime(async () => {
