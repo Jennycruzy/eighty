@@ -1,4 +1,14 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page, type Locator } from "@playwright/test";
+async function keyOn(page: Page, control: Locator, key = "Enter") {
+  for (let i = 0; i < 70; i++) {
+    if (await control.evaluate((el) => el === document.activeElement)) {
+      await page.keyboard.press(key);
+      return;
+    }
+    await page.keyboard.press("Tab");
+  }
+  throw new Error("A control could not be reached by keyboard.");
+}
 
 import { PUBLIC_PAGES } from "../../shared/access";
 for (const lang of ["en", "es"]) {
@@ -114,14 +124,155 @@ for (const lang of ["en", "es"]) {
   }) => {
     await page.goto(`/check?lang=${lang}`);
     for (let step = 0; step < 13; step++)
+      await keyOn(
+        page,
+        page.getByRole("button", {
+          name: lang === "es" ? "No sé" : "I’m not sure",
+          exact: true,
+        }),
+      );
+    await expect(page.locator(".result h2")).toHaveText(
+      lang === "es" ? "Aún no sabemos" : "Not sure yet",
+    );
+  });
+}
+
+for (const lang of ["en", "es"]) {
+  test(`Screener gives a reason, proof and a working closed-account handoff (${lang})`, async ({
+    page,
+  }) => {
+    await page.goto(`/check?lang=${lang}`);
+    for (let step = 0; step < 13; step++) {
+      await expect(page.locator("fieldset")).toHaveCount(1);
+      await expect(
+        page.getByRole("button", {
+          name: lang === "es" ? "No sé" : "I’m not sure",
+          exact: true,
+        }),
+      ).toBeVisible();
+      if (step === 0) await page.locator("#state").selectOption("NE");
+      if (step === 1) await page.locator("#age").fill("34");
+      if (step === 4) await page.locator("input[type=radio]").first().check();
       await page
         .getByRole("button", {
           name: lang === "es" ? "Seguir" : "Next",
           exact: true,
         })
         .click();
+    }
+    await expect(page.locator(".result")).toHaveAttribute(
+      "data-outcome",
+      "excluded",
+    );
+    await expect(
+      page.getByRole("heading", {
+        name:
+          lang === "es" ? "Qué guardar como prueba" : "What to keep as proof",
+      }),
+    ).toBeVisible();
+    await expect(page.locator(".result")).toContainText(
+      lang === "es" ? "edad del niño" : "child’s age",
+    );
+    await page.locator(".result summary").click();
+    await expect(page.locator(".result")).toContainText("435.554(c)(3)");
+    await page
+      .getByRole("link", {
+        name: lang === "es" ? "Seguir mis meses" : "Track my months",
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      new RegExp(`/check/account${lang === "es" ? "\\?lang=es" : ""}$`),
+    );
+    await expect(
+      page.getByRole("heading", {
+        name:
+          lang === "es"
+            ? "Aún no puedes crear una cuenta"
+            : "Account creation is closed",
+      }),
+    ).toBeVisible();
+    await expect(page.locator("dl")).toContainText("NE");
+    await expect(page.locator("dl")).toContainText("34");
+    await expect(page.locator("input[type=email]")).toHaveCount(0);
+    await page
+      .getByRole("link", {
+        name: lang === "es" ? "Volver a mis respuestas" : "Back to my answers",
+      })
+      .click();
+    await expect(page.locator(".result")).toHaveAttribute(
+      "data-outcome",
+      "excluded",
+    );
+    await expect(page.locator("body")).not.toContainText("Sign in to continue");
+  });
+}
+
+for (const lang of ["en", "es"]) {
+  test(`Both landing doors work by keyboard (${lang})`, async ({ page }) => {
+    await page.goto(`/?lang=${lang}`);
+    await keyOn(
+      page,
+      page.getByRole("link", {
+        name:
+          lang === "es" ? "Revisar si me aplica" : "Check if it applies to me",
+        exact: true,
+      }),
+    );
+    await expect(page.locator("fieldset")).toHaveCount(1);
+    await page.goto(`/?lang=${lang}`);
+    await keyOn(
+      page,
+      page.getByRole("link", {
+        name: lang === "es" ? "Revisar un mes" : "Check a month",
+        exact: true,
+      }),
+    );
+    await expect(page.locator("#month")).toBeVisible();
+  });
+  test(`All initial answers give a conditional result by keyboard (${lang})`, async ({
+    page,
+  }) => {
+    await page.goto(`/check?lang=${lang}`);
+    await keyOn(page, page.locator("#state"), "n");
+    await keyOn(
+      page,
+      page.getByRole("button", {
+        name: lang === "es" ? "Seguir" : "Next",
+        exact: true,
+      }),
+    );
+    await keyOn(page, page.locator("#age"), "3");
+    await page.keyboard.type("4");
+    await keyOn(
+      page,
+      page.getByRole("button", {
+        name: lang === "es" ? "Seguir" : "Next",
+        exact: true,
+      }),
+    );
+    for (let step = 2; step < 13; step++) {
+      await keyOn(page, page.locator("input[type=radio]:checked"), "ArrowUp");
+      await keyOn(
+        page,
+        page.getByRole("button", {
+          name: lang === "es" ? "Seguir" : "Next",
+          exact: true,
+        }),
+      );
+    }
+    await expect(page.locator(".result")).toHaveAttribute(
+      "data-outcome",
+      "conditional",
+    );
+    await expect(page.locator(".result")).toHaveAttribute(
+      "data-status",
+      "Not sure yet",
+    );
     await expect(page.locator(".result h2")).toHaveText(
-      lang === "es" ? "Aún no sabemos" : "Not sure yet",
+      lang === "es"
+        ? "La regla puede aplicarte. Esto es lo que cuenta."
+        : "The rule may apply. Here’s what counts.",
     );
   });
 }

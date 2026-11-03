@@ -2,6 +2,10 @@
 
 ## 3 November 2026
 
+- Answer public HEAD requests with the GET status and headers, without a body.
+- Keep the screener to 13 optional questions and add reasons, citations and proof checklists in both languages.
+- Carry answers into a matching verified account. Keep registration closed until real-domain email and member readiness are approved.
+
 - Let members confirm separate shifts or payouts after comparing a duplicate warning. Keep the exact compared IDs and versions in the saved choice and event.
 - Exclude hidden container inputs through one general rule.
 - Publish search files for all 130 public language addresses.

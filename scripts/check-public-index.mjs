@@ -43,6 +43,6 @@ export async function checkPublicIndex(baseUrl) {
       !xml.includes("/admin"),
   );
   console.log(
-    "PASS Public search files load signed out and list all 130 public language addresses.",
+    `PASS Public search files load signed out and list all ${locations.length} public language addresses.`,
   );
 }

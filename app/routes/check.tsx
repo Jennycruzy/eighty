@@ -1,105 +1,67 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
+import { Link } from "react-router";
 
 import states from "../../data/states.json";
-import { screenAnswers, type ScreenerAnswers } from "../../shared/screener";
+import en from "../../locales/en-US.json";
+import esCopy from "../../locales/es-US.json";
+import { screenerResult } from "../../shared/screener-result";
 import { useLanguage, languageLink } from "../lib/language";
-const questions = [
-  ["state", "Which state do you live in?", "¿En qué estado vives?"],
-  ["age", "How old are you?", "¿Cuántos años tienes?"],
-  [
-    "pregnant",
-    "Are you pregnant or covered for the time after pregnancy?",
-    "¿Estás embarazada o tienes cobertura por el tiempo después del embarazo?",
-  ],
-  ["medicare", "Do you have Medicare?", "¿Tienes Medicare?"],
-  [
-    "child",
-    "Are you a parent or guardian of a child age 13 or younger who relies on your care?",
-    "¿Eres padre, madre o tutor de un niño de 13 años o menos que depende de tus cuidados?",
-  ],
-  [
-    "care",
-    "Do you care for someone with a disability?",
-    "¿Cuidas a alguien con una discapacidad?",
-  ],
-  [
-    "indian",
-    "Are you American Indian or Alaska Native under the federal definition?",
-    "¿Eres indígena americano o nativo de Alaska según la definición federal?",
-  ],
-  [
-    "veteran",
-    "Do you have a 100% VA disability rating?",
-    "¿Tienes una calificación de discapacidad del 100% del VA?",
-  ],
-  [
-    "treatment",
-    "Are you in a treatment program?",
-    "¿Estás en un programa de tratamiento?",
-  ],
-  [
-    "snap",
-    "Does your household get SNAP food help?",
-    "¿Tu hogar recibe ayuda de alimentos SNAP?",
-  ],
-  [
-    "foster",
-    "Do you have Medicaid as a former foster youth?",
-    "¿Tienes Medicaid como exjoven de crianza temporal?",
-  ],
-  [
-    "health",
-    "Does a health condition make it hard to work or follow this rule?",
-    "¿Un problema de salud dificulta trabajar o cumplir esta regla?",
-  ],
-  [
-    "tanf",
-    "Do you get TANF cash help and meet its work rules?",
-    "¿Recibes ayuda en efectivo de TANF y cumples sus reglas de trabajo?",
-  ],
-] as const;
+import { useScreenerDraft } from "../lib/screener-draft";
+
 export default function Check() {
   const lang = useLanguage(),
     es = lang === "es";
-  const [answers, setAnswers] = useState<ScreenerAnswers>({}),
-    [step, setStep] = useState(0);
-  const questionField = useRef<HTMLFieldSetElement>(null);
-  const resultHeading = useRef<HTMLHeadingElement>(null);
+  const copy = (es ? esCopy : en).screener;
+  const { answers, setAnswers, step, setStep } = useScreenerDraft();
+  const field = useRef<HTMLFieldSetElement>(null),
+    heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
-    (questionField.current || resultHeading.current)?.focus();
+    (field.current || heading.current)?.focus();
   }, [step]);
-  const question = questions[step];
-  const result = question ? null : screenAnswers(answers);
-  function set(value: string) {
-    setAnswers({ ...answers, [question![0]]: value });
-  }
+  const question = copy.questions[step];
+  const result = question ? null : screenerResult(answers);
+  const explanation = result
+    ? copy.reasons[result.reason as keyof typeof copy.reasons]
+    : null;
+  const set = (value: string) =>
+    setAnswers({ ...answers, [question!.key]: value });
+  const citation =
+    result?.reason === "care"
+      ? "42 CFR 435.554(c)(3)"
+      : result?.reason === "health"
+        ? "42 CFR 435.554(c)(5)"
+        : result?.reason === "snap"
+          ? "42 CFR 435.554(c)(7)"
+          : result?.reason === "treatment"
+            ? "42 CFR 435.554(c)(8)"
+            : result?.rule.citation;
   return (
     <>
       <h1>{es ? "¿Me aplica la regla?" : "Does the rule apply to me?"}</h1>
       <p>
         {es
-          ? "Puedes saltar cualquier pregunta. No guardamos las respuestas."
-          : "You can skip any question. Nothing is saved."}
+          ? "Puedes saltar cualquier pregunta. Tus respuestas quedan solo en esta página hasta que decidas crear una cuenta. Se borran si cierras o recargas la página."
+          : "You can skip any question. Your answers stay in this page until you choose to create an account. They clear if you close or reload the page."}
       </p>
       {question ? (
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
+          onSubmit={(event) => {
+            event.preventDefault();
             setStep(step + 1);
           }}
         >
           <p className="muted">
-            {step + 1} / {questions.length}
+            {step + 1} / {copy.questions.length}
           </p>
-          <fieldset key={question[0]} ref={questionField} tabIndex={-1}>
-            <legend>{es ? question[2] : question[1]}</legend>
-            {question[0] === "state" ? (
+          <fieldset key={question.key} ref={field} tabIndex={-1}>
+            <legend>{question.text}</legend>
+            {question.key === "state" ? (
               <>
                 <label htmlFor="state">{es ? "Estado" : "State"}</label>
                 <select
                   id="state"
                   value={answers.state || ""}
-                  onChange={(e) => set(e.target.value)}
+                  onChange={(event) => set(event.target.value)}
                 >
                   <option value="">
                     {es
@@ -112,33 +74,8 @@ export default function Check() {
                     </option>
                   ))}
                 </select>
-                <label htmlFor="group">
-                  {es
-                    ? "¿Qué grupo de Medicaid tienes? Si no sabes, puedes seguir."
-                    : "Which Medicaid group are you in? You can keep going if you do not know."}
-                </label>
-                <select
-                  id="group"
-                  value={answers.group || ""}
-                  onChange={(e) =>
-                    setAnswers({ ...answers, group: e.target.value })
-                  }
-                >
-                  <option value="">{es ? "No sé" : "Not sure"}</option>
-                  <option value="expansion">
-                    {es ? "Expansión para adultos" : "Adult expansion"}
-                  </option>
-                  <option value="1115">
-                    {es ? "Programa especial 1115" : "1115 demonstration"}
-                  </option>
-                  <option value="other">
-                    {es
-                      ? "Otro grupo del plan estatal"
-                      : "Another State plan group"}
-                  </option>
-                </select>
               </>
-            ) : question[0] === "age" ? (
+            ) : question.key === "age" ? (
               <>
                 <label htmlFor="age">
                   {es ? "Edad (opcional)" : "Age (optional)"}
@@ -150,7 +87,7 @@ export default function Check() {
                   min="0"
                   max="120"
                   value={answers.age || ""}
-                  onChange={(e) => set(e.target.value)}
+                  onChange={(event) => set(event.target.value)}
                 />
               </>
             ) : (
@@ -158,8 +95,8 @@ export default function Check() {
                 <label className="choice" key={value}>
                   <input
                     type="radio"
-                    name={question[0]}
-                    checked={(answers[question[0]] || "unknown") === value}
+                    name={question.key}
+                    checked={(answers[question.key] || "unknown") === value}
                     onChange={() => set(value)}
                   />
                   {value === "yes"
@@ -185,6 +122,20 @@ export default function Check() {
                 {es ? "Atrás" : "Back"}
               </button>
             )}
+            <button
+              type="button"
+              className="secondary"
+              onClick={() => {
+                set(
+                  question.key === "state" || question.key === "age"
+                    ? ""
+                    : "unknown",
+                );
+                setStep(step + 1);
+              }}
+            >
+              {es ? "No sé" : "I’m not sure"}
+            </button>
             <button>{es ? "Seguir" : "Next"}</button>
           </div>
         </form>
@@ -192,37 +143,67 @@ export default function Check() {
         <section
           className="result"
           data-status={result!.status}
+          data-outcome={result!.outcome}
           aria-live="polite"
         >
-          <h2 ref={resultHeading} tabIndex={-1}>
-            {result!.status === "Exempt"
+          <h2 ref={heading} tabIndex={-1}>
+            {result!.outcome === "excluded"
               ? es
                 ? "La regla no te aplica según estas respuestas"
                 : "The rule does not apply based on these answers"
-              : es
-                ? "Aún no sabemos"
-                : "Not sure yet"}
+              : result!.outcome === "conditional"
+                ? es
+                  ? "La regla puede aplicarte. Esto es lo que cuenta."
+                  : "The rule may apply. Here’s what counts."
+                : es
+                  ? "Aún no sabemos"
+                  : "Not sure yet"}
           </h2>
-          <p>
-            {result!.status === "Exempt"
-              ? es
-                ? "Guarda una prueba de la razón. Confirma con tu estado qué documento acepta."
-                : "Keep proof of the reason. Ask your state what document it accepts."
-              : es
-                ? "Pregunta al estado por tu grupo de cobertura y si una exclusión te aplica. Cuidar a alguien, recibir SNAP o estar en tratamiento puede necesitar más datos."
-                : "Ask your state about your coverage group and any exclusion. Caregiving, SNAP or treatment may need more facts."}
-          </p>
+          <p>{explanation!.reason}</p>
+          {result!.outcome === "conditional" && (
+            <ul>
+              <li>
+                {es
+                  ? "Trabajo, servicio o un programa de trabajo que cuente."
+                  : "Work, service or a work program that counts."}
+              </li>
+              <li>
+                {es
+                  ? "Estudios al menos a medio tiempo. Menos estudios pueden contar como horas."
+                  : "School at least half-time. Less school can still count as hours."}
+              </li>
+              <li>
+                {es
+                  ? "Suficientes ingresos según la regla. Tu estado confirma la cantidad que cuenta."
+                  : "Enough income under the rule. Your state confirms the amount that counts."}
+              </li>
+            </ul>
+          )}
+          <h3>{es ? "Qué guardar como prueba" : "What to keep as proof"}</h3>
+          <p>{explanation!.proof}</p>
           <details>
             <summary>{es ? "Cómo decidimos" : "How we decided"}</summary>
-            <p>{result!.citation}</p>
-            <a href="https://www.ecfr.gov/current/title-42/section-435.554">
+            <p>{citation}</p>
+            <a
+              href={`https://www.ecfr.gov/current/title-42/section-${citation?.includes("435.554") ? "435.554" : "435.551"}`}
+            >
               {es ? "Leer la regla" : "Read the rule"}
             </a>
+            {result!.outcome === "conditional" && (
+              <p>
+                <a href="https://www.ecfr.gov/current/title-42/section-435.552">
+                  42 CFR 435.552 · {es ? "Lo que cuenta" : "What counts"}
+                </a>
+              </p>
+            )}
           </details>
           <div className="actions">
-            <a
-              className="button"
-              href={languageLink(
+            <Link className="button" to={languageLink("/check/account", lang)}>
+              {es ? "Seguir mis meses" : "Track my months"}
+            </Link>
+            <Link
+              className="button secondary"
+              to={languageLink(
                 answers.state
                   ? `/states/${answers.state.toLowerCase()}`
                   : "/states",
@@ -230,7 +211,7 @@ export default function Check() {
               )}
             >
               {es ? "Buscar ayuda del estado" : "Find state help"}
-            </a>
+            </Link>
             <button className="secondary" onClick={() => setStep(0)}>
               {es ? "Revisar respuestas" : "Review answers"}
             </button>

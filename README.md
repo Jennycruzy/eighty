@@ -35,6 +35,8 @@ The federal rules engine has [365 cited answer cases](docs/tests/results/answer-
 
 The [public-page checks](docs/tests/results/public-pages.md) cover signed-out English and Spanish pages, closed starter routes and phone-browser flows. The [real private storage check](docs/tests/results/private-storage.md) passes. Document reading and real email delivery remain unconfigured; sign-up and uploads remain closed.
 
+The [initial check and account handoff](docs/screener.md) use 13 optional questions, cited reasons and proof checklists. Account creation stays closed on the preview. Public HEAD requests are checked against GET in the production checks.
+
 Private member-record helpers and the evidence proposal schema are [documented here](docs/evidence.md). Their database and authorization checks are tested separately; they are not yet exposed as member workflows.
 
 ## Limits before sign-up opens

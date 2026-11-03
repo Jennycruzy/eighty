@@ -82,7 +82,7 @@ export async function checkPublicPages(baseUrl) {
     signal: AbortSignal.timeout(10000),
   });
   assert(
-    [403, 404].includes(signup.status),
+    [403, 404, 503].includes(signup.status),
     `Public sign-up must stay closed, got ${signup.status}`,
   );
   for (const path of [

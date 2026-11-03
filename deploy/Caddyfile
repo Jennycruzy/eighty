@@ -10,7 +10,7 @@
 	}
 
 	# Keep the starter services closed even if application routing changes.
-	@unpublished not path / /try /check /states /states/* /how-it-works /help /proof /proof/answer-key.md /proof/answer-cases.json /share /for-navigators /about /privacy /terms /accessibility /security /assets/* /favicon.svg /icon-180.svg /robots.txt /sitemap.xml /months /months/* /add /review /plan /notice /settings /settings/* /proof/packets /navigator /navigator/* /admin /admin/*
+	@unpublished not path /_.data /try.data /check.data /check/account.data /states.data /how-it-works.data /help.data /proof.data /share.data /for-navigators.data /about.data /privacy.data /terms.data /accessibility.data /security.data / /try /check /check/account /_agent-native/actions/prepare_member_account /_agent-native/actions/finish_member_account /_agent-native/ui-capability /_agent-native/auth/ba/sign-up/email /_agent-native/auth/ba/get-session /_agent-native/auth/ba/verify-email /_agent-native/auth/email-link/landing /states /states/* /how-it-works /help /proof /proof/answer-key.md /proof/answer-cases.json /share /for-navigators /about /privacy /terms /accessibility /security /assets/* /favicon.svg /icon-180.svg /robots.txt /sitemap.xml /months /months/* /add /review /plan /notice /settings /settings/* /proof/packets /navigator /navigator/* /admin /admin/*
 	respond @unpublished "Not found" 404
 
 	reverse_proxy 127.0.0.1:3000

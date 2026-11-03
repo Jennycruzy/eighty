@@ -70,7 +70,11 @@ export default function PublicPage() {
           </a>
         </p>
         <details>
-          <summary>{spanish ? "La regla federal" : "The federal rule"}</summary>
+          <summary>
+            {spanish
+              ? "Hecho con la regla federal, 42 CFR 435"
+              : "Built from the federal rule, 42 CFR 435"}
+          </summary>
           <a href="https://www.ecfr.gov/current/title-42/section-435.552">
             42 CFR 435.552
           </a>
@@ -120,7 +124,7 @@ export default function PublicPage() {
         </section>
       </>
     );
-  const key = path.slice(1) as keyof typeof en;
+  const key = path.slice(1) as Exclude<keyof typeof en, "screener">;
   const content = (spanish ? es : en)[key];
   return (
     <>

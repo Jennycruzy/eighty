@@ -158,5 +158,123 @@
         "Use your state’s official channel for urgent coverage needs. This site has no working security-report inbox yet. Do not send private details to an address you have guessed."
       ]
     ]
+  },
+  "screener": {
+    "questions": [
+      {
+        "key": "state",
+        "text": "Which state do you live in?"
+      },
+      {
+        "key": "age",
+        "text": "How old are you?"
+      },
+      {
+        "key": "pregnant",
+        "text": "Are you pregnant or covered for the time after pregnancy?"
+      },
+      {
+        "key": "medicare",
+        "text": "Do you have Medicare?"
+      },
+      {
+        "key": "child",
+        "text": "Are you a parent or guardian of a child age 13 or younger who relies on your care?"
+      },
+      {
+        "key": "care",
+        "text": "Do you care for someone with a disability?"
+      },
+      {
+        "key": "indian",
+        "text": "Are you American Indian or Alaska Native under the federal definition?"
+      },
+      {
+        "key": "veteran",
+        "text": "Do you have a 100% VA disability rating?"
+      },
+      {
+        "key": "treatment",
+        "text": "Are you in a treatment program?"
+      },
+      {
+        "key": "snap",
+        "text": "Does your household get SNAP food help?"
+      },
+      {
+        "key": "foster",
+        "text": "Do you have Medicaid as a former foster youth?"
+      },
+      {
+        "key": "health",
+        "text": "Does a health condition make it hard to work or follow this rule?"
+      },
+      {
+        "key": "tanf",
+        "text": "Do you get TANF cash help and meet its work rules?"
+      }
+    ],
+    "reasons": {
+      "foster": {
+        "reason": "Your Medicaid is in the former foster youth group.",
+        "proof": "Keep your Medicaid letter that names this coverage group."
+      },
+      "indian": {
+        "reason": "You said you meet the federal Indian definition.",
+        "proof": "Ask your state which tribal record it accepts. Keep a copy."
+      },
+      "child": {
+        "reason": "You care for your child age 13 or younger.",
+        "proof": "Keep proof of the child’s age and your role as parent or guardian."
+      },
+      "veteran": {
+        "reason": "You have a 100% VA disability rating.",
+        "proof": "Keep your VA rating letter."
+      },
+      "pregnant": {
+        "reason": "You are pregnant or have covered care after pregnancy.",
+        "proof": "Keep a letter from your care team or your Medicaid coverage notice."
+      },
+      "tanf": {
+        "reason": "You get TANF and meet its work rules.",
+        "proof": "Keep a TANF letter that shows you meet its work rules."
+      },
+      "medicare": {
+        "reason": "You have Medicare.",
+        "proof": "Keep your Medicare card or coverage letter."
+      },
+      "age": {
+        "reason": "Your age is outside the rule’s range of 19 to 64.",
+        "proof": "Keep proof of your date of birth."
+      },
+      "group": {
+        "reason": "Your Medicaid group is outside this federal rule.",
+        "proof": "Keep your Medicaid letter that names your coverage group."
+      },
+      "care": {
+        "reason": "Your care role may exclude you. We need more care facts. Ask the state what it needs.",
+        "proof": "Keep a note of who you care for, how often, your hours and whether you live together. Do not stop care based on this check."
+      },
+      "health": {
+        "reason": "A health condition may exclude you. Ask your state for its health review and list of conditions. We do not diagnose.",
+        "proof": "Ask your care team for a note about how your health affects work or following the rule. You do not need to tell us a diagnosis."
+      },
+      "snap": {
+        "reason": "SNAP alone does not settle this check. Ask if your household meets the SNAP part of this Medicaid rule.",
+        "proof": "Keep your SNAP notice and any letter about its work rules or exemptions."
+      },
+      "treatment": {
+        "reason": "Your treatment program may exclude you. Ask if it meets your state’s rules.",
+        "proof": "Ask the program for a letter that shows you take part. Do not send a diagnosis to Eighty."
+      },
+      "conditional": {
+        "reason": "Your answers do not show an exclusion. Your state must confirm your Medicaid group and check any other reason the rule may not apply.",
+        "proof": "Keep your Medicaid coverage letter. If the rule applies, keep pay records, work hours, school records or service hours."
+      },
+      "unknown": {
+        "reason": "We can’t tell which reason applies yet. Ask your state which Medicaid group you have and which exclusions it needs to check.",
+        "proof": "Keep your Medicaid coverage letter. Bring any papers that support an answer you gave."
+      }
+    }
   }
 }

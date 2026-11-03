@@ -14,6 +14,7 @@ export default [
   ].map((path) => route(path, "routes/public.tsx", { id: path })),
   route("try", "routes/try.tsx"),
   route("check", "routes/check.tsx"),
+  route("check/account", "routes/account.tsx"),
   route("share", "routes/share.tsx"),
   route("states", "routes/states.tsx"),
   route("states/:code", "routes/state.tsx"),

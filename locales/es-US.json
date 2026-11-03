@@ -158,5 +158,123 @@
         "Usa el medio oficial de tu estado para asuntos urgentes de cobertura. Este sitio aún no tiene un buzón para avisos de seguridad. No envíes datos privados a una dirección que hayas adivinado."
       ]
     ]
+  },
+  "screener": {
+    "questions": [
+      {
+        "key": "state",
+        "text": "¿En qué estado vives?"
+      },
+      {
+        "key": "age",
+        "text": "¿Cuántos años tienes?"
+      },
+      {
+        "key": "pregnant",
+        "text": "¿Estás embarazada o tienes cobertura por el tiempo después del embarazo?"
+      },
+      {
+        "key": "medicare",
+        "text": "¿Tienes Medicare?"
+      },
+      {
+        "key": "child",
+        "text": "¿Eres padre, madre o tutor de un niño de 13 años o menos que depende de tus cuidados?"
+      },
+      {
+        "key": "care",
+        "text": "¿Cuidas a alguien con una discapacidad?"
+      },
+      {
+        "key": "indian",
+        "text": "¿Eres indígena americano o nativo de Alaska según la definición federal?"
+      },
+      {
+        "key": "veteran",
+        "text": "¿Tienes una calificación de discapacidad del 100% del VA?"
+      },
+      {
+        "key": "treatment",
+        "text": "¿Estás en un programa de tratamiento?"
+      },
+      {
+        "key": "snap",
+        "text": "¿Tu hogar recibe ayuda de alimentos SNAP?"
+      },
+      {
+        "key": "foster",
+        "text": "¿Tienes Medicaid como exjoven de crianza temporal?"
+      },
+      {
+        "key": "health",
+        "text": "¿Un problema de salud dificulta trabajar o cumplir esta regla?"
+      },
+      {
+        "key": "tanf",
+        "text": "¿Recibes ayuda en efectivo de TANF y cumples sus reglas de trabajo?"
+      }
+    ],
+    "reasons": {
+      "foster": {
+        "reason": "Tu Medicaid es del grupo de exjóvenes de crianza temporal.",
+        "proof": "Guarda tu carta de Medicaid que indica este grupo de cobertura."
+      },
+      "indian": {
+        "reason": "Dijiste que cumples la definición federal de indígena.",
+        "proof": "Pregunta al estado qué documento tribal acepta. Guarda una copia."
+      },
+      "child": {
+        "reason": "Cuidas a tu hijo de 13 años o menos.",
+        "proof": "Guarda una prueba de la edad del niño y de tu función como padre, madre o tutor."
+      },
+      "veteran": {
+        "reason": "Tienes una calificación de discapacidad del 100% del VA.",
+        "proof": "Guarda tu carta de calificación del VA."
+      },
+      "pregnant": {
+        "reason": "Estás embarazada o tienes cobertura después del embarazo.",
+        "proof": "Guarda una carta de tu equipo médico o tu aviso de cobertura de Medicaid."
+      },
+      "tanf": {
+        "reason": "Recibes TANF y cumples sus reglas de trabajo.",
+        "proof": "Guarda una carta de TANF que indique que cumples sus reglas de trabajo."
+      },
+      "medicare": {
+        "reason": "Tienes Medicare.",
+        "proof": "Guarda tu tarjeta de Medicare o tu carta de cobertura."
+      },
+      "age": {
+        "reason": "Tu edad está fuera del rango de 19 a 64 años de la regla.",
+        "proof": "Guarda una prueba de tu fecha de nacimiento."
+      },
+      "group": {
+        "reason": "Tu grupo de Medicaid está fuera de esta regla federal.",
+        "proof": "Guarda tu carta de Medicaid que indica tu grupo de cobertura."
+      },
+      "care": {
+        "reason": "Tu función de cuidado puede excluirte. Faltan datos sobre el cuidado. Pregunta al estado qué necesita.",
+        "proof": "Guarda una nota de a quién cuidas, con qué frecuencia, tus horas y si viven juntos. No dejes de cuidar por este resultado."
+      },
+      "health": {
+        "reason": "Un problema de salud puede excluirte. Pide al estado su revisión de salud y su lista de condiciones. No hacemos diagnósticos.",
+        "proof": "Pide a tu equipo médico una nota sobre cómo tu salud afecta el trabajo o cumplir la regla. No necesitas decirnos un diagnóstico."
+      },
+      "snap": {
+        "reason": "Tener SNAP no basta para este resultado. Pregunta si tu hogar cumple la parte de SNAP de esta regla de Medicaid.",
+        "proof": "Guarda tu aviso de SNAP y cualquier carta sobre sus reglas de trabajo o exenciones."
+      },
+      "treatment": {
+        "reason": "Tu programa de tratamiento puede excluirte. Pregunta si cumple las reglas de tu estado.",
+        "proof": "Pide al programa una carta que indique que participas. No envíes un diagnóstico a Eighty."
+      },
+      "conditional": {
+        "reason": "Tus respuestas no muestran una exclusión. El estado debe confirmar tu grupo de Medicaid y revisar otras razones por las que la regla no te aplique.",
+        "proof": "Guarda tu carta de cobertura de Medicaid. Si la regla te aplica, guarda pruebas de pago, horas de trabajo, estudios o servicio."
+      },
+      "unknown": {
+        "reason": "Aún no sabemos qué razón te aplica. Pregunta al estado qué grupo de Medicaid tienes y qué exclusiones necesita revisar.",
+        "proof": "Guarda tu carta de cobertura de Medicaid. Lleva los documentos que apoyen tus respuestas."
+      }
+    }
   }
 }

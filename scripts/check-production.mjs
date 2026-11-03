@@ -1,13 +1,22 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
-import { appendFile, mkdir, unlink, writeFile } from "node:fs/promises";
+import {
+  appendFile,
+  mkdir,
+  readFile,
+  unlink,
+  writeFile,
+} from "node:fs/promises";
+import { request as proxyRequest } from "node:http";
+import { createServer } from "node:https";
 import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
 import postgres from "postgres";
 
+import { checkPublicHeads } from "./check-public-heads.mjs";
 import { checkPublicPages } from "./check-public-pages.mjs";
 
 const execute = promisify(execFile);
@@ -15,18 +24,31 @@ const image = process.argv[2] || "eighty:local";
 const runId = `eighty-check-${randomUUID()}`;
 const database = `${runId}-db`;
 const app = `${runId}-app`;
+const accounts = `${runId}-accounts`;
+const accountEncryptionKey = randomBytes(32).toString("hex");
 const databasePassword = randomBytes(32).toString("hex");
 const authSecret = randomBytes(32).toString("hex");
 const logPath = new URL("../.private/production-check.log", import.meta.url);
 const environmentFile = new URL(`../.private/${runId}.env`, import.meta.url);
-const secrets = [databasePassword, authSecret];
+const secrets = [databasePassword, authSecret, accountEncryptionKey];
 const browserEndpoint = new URL(
   "../.private/browser-endpoint.json",
   import.meta.url,
 );
 let browserEndpointCreated = false;
-const resources = { network: false, database: false, app: false };
+const resources = {
+  network: false,
+  database: false,
+  app: false,
+  accounts: false,
+};
 let sql;
+let accountProxy;
+const accountTlsKey = new URL(`../.private/${runId}-key.pem`, import.meta.url);
+const accountTlsCert = new URL(
+  `../.private/${runId}-cert.pem`,
+  import.meta.url,
+);
 let step = "prepare the check";
 
 await mkdir(new URL("../.private/", import.meta.url), {
@@ -151,6 +173,7 @@ try {
       ...process.env,
       DATABASE_URL: hostDatabaseUrl,
       BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
       EIGHTY_ENV_FILE: fileURLToPath(environmentFile),
     },
   );
@@ -160,6 +183,7 @@ try {
     ...process.env,
     DATABASE_URL: hostDatabaseUrl,
     BETTER_AUTH_SECRET: authSecret,
+    SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
     NODE_ENV: "production",
   });
   sql = postgres(hostDatabaseUrl, { max: 1, connect_timeout: 5 });
@@ -191,6 +215,18 @@ try {
       "--env",
       "BETTER_AUTH_SECRET",
       "--env",
+      "SECRETS_ENCRYPTION_KEY",
+      "--mount",
+      `type=bind,src=${fileURLToPath(new URL("../tests/helpers/capture-account-email.mjs", import.meta.url))},dst=/tmp/capture-account-email.mjs,readonly`,
+      "--env",
+      "NODE_OPTIONS=--import=/tmp/capture-account-email.mjs",
+      "--env",
+      "RESEND_API_KEY=eighty-disposable-email",
+      "--env",
+      "EMAIL_FROM=Eighty Check <noreply@example.test>",
+      "--env",
+      "EIGHTY_REGISTRATION_ENABLED=0",
+      "--env",
       "AUTH_DISABLED=false",
       "--env",
       "AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK=0",
@@ -200,6 +236,7 @@ try {
       ...process.env,
       DATABASE_URL: appDatabaseUrl,
       BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
     },
   );
   resources.app = true;
@@ -226,6 +263,29 @@ try {
   };
   await waitUntil(health, "application and database readiness");
   console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
+  const closedSignup = await fetch(
+    `${baseUrl}/_agent-native/auth/ba/sign-up/email`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json", origin: baseUrl },
+      body: JSON.stringify({
+        email: "closed-with-email@example.test",
+        password: "Test-password-for-closed-signup",
+        name: "Closed check",
+      }),
+    },
+  );
+  assert.equal(
+    closedSignup.status,
+    503,
+    "Registration stays closed even when email credentials are present",
+  );
+  const closedRows =
+    await sql`SELECT id FROM "user" WHERE email='closed-with-email@example.test'`;
+  assert.equal(closedRows.length, 0);
+  console.log(
+    "PASS Registration stays closed with configured test email, without creating an account.",
+  );
 
   step = "check private member records";
   const memberOutput = await command(
@@ -235,6 +295,7 @@ try {
       ...process.env,
       DATABASE_URL: hostDatabaseUrl,
       BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
       NODE_ENV: "production",
     },
   );
@@ -243,6 +304,8 @@ try {
   }
   step = "check signed-out public pages and closed starter routes";
   await checkPublicPages(baseUrl);
+  step = "check public HEAD responses";
+  await checkPublicHeads(baseUrl);
   step = "check the public tools in a phone browser";
   await writeFile(browserEndpoint, JSON.stringify({ baseURL: baseUrl }), {
     mode: 0o600,
@@ -253,6 +316,132 @@ try {
   await unlink(browserEndpoint);
   browserEndpointCreated = false;
   console.log(browserOutput);
+  step = "check account creation with captured test mail";
+  await command("openssl", [
+    "req",
+    "-x509",
+    "-newkey",
+    "rsa:2048",
+    "-nodes",
+    "-keyout",
+    fileURLToPath(accountTlsKey),
+    "-out",
+    fileURLToPath(accountTlsCert),
+    "-subj",
+    "/CN=eighty.example.test",
+    "-days",
+    "1",
+  ]);
+  let accountUpstreamPort;
+  accountProxy = createServer(
+    {
+      key: await readFile(accountTlsKey),
+      cert: await readFile(accountTlsCert),
+    },
+    (request, response) => {
+      if (!accountUpstreamPort) {
+        response.writeHead(503);
+        response.end();
+        return;
+      }
+      const upstream = proxyRequest(
+        {
+          hostname: "127.0.0.1",
+          port: accountUpstreamPort,
+          path: request.url,
+          method: request.method,
+          headers: {
+            ...request.headers,
+            "x-forwarded-proto": "https",
+            "x-forwarded-host": request.headers.host,
+            "x-forwarded-for": "127.0.0.1",
+          },
+        },
+        (reply) => {
+          response.writeHead(reply.statusCode, reply.headers);
+          reply.pipe(response);
+        },
+      );
+      upstream.on("error", () => {
+        if (!response.headersSent) response.writeHead(502);
+        response.end();
+      });
+      request.pipe(upstream);
+    },
+  );
+  await new Promise((resolve, reject) => {
+    accountProxy.once("error", reject);
+    accountProxy.listen(0, "127.0.0.1", resolve);
+  });
+  const accountUrl = `https://eighty.example.test:${accountProxy.address().port}`;
+  await command(
+    "docker",
+    [
+      "run",
+      "--detach",
+      "--name",
+      accounts,
+      "--network",
+      runId,
+      "--label",
+      `care.eighty.check=${runId}`,
+      "--init",
+      "--cap-drop",
+      "ALL",
+      "--security-opt",
+      "no-new-privileges:true",
+      "--publish",
+      "127.0.0.1::3000",
+      "--mount",
+      `type=bind,src=${fileURLToPath(new URL("../tests/helpers/capture-account-email.mjs", import.meta.url))},dst=/tmp/capture-account-email.mjs,readonly`,
+      "--env",
+      "DATABASE_URL",
+      "--env",
+      "BETTER_AUTH_SECRET",
+      "--env",
+      "SECRETS_ENCRYPTION_KEY",
+      "--env",
+      "NODE_OPTIONS=--import=/tmp/capture-account-email.mjs",
+      "--env",
+      "AUTH_DISABLED=false",
+      "--env",
+      "EIGHTY_REGISTRATION_ENABLED=1",
+      "--env",
+      "RESEND_API_KEY=eighty-disposable-email",
+      "--env",
+      "EMAIL_FROM=Eighty Check <noreply@example.test>",
+      "--env",
+      `BETTER_AUTH_URL=${accountUrl}`,
+      image,
+    ],
+    {
+      ...process.env,
+      DATABASE_URL: appDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
+    },
+  );
+  resources.accounts = true;
+  const accountPort = await publishedPort(accounts, "3000/tcp");
+  accountUpstreamPort = accountPort;
+  const accountHealthUrl = `http://127.0.0.1:${accountPort}`;
+  await waitUntil(async () => {
+    const r = await fetch(accountHealthUrl + "/_agent-native/health?strict=1");
+    return r.ok;
+  }, "account check startup");
+  const accountOutput = await command(
+    "node",
+    ["scripts/check-account-creation.mjs", runId, accounts, accountUrl],
+    {
+      ...process.env,
+      DATABASE_URL: hostDatabaseUrl,
+      BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
+      NODE_ENV: "production",
+    },
+  );
+  for (const line of accountOutput.split("\n"))
+    if (line.startsWith("PASS ")) console.log(line);
   const email = `${runId}@example.test`;
 
   step = "check the scheduled runner without a model";
@@ -263,6 +452,7 @@ try {
       ...process.env,
       DATABASE_URL: hostDatabaseUrl,
       BETTER_AUTH_SECRET: authSecret,
+      SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
       NODE_ENV: "production",
       AGENT_NATIVE_DEPLOYMENT_ENVIRONMENT: "local",
     },
@@ -294,10 +484,17 @@ try {
     [runId],
   );
   await checkPublicPages(baseUrl);
+  step = "check public HEAD responses";
+  await checkPublicHeads(baseUrl);
   console.log("PASS Test data survives database and application restarts.");
 } catch (error) {
   process.exitCode = 1;
   await log(error.message);
+  if (resources.accounts) {
+    try {
+      await command("docker", ["logs", accounts]);
+    } catch {}
+  }
   if (resources.app) {
     try {
       await command("docker", ["logs", "--tail", "150", app]);
@@ -305,8 +502,19 @@ try {
       /* Keep the original failure. */
     }
   }
+  await log(error?.stack || String(error));
   console.error(`FAIL Could not ${step}. See .private/production-check.log.`);
 } finally {
+  if (accountProxy) {
+    accountProxy.closeAllConnections();
+    await new Promise((resolve) => accountProxy.close(resolve));
+  }
+  for (const file of [accountTlsKey, accountTlsCert])
+    try {
+      await unlink(file);
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
   if (browserEndpointCreated) await unlink(browserEndpoint);
   if (sql) {
     try {
@@ -316,6 +524,7 @@ try {
     }
   }
   for (const [key, name] of [
+    ["accounts", accounts],
     ["app", app],
     ["database", database],
   ]) {

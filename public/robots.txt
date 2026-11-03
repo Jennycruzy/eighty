@@ -6,6 +6,8 @@ Allow: /try$
 Allow: /try?lang=es$
 Allow: /check$
 Allow: /check?lang=es$
+Allow: /check/account$
+Allow: /check/account?lang=es$
 Allow: /states$
 Allow: /states?lang=es$
 Allow: /how-it-works$

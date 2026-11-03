@@ -1,4 +1,6 @@
+import { useState } from "react";
 import {
+  Link,
   Links,
   Meta,
   Outlet,
@@ -9,8 +11,10 @@ import {
 } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 
+import type { ScreenerAnswers } from "../shared/screener";
 import { ConnectionNotice } from "./components/public/ConnectionNotice";
 import { LanguageContext, languageLink } from "./lib/language";
+import { ScreenerDraftContext } from "./lib/screener-draft";
 
 import stylesheet from "./public.css?url";
 export const links = () => [{ rel: "stylesheet", href: stylesheet }];
@@ -47,6 +51,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 export default function Root() {
   const { lang } = useLoaderData<typeof loader>();
+  const [answers, setAnswers] = useState<ScreenerAnswers>({});
+  const [step, setStep] = useState(0);
   const link = (path: string) => languageLink(path, lang);
   return (
     <LanguageContext value={lang}>
@@ -59,18 +65,20 @@ export default function Root() {
         </a>
         <nav aria-label={lang === "es" ? "Menú principal" : "Main menu"}>
           <a href={link("/help")}>{lang === "es" ? "Ayuda" : "Help"}</a>
-          <a
-            href={lang === "en" ? "?lang=es" : "?lang=en"}
+          <Link
+            to={lang === "en" ? "?lang=es" : "?lang=en"}
             lang={lang === "en" ? "es" : "en"}
           >
             {lang === "en" ? "Español" : "English"}
-          </a>
+          </Link>
         </nav>
       </header>
-      <main id="main">
-        <ConnectionNotice />
-        <Outlet />
-      </main>
+      <ScreenerDraftContext value={{ answers, setAnswers, step, setStep }}>
+        <main id="main">
+          <ConnectionNotice />
+          <Outlet />
+        </main>
+      </ScreenerDraftContext>
       <footer>
         <p>
           {lang === "es"
