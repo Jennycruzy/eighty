@@ -64,6 +64,23 @@ async function log(value) {
   await appendFile(logPath, `${text}\n`);
 }
 
+// Names the failed check and its first error line. A child check script marks
+// its failure with "CHECK FAILED: <check>: <first line>" on stderr.
+function failureSummary(error) {
+  const marked = String(error?.stderr || "")
+    .split("\n")
+    .find((line) => line.startsWith("CHECK FAILED: "));
+  if (marked) return marked.slice("CHECK FAILED: ".length);
+  const lines = String(error?.message ?? error)
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  return (
+    (lines[0]?.startsWith("Command failed:") ? lines[1] : lines[0]) ||
+    "unknown error"
+  );
+}
+
 async function command(file, args, env = process.env, timeout = 120_000) {
   try {
     const result = await execute(file, args, {
@@ -384,6 +401,8 @@ try {
         if (!response.headersSent) response.writeHead(502);
         response.end();
       });
+      // Send the headers now: the app must see them even when no body bytes arrive.
+      upstream.flushHeaders();
       request.pipe(upstream);
     },
   );
@@ -548,7 +567,12 @@ try {
     }
   }
   await log(error?.stack || String(error));
-  console.error(`FAIL Could not ${step}. See .private/production-check.log.`);
+  let summary = failureSummary(error).slice(0, 300);
+  for (const secret of secrets)
+    summary = summary.replaceAll(secret, "[redacted]");
+  console.error(
+    `FAIL Could not ${step}. Failed: ${summary}. See .private/production-check.log.`,
+  );
 } finally {
   if (accountProxy) {
     accountProxy.closeAllConnections();

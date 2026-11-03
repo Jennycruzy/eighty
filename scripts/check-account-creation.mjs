@@ -30,6 +30,8 @@ const browser = await chromium.launch({
   ],
 });
 const sessions = [];
+// Names the check in progress, so a failure reports where it happened.
+let current = "start the browser checks";
 async function tabTo(page, locator) {
   for (let count = 0; count < 70; count++) {
     if (await locator.evaluate((el) => el === document.activeElement)) return;
@@ -86,6 +88,7 @@ try {
   for (const lang of ["en", "es"]) {
     const es = lang === "es",
       email = `${runId}-${lang}@example.test`;
+    current = `${lang} account creation`;
     const context = await browser.newContext({
       viewport: { width: 360, height: 640 },
       locale: lang === "es" ? "en-US" : "es-US",
@@ -256,7 +259,10 @@ try {
       `PASS ${lang}: keyboard-only screener → account → captured verification → saved answers, with a real hashed password and verified identity.`,
     );
   }
-  await checkEvidenceBrowser(sessions, baseURL, choose);
+  await checkEvidenceBrowser(sessions, baseURL, choose, (name) => {
+    current = name;
+  });
+  current = "refusal of wrong-account, expired and changed links";
   // A different signed-in person cannot claim the other account's draft.
   const own = sessions[0],
     other = sessions[1];
@@ -300,6 +306,12 @@ try {
     "PASS Wrong-account, expired and changed links are refused; existing profile answers are kept.",
   );
 } catch (error) {
+  const firstLine =
+    String(error?.message ?? error)
+      .split("\n")
+      .map((line) => line.trim())
+      .find(Boolean) ?? "unknown error";
+  console.error(`CHECK FAILED: ${current}: ${firstLine}`);
   for (const [index, session] of sessions.entries()) {
     console.error(`Evidence browser ${index}: ${session.page.url()}`);
     console.error(

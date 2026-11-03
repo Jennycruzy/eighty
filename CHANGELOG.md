@@ -2,6 +2,7 @@
 
 ## 3 November 2026
 
+- Prove the upload size limit through the real signed-in page request.
 - Read at most two documents at a time to protect server memory.
 - Answer public HEAD requests with the GET status and headers, without a body.
 - Keep the screener to 13 optional questions and add reasons, citations and proof checklists in both languages.

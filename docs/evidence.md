@@ -28,7 +28,7 @@ Remaining launch limits: there is no independent database backup, and the file e
 
 ## File size and removal safeguards
 
-Both upload actions set `maxBodyBytes` to the base64 size of a 15 MB file plus 1 KB for JSON. The framework rejects an excessive Content-Length before reading the body and stops a chunked body when it crosses the limit. Caddy also limits `/_agent-native/actions/*` to 22 MB.
+Both upload actions set `maxBodyBytes` to the base64 size of a 15 MB file plus 1 KB for JSON. The framework rejects an excessive Content-Length before reading the body and stops a chunked body when it crosses the limit. Caddy also limits `/_agent-native/actions/*` to 22 MB. `pnpm check:production` proves the 413 with the headers of a real signed-in page request, sending a Content-Length one byte over the limit and no body; the same request without those headers must get 403, and a small valid request must reach the action.
 
 A JPEG, PNG or WebP over 15 MB or 40 million pixels is made smaller on the phone before upload. The saved JPEG has a longest side of at most 4,000 pixels, with orientation applied and quality 0.9. If needed, the phone reduces the dimensions again to stay under 15 MB. The page says before saving that it will keep a smaller copy, and confirms that after saving. The full original stays on the member's phone. Normal-sized uploads remain byte-for-byte unchanged. Oversized PDF and HEIC files give steps for splitting the PDF, choosing a lower photo size or saving a JPEG; manual entry remains available.
 

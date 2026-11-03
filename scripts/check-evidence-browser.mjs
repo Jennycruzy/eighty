@@ -9,7 +9,7 @@ import sharp from "sharp";
 
 import { checkUploadSize } from "./check-upload-size.mjs";
 
-export async function checkEvidenceBrowser(sessions, baseURL, choose) {
+export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
   const png = await readFile(
     new URL("../tests/fixtures/documents/pay.png", import.meta.url),
   );
@@ -41,11 +41,13 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose) {
   })
     .png()
     .toBuffer();
-  await checkUploadSize(sessions[0].context, baseURL);
+  mark("upload size limit");
+  await checkUploadSize(sessions[0], baseURL, choose, dark);
   for (const session of sessions) {
     const { page, context, email } = session,
       es = email.endsWith("-es@example.test"),
       lang = es ? "es" : "en";
+    mark(`${lang} evidence upload and review`);
     const errors = [];
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(`${baseURL}/add?lang=${lang}`);
