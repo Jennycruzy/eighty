@@ -1,0 +1,18 @@
+diff --git a/dist/private-blob/s3-private.js b/dist/private-blob/s3-private.js
+index f270d02abba62d0bcbf699bc6d2da1ac16975b04..b4568267a0a9c0ef6cf73fa3fe90863acafafc52 100644
+--- a/dist/private-blob/s3-private.js
++++ b/dist/private-blob/s3-private.js
+@@ -344,11 +344,8 @@ function toBytes(data) {
+ }
+ async function putBlob(providerId, bucket, input) {
+     const bytes = toBytes(input.data);
+-    // A bucket with a public URL serves any key it is asked for, so its blobs
+-    // are stored encrypted.
+-    const encrypted = bucket.config.publicBaseUrl
+-        ? encryptBlobBytes(bytes)
+-        : null;
++    // Encrypt private files before they leave the app, including private buckets.
++    const encrypted = encryptBlobBytes(bytes);
+     const key = `${OBJECT_KEY_PREFIX}/${randomUUID()}`;
+     const response = await signedS3Request(bucket.config, key, {
+         method: "PUT",

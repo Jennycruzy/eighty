@@ -2,6 +2,9 @@
 
 ## 2 November 2026
 
+- Require application encryption for files in private buckets.
+- Verify real private storage with a synthetic upload, private read, refused public access and confirmed deletion.
+
 - Add private member and evidence tables with account ownership checks.
 - Validate reader proposals without accepting status changes, personal identity fields or free-text instructions.
 - Check verified browser sessions and private record ownership using a separate database.

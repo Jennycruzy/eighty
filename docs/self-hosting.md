@@ -99,3 +99,11 @@ Independent rules review, member workflows, private storage access checks, worki
 Caddy adds a separate published-path allowlist. Update that list deliberately when a real member endpoint is ready. Do not open the framework namespace to make a page load. The current site provides no public chat, terminal, database console, extension manager, team page or observability page. The starter manifest and logos are not published.
 
 The [public-page check results](tests/results/public-pages.md) record the current verification.
+
+## Check private document storage
+
+Keep the R2 bucket private and use a bucket-scoped Object Read & Write key. Save the `S3_*` values in the private production environment file. Do not configure a public bucket URL. Keep the signing and encryption keys stable.
+
+`pnpm check:storage` loads that private file in a child process and runs a synthetic upload/read/delete check. For the local Compose database it connects through the localhost port. It never prints credentials, document contents or opaque handles. This is an operator check, separate from the account-free unit checks.
+
+The [storage results](tests/results/private-storage.md) describe the verification and its limits. The pinned core patch must be included before `pnpm install` in the container build; the Dockerfile copies `patches/` for that reason. A normal install uses the patch recorded in the lockfile.

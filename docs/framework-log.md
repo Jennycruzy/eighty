@@ -50,7 +50,7 @@ Test: `tests/framework/forms-upload.spec.ts`.
 - Expected: it does not request a permanent public document URL.
 - Actual: the handler calls storage with `stableUrl: true` and returns the storage URL.
 
-Status: the public-URL request is reproduced. The storage boundary is replaced, so this is **not proof of public access to a real stored file**. An upload to a configured provider followed by an unauthenticated read is still required. Sensitive documents must not use Forms uploads. No change has been made to Forms or core storage.
+Status: the public-URL request is reproduced. The storage boundary is replaced, so this is **not proof of public access to a real stored file**. An upload to a configured provider followed by an unauthenticated read is still required. Sensitive documents must not use Forms uploads. Forms is unchanged. The separate private-bucket encryption change below does not change its public upload handler.
 
 ## Public form language
 
@@ -74,3 +74,17 @@ Package: `@agent-native/core` 0.222.2, Node.js 22.23.4, Nitro `node` target. Tes
 Workaround: keep `use-sync-external-store` external during the intermediate React Router server build, through Vite's supported `ssr.external` setting. The final server build then resolves it in the server graph. The container page and signed-in action checks pass with this setting. No dependencies were patched or copied by hand.
 
 A duplicate search for `Cannot find module` and `react` on 2 November returned [issue 2982](https://github.com/BuilderIO/agent-native/issues/2982), which describes a related Node container failure involving a missing `yjs` dependency. It is not proof that the React case has the same repair. No new issue or pull request has been filed for this case.
+
+## Encrypting files in a private bucket
+
+Package: core 0.222.2. Reproduced on 2 November 2026 with the installed package and a real private R2 bucket. Test: `tests/unit/private-storage-encryption.test.mjs`; live check: `pnpm check:storage`.
+
+The S3 private provider encrypts the file itself only when a public base URL is configured. Without that URL it relies on the bucket's access controls and storage-side encryption. The handle is opaque, but its `encrypted` flag is false and an authenticated raw object read returns the original bytes. This is the framework's stated behavior, not evidence that R2's own encryption or private access is broken.
+
+Eighty requires application encryption too. The regression test failed before the change because the upload contained the original bytes. The real R2 check also found no application encryption and a generated direct read link. Every synthetic test object was deleted.
+
+Local change: `patches/@agent-native__core@0.222.2.patch` makes the shared private S3 helper always use its existing AES-256-GCM encryption. Both S3 and hosted private providers use that helper; only the S3/R2 path has been tested live. Existing handles remain readable through their recorded encryption parameters.
+
+After the patch, the regression passes. The live R2 check confirms different stored bytes, exact private reads, rejected anonymous access, no direct read link, rejected tampered handles and verified deletion. Forms' public uploader is unchanged and must still not receive sensitive documents.
+
+Duplicate searches on 2 November for `repo:BuilderIO/agent-native "private" "encryption" "bucket"` and `repo:BuilderIO/agent-native "s3-private" "encrypt"` returned no matches. No issue or pull request has been filed for this application-specific change. No upstream fix or merge is claimed.

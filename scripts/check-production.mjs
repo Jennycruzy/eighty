@@ -86,7 +86,9 @@ try {
   assert.equal(metadata.Config.User, "node");
   assert(
     !metadata.Config.Env.some((value) =>
-      /^(DATABASE_URL|BETTER_AUTH_SECRET)=/.test(value),
+      /^(DATABASE_URL|BETTER_AUTH_SECRET|SECRETS_ENCRYPTION_KEY|S3_ACCESS_KEY_ID|S3_SECRET_ACCESS_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)=/.test(
+        value,
+      ),
     ),
   );
 
