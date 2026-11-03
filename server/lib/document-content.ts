@@ -6,6 +6,7 @@ import {
   MAX_DOCUMENT_BYTES,
   MAX_IMAGE_PIXELS,
 } from "../../shared/document-upload.ts";
+import { withDecodeSlot } from "./decode-slots.ts";
 import { photoQuality } from "./photo-quality.ts";
 
 export async function inspectDocument(bytes: Buffer, rotation: number) {
@@ -14,6 +15,10 @@ export async function inspectDocument(bytes: Buffer, rotation: number) {
       statusCode: 413,
       statusMessage: "Use a file under 15 MB",
     });
+  return withDecodeSlot(() => decodeDocument(bytes, rotation));
+}
+
+async function decodeDocument(bytes: Buffer, rotation: number) {
   if (bytes.subarray(0, 5).toString() === "%PDF-") {
     try {
       const pdf = await PDFDocument.load(bytes, { updateMetadata: false });

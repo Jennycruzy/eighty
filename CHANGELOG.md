@@ -2,6 +2,7 @@
 
 ## 3 November 2026
 
+- Read at most two documents at a time to protect server memory.
 - Answer public HEAD requests with the GET status and headers, without a body.
 - Keep the screener to 13 optional questions and add reasons, citations and proof checklists in both languages.
 - Carry answers into a matching verified account. Keep registration closed until real-domain email and member readiness are approved.

@@ -34,6 +34,6 @@ A JPEG, PNG or WebP over 15 MB or 40 million pixels is made smaller on the phone
 
 A file can be removed when it has no evidence lines or every linked line is rejected. A proposed or confirmed line still protects it. The database transaction removes the document row and writes a member event and an encrypted storage-deletion record together. Only after commit does the app delete the stored file. Storage failure leaves the deletion record for retry, and the member sees that deletion is pending. The framework's interval job checks due records every minute, with retries backing off to at most one hour. The record is removed only when storage confirms deletion; a failed acknowledgment is safe to retry too.
 
-## Deferred decoding memory work
+## Decoding memory
 
-A 40-million-pixel HEIC image needs about 160 MB for its RGBA pixels alone, before decoder and preview memory. This update does not change decoding concurrency. Follow-up: use a simple in-process queue to allow at most two server document decodes at once. Add a test that holds the first two decodes, proves a third waits, then releases a slot and proves it proceeds. Also release slots on errors. This is a decoding queue, separate from the durable file-deletion retry records above.
+A large photo can need about 160 MB of memory to decode, so the server reads at most two documents at a time. Other uploads and file views wait up to 30 seconds for a free slot, then get a clear message to try again in a minute.
