@@ -15,6 +15,7 @@ import {
   getMemberRecord,
   saveMemberRecord,
 } from "../server/lib/member-records.ts";
+import { checkEvidenceRecords } from "./check-evidence-records.mjs";
 import "../server/plugins/agent-native-email-branding.ts";
 const runId = process.argv[2];
 assert.match(runId || "", /^eighty-check-[a-f0-9-]+$/);
@@ -119,6 +120,7 @@ try {
     );
     assert.equal((await getMemberRecord(owner)).stateCode, "NE");
   });
+  await checkEvidenceRecords(owner, other, inAccount);
   const validDocumentId = randomUUID();
   await getDbExec().execute({
     sql: "INSERT INTO eighty_documents (id,owner_email,member_id,handle,mime,bytes,hash) VALUES (?,?,?,?,?,?,?)",

@@ -238,9 +238,9 @@ try {
       NODE_ENV: "production",
     },
   );
-  console.log(
-    memberOutput.split("\n").find((line) => line.startsWith("PASS ")),
-  );
+  for (const line of memberOutput.split("\n")) {
+    if (line.startsWith("PASS ")) console.log(line);
+  }
   step = "check signed-out public pages and closed starter routes";
   await checkPublicPages(baseUrl);
   step = "check the public tools in a phone browser";

@@ -1,5 +1,9 @@
 # Changes
 
+## 3 November 2026
+
+- Add private evidence drafts, member-only review actions, duplicate checks and saved versions. Verify account isolation, conflicting saves and transaction rollback against PostgreSQL. The public account boundary remains closed.
+
 ## 2 November 2026
 
 - Require application encryption for files in private buckets.
@@ -30,4 +34,4 @@
 - Add repeatable checks for messaging, jobs and Forms, with their limits recorded.
 - Calculate notice reply dates, including a possible later arrival while keeping the earlier reminder date.
 
-The member workflows are not available yet. The rules engine awaits independent review.
+The member workflows remain closed while account email, document capture and review screens are completed.
