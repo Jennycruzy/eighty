@@ -3,6 +3,7 @@ export const PUBLIC_PAGES = [
   "/try",
   "/check",
   "/check/account",
+  "/check/sign-in",
   "/states",
   "/how-it-works",
   "/help",
@@ -40,7 +41,12 @@ export function isMemberPage(path: string): boolean {
     "/navigator",
     "/admin",
     "/proof/packets",
-  ].some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+  ].some(
+    (prefix) =>
+      path === prefix ||
+      path === `${prefix}.data` ||
+      path.startsWith(`${prefix}/`),
+  );
 }
 export function isStaticFile(path: string): boolean {
   return (
@@ -59,6 +65,18 @@ export function isAllowedService(path: string): boolean {
   return (
     path === "/_agent-native/health" ||
     [
+      ...[
+        "add_manual_evidence",
+        "confirm_evidence",
+        "edit_evidence",
+        "reject_evidence",
+        "list_evidence",
+        "inspect_document",
+        "upload_document",
+        "list_documents",
+        "get_document",
+        "remove_document",
+      ].map((name) => `/_agent-native/actions/${name}`),
       "/_agent-native/actions/prepare_member_account",
       "/_agent-native/actions/finish_member_account",
       "/_agent-native/ui-capability",

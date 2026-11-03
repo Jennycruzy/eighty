@@ -28,9 +28,9 @@ The production check creates its own Docker network, PostgreSQL container and ap
 
 It checks database readiness after release migrations, all public pages and all state pages signed out in both languages, closed starter routes and sign-up, protected member pages, phone-sized browser flows, a scheduled job without a model, and data persistence after database and application restarts. The job must write a receipt and a successful history row, without creating a chat thread. Finally, the check removes only its own containers, database volume and network. Redacted diagnostics stay in `.private/production-check.log`, outside Git and the image.
 
-The web server runs in production mode throughout. The scheduler subcheck uses the framework's local deployment setting: the framework intentionally blocks reserved test email addresses from running jobs in production. This subcheck proves the runner's work and stored result in the test database; it does not prove a real account's production reminder delivery. Only the explicit public page list bypasses login. Member pages require a cookie session. Unknown services, including starter actions, are denied. Caddy adds a separate published-path allowlist.
+The web server runs in production mode throughout. The scheduler subcheck uses the framework's local deployment setting: the framework intentionally blocks reserved test email addresses from running jobs in production. This subcheck proves the runner's work and stored result in the test database; it does not prove a real account's production reminder delivery. Only the explicit public page list bypasses login. Member pages require a verified cookie session. Unknown services, including starter actions, are denied. Caddy adds a separate published-path allowlist.
 
-This checks the public application and container. It is not a complete test of member journeys, email verification, backups or restore, document storage, or a public deployment. PostgreSQL runs locally for this check; production should use the planned managed database.
+This checks the public application and container. It checks synthetic account verification and evidence review with disposable email and storage transports. It does not prove real email delivery, independent backups or restore, or a public deployment. PostgreSQL runs locally for this check; production should use the planned managed database.
 
 The [framework's Docker guide](https://www.agent-native.com/docs/docker/) describes the underlying server. The image uses two stages: the first installs and builds; the second holds the server output and runs as a regular user. Credentials are supplied when the container starts. They are not build arguments. `.dockerignore` excludes environment files, private notes, development data and local build output.
 
@@ -44,7 +44,8 @@ Copy `.env.example` to `.env.production` and give it file permissions `600`. Fil
 | `BETTER_AUTH_SECRET` | Signs sessions |
 | `SECRETS_ENCRYPTION_KEY` | Protects stored credentials and private document keys |
 | `BETTER_AUTH_URL` | The actual public origin, when one is configured |
-| `S3_*` | Private storage credentials, when document capture is ready |
+| `S3_*` | Private bucket credentials used by the operator storage check |
+| `AGENT_NATIVE_HOSTED_STORAGE_*` | The same private bucket, configured as app-owned storage for signed-in members |
 | `RESEND_API_KEY`, `EMAIL_FROM` | Email verification, password resets and reminders |
 
 The application disables public upload fallback in its source configuration. Compose also sets `AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK=0`. Missing private storage must remain a visible failure. Do not turn on a public fallback to make uploads work.
@@ -105,7 +106,7 @@ The [public-page check results](tests/results/public-pages.md) record the curren
 
 ## Check private document storage
 
-Keep the R2 bucket private and use a bucket-scoped Object Read & Write key. Save the `S3_*` values in the private production environment file. Do not configure a public bucket URL. Keep the signing and encryption keys stable.
+Keep the R2 bucket private and use a bucket-scoped Object Read & Write key. Save the `S3_*` values in the private production environment file. For member uploads, also set `AGENT_NATIVE_HOSTED_STORAGE_ENABLED=true` and the `AGENT_NATIVE_HOSTED_STORAGE_ENDPOINT`, `BUCKET`, `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` and `REGION` settings using the same bucket and credentials (repeat the full prefix for each setting). The app selects the framework's `hosted-private` provider: its app-owned bucket works for signed-in members without giving them storage credentials. A server plugin registers the providers at startup. Do not configure a public bucket URL. Keep the signing and encryption keys stable.
 
 `pnpm check:storage` loads that private file in a child process and runs a synthetic upload/read/delete check. For the local Compose database it connects through the localhost port. It never prints credentials, document contents or opaque handles. This is an operator check, separate from the account-free unit checks.
 
@@ -115,4 +116,4 @@ The [storage results](tests/results/private-storage.md) describe the verificatio
 
 `public/robots.txt` permits only public page addresses and the assets needed to read them. `public/sitemap.xml` lists all public pages and state pages in English and Spanish. Run `node scripts/update-public-index.mjs` after changing the public routes or the HTTPS origin. The automatic checks compare the files with the route and state lists, and check that the running container serves both files without an account.
 
-Caddy sets `Strict-Transport-Security: max-age=31536000` on the HTTPS site. Preloading remains off while the final domain is pending. The header applies to errors and closed routes as well as public pages.
+Caddy sets `Strict-Transport-Security: max-age=31536000` on the HTTPS site. Preloading remains off. The header applies to errors and closed routes as well as public pages.

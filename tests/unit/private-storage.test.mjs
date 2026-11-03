@@ -8,11 +8,13 @@ import {
 import {
   getPrivateBlobStorageReadinessForRequest,
   putPrivateBlob,
+  ensureS3PrivateBlobProviders,
 } from "@agent-native/core/private-blob";
 
 import "../../server/plugins/agent-native-email-branding.ts";
 
 test("missing private storage never sends document bytes to a public uploader", async () => {
+  ensureS3PrivateBlobProviders();
   let publicWrites = 0;
   registerFileUploadProvider({
     id: "eighty-public-upload-check",
@@ -29,13 +31,13 @@ test("missing private storage never sends document bytes to a public uploader", 
       configured: false,
       providerId: null,
     });
-    assert.equal(
-      await putPrivateBlob({
+    await assert.rejects(
+      putPrivateBlob({
         data: Buffer.from("Synthetic document"),
         filename: "proof.txt",
         mimeType: "text/plain",
       }),
-      null,
+      (error) => error.kind === "not_configured",
     );
     assert.equal(publicWrites, 0);
   } finally {

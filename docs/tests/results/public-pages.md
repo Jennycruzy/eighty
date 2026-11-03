@@ -24,3 +24,5 @@ pnpm check:production eighty:check
 The runner uses a separate database, binds its ports to localhost and deletes only its own test resources. It passes the browser's temporary local URL through a private file and removes that file afterwards. Reports remain in `.private/browser-report/`; CI uploads them as an artifact.
 
 These checks do not establish document-reading accuracy, complete member journeys, real email delivery, working private document storage, a full screen-reader pass or legal approval. Sign-up and uploads remain closed. The public month tool checks work and pay; it does not check every exclusion or state choice.
+
+The signed-in evidence update was checked on 3 November with `pnpm check:production eighty:member-proof`. Adding the public sign-in page brings the count to 134 signed-out page loads and 136 HEAD comparisons, including the two search files. The new `/add`, `/review` and evidence services remain protected. Registration stays closed.

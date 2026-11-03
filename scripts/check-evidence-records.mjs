@@ -13,6 +13,7 @@ import {
   changeEvidenceRecord,
   listEvidenceRecords,
 } from "../server/lib/evidence-records.ts";
+import { checkDocumentRemoval } from "./check-document-removal.mjs";
 import { checkSeparateEvidence } from "./check-separate-evidence.mjs";
 
 // Called only after the parent has checked the unique disposable-database marker.
@@ -34,6 +35,13 @@ export async function checkEvidenceRecords(owner, other, inAccount) {
   }
   const ownerContext = await browserContext(owner);
   const otherContext = await browserContext(other);
+  await checkDocumentRemoval(
+    owner,
+    other,
+    inAccount,
+    ownerContext,
+    otherContext,
+  );
   const shift = {
     kind: "work",
     organization: "Test employer",

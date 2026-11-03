@@ -55,3 +55,30 @@ export async function reviewedMemberActor(
     throw createError({ statusCode: 401, statusMessage: "Sign in required" });
   return { email, userId };
 }
+
+export async function browserMemberActor(
+  context: ActionRunContext | undefined,
+): Promise<MemberActor> {
+  const email = requireMemberIdentity(context);
+  if (!context?.requestHeaders)
+    throw createError({
+      statusCode: 403,
+      statusMessage: "Sign in on this device",
+    });
+  const session = await getBrowserCookieSession(
+    new H3Event(
+      new Request("http://localhost/eighty-document", {
+        headers: context.requestHeaders,
+      }),
+    ),
+  );
+  if (session?.email !== email || session.emailVerified !== true)
+    throw createError({
+      statusCode: 403,
+      statusMessage: "Verify your email first",
+    });
+  const userId = session.authUserId || session.userId;
+  if (!userId)
+    throw createError({ statusCode: 401, statusMessage: "Sign in required" });
+  return { email, userId };
+}

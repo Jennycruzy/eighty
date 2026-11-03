@@ -1,49 +1,39 @@
-# Evidence and member records
+# Add and review proof
 
-The public tools are live. Account creation, document upload and document reading remain closed. Server actions and records are being checked behind the closed public boundary. No member screen uses them yet.
+Members with a verified email can sign in at `/check/sign-in`, then use `/add` and `/review`. Account creation remains closed in production. These screens use the same actions as the other callers; each action checks the account inside the server.
 
-## Proposed facts
+A member can type work, pay, volunteer, work program or school facts. Blanks stay unknown. Saving makes a proposed line. A separate confirmation records the reviewed facts. Editing a confirmed line returns it to proposed. Rejected lines stay in the history and can be restored through editing. Every change checks the version and writes its history in the same database transaction.
 
-`shared/evidence.ts` accepts dates, hours, pay, school facts and service facts. It rejects a proposed owner, member ID, version or confirmed status. It has no field for a Social Security number, member name or diagnosis. Follow-up questions are known field codes, not free text that could contain instructions. The reader cannot claim that the member confirmed business costs.
+A duplicate warning compares the proposed line with current confirmed lines. “These are separate” records the IDs and versions the member reviewed. Changed comparisons must be reviewed again. The HTTP action uses the framework's structured error type so the browser receives that comparison.
 
-Income records keep the pay date separate from the work dates. That lets a later monthly assessment ask which month the pay belongs to instead of guessing from the work period.
+## Files
 
-The reader itself is not connected. Passing these schema tests does not establish document-reading accuracy.
+Uploads accept JPEG, PNG, WebP, HEIC and PDF, up to 15 MB each. Photos are limited to 40 million pixels; PDFs to 40 pages. Password-protected and unreadable files are refused. Content is checked by the decoder, rather than trusting the file name or browser type. The request body is also bounded on the server and in Caddy.
 
-## Who may review
+The phone makes a smaller JPEG viewing copy, with a longest side of 2,400 pixels, when its browser can decode the image. The server handles HEIC when the phone cannot. For normal-sized files, the full original crosses the connection and is kept unchanged. Oversized JPEG, PNG and WebP files follow the smaller-copy path described below. EXIF rotation is applied to the viewing copy. The member can turn a sideways photo before saving. The original's bytes remain unchanged.
 
-The review helper refuses tool, HTTP, CLI, MCP, widget, automation and app-to-app caller labels. A frontend label alone is insufficient: the browser helper also checks the actual session cookie, verified email and matching user identity.
+Darkness and blur checks produce warnings, never evidence or a decision. The member can retake the photo or explicitly say its facts are readable. A check and a retake write no file or database row. The server repeats the check before saving. PDF pages are rendered one at a time with local PDF.js code, without running document scripts or rendering links and forms. Page controls, rotation and size controls work on a phone. The original can be downloaded through the signed-in account.
 
-Each review action declares `uiOnly: true`, hide itself from agent and MCP tool catalogs, and calls the review helper inside its server action. The framework verifies the signed UI capability there. A frontend header is only a caller's claim. Approval flags from a terminal or assistant do not establish that a person reviewed the line.
+Only original bytes are stored, through the framework's encrypted private storage. The app selects its app-owned `hosted-private` bucket and registers the provider at startup; member requests do not borrow a deployment owner's generic storage credentials. The database requires an encrypted, opaque handle. Viewing copies are made in memory and are not saved. Reads check both the verified browser session and the member's ownership. Responses use `private, no-store`. No storage handle or public document URL is returned to the browser. SHA-256 detects a repeated file within that member's account. Limits are 200 files and 300 MB per member.
 
-The tests exercise refusal paths and a real signed session in an isolated database. There is no signed-in evidence-confirmation endpoint yet, so full transport tests for that endpoint remain outstanding.
+An unused file, or a file linked only to rejected evidence, can be deleted. Proposed or confirmed lines keep their files as proof. Storage failures leave manual entry available. No document reader or model is used in this work.
 
-## Storage of records
+## Checks
 
-The app uses its own `eighty_` tables and the framework's typed database client and release migration runner. Member records require both the owner email and the canonical user ID. The helper checks the active request identity too. An account with a reused email cannot replace a profile owned by a different user ID. Repeated saves update one profile.
+`pnpm test` includes generated image rotation, resizing, metadata removal, dark and blurred photos, HEIC conversion, PDF page limits and malformed uploads. Fixtures contain made-up pay facts only. The HEIC fixture was encoded from `tests/fixtures/documents/pay.png` using the supplied Dockerfile and `heif-enc`.
 
-The initial migration adds members, private document references, evidence, evidence versions, member events and model/rule counters. It creates only app-owned tables. It does not alter framework tables or existing member data.
+`pnpm check:production IMAGE` creates a separate database and two verified browser accounts. It checks English and Spanish at 360 px, file inspection and retake, encrypted storage, exact original bytes, ownership, multiple PDF pages, manual evidence, confirmation, duplicate comparisons, editing, rejection and restoration. Its private-storage transport runs only in that disposable container; encryption and decryption use the real provider. `pnpm check:storage` separately checks the configured private bucket.
 
-Document rows require actual boolean `encrypted` and `opaque` flags. This database check is not a test of encryption or bucket privacy. The real private storage checks now pass; see [the storage results](tests/results/private-storage.md). Uploads stay closed until their complete account flow is ready.
+Remaining launch limits: there is no independent database backup, and the file encryption key exists only on this server. Registration stays closed. The model reader is separate work.
 
-Anonymous try-counter rows cannot contain a member ID. The content-free counter table is excluded from general database tools through `doctor.dbToolScopingDenylist`; adding an owner identity would conflict with the anonymous try-mode contract. An operator view must use a separate authorized action.
+## File size and removal safeguards
 
-## Verification
+Both upload actions set `maxBodyBytes` to the base64 size of a 15 MB file plus 1 KB for JSON. The framework rejects an excessive Content-Length before reading the body and stops a chunked body when it crosses the limit. Caddy also limits `/_agent-native/actions/*` to 22 MB.
 
-`pnpm test` checks the proposal schema, caller restrictions, missing browser credentials and profile-field restrictions. `pnpm check:production` runs member record checks against a disposable PostgreSQL database, then the public route, browser and recovery checks.
+A JPEG, PNG or WebP over 15 MB or 40 million pixels is made smaller on the phone before upload. The saved JPEG has a longest side of at most 4,000 pixels, with orientation applied and quality 0.9. If needed, the phone reduces the dimensions again to stay under 15 MB. The page says before saving that it will keep a smaller copy, and confirms that after saving. The full original stays on the member's phone. Normal-sized uploads remain byte-for-byte unchanged. Oversized PDF and HEIC files give steps for splitting the PDF, choosing a lower photo size or saving a JPEG; manual entry remains available.
 
-The member-record script first requires the run's unique marker in the test database. It will not write member records to an arbitrary database. Test identities are fictional. The cookie test seeds a verified identity through the framework's server helper; it does not test Google sign-in or email delivery. SQL tests distinguish valid private-handle metadata from missing, false and string flags, and reject a member-linked anonymous try row.
+A file can be removed when it has no evidence lines or every linked line is rejected. A proposed or confirmed line still protects it. The database transaction removes the document row and writes a member event and an encrypted storage-deletion record together. Only after commit does the app delete the stored file. Storage failure leaves the deletion record for retry, and the member sees that deletion is pending. The framework's interval job checks due records every minute, with retries backing off to at most one hour. The record is removed only when storage confirms deletion; a failed acknowledgment is safe to retry too.
 
-## Saving and reviewing lines
+## Deferred decoding memory work
 
-Typed lines start as proposed. Confirm, edit and reject actions check the verified browser session inside the action. These actions are hidden from the agent and MCP catalogs. The public request filter and Caddy still block them while the account screens are completed.
-
-Every save adds a version and a content-free event in the same database transaction. Framework action audits are configured to omit all input values, including hours, pay and organization names. Editing a confirmed line returns it to proposed. The prior confirmed version is retained. A stale version returns a conflict instead of overwriting a later edit. Rejecting a line keeps its history; editing it lets the member review it again.
-
-Before confirmation, dates and an organization are required to check for double counting. Overlapping periods for the same activity and organization, or the same pay date at the same organization, need review. This is a conservative application safeguard, not an additional legal eligibility rule. Different amounts do not bypass it. The warning returns the other line IDs and their versions. A member who has compared them can choose **“These are separate”**. That confirmation must name exactly the current matching lines and versions. A missing, extra, edited or newly confirmed line returns a fresh warning. A stale target version still conflicts.
-
-The choice is saved on the confirmed evidence version and as an `evidence-confirm-separate` member event, with the compared IDs and versions. It requires the same verified browser review and UI-only action as an ordinary confirmation. Editing the line returns it to proposed and does not carry the old choice into its new version.
-
-Changes lock the member row before reading the comparison set. Two overlapping confirmations based on the same old set cannot both succeed. Two separate shifts on a day, or a regular payout and a bonus on payday, can be confirmed after the member compares the current warning.
-
-The PostgreSQL checks cover account isolation, forged caller labels, a missing browser cookie, stale edits, confirmed-line edits, rejection and restoration, simultaneous saves, duplicate periods, version history and event counts. Full browser-to-action transport tests and packet snapshot locks remain to be added with those flows. These tests do not establish a complete member journey.
+A 40-million-pixel HEIC image needs about 160 MB for its RGBA pixels alone, before decoder and preview memory. This update does not change decoding concurrency. Follow-up: use a simple in-process queue to allow at most two server document decodes at once. Add a test that holds the first two decodes, proves a third waits, then releases a slot and proves it proceeds. Also release slots on errors. This is a decoding queue, separate from the durable file-deletion retry records above.

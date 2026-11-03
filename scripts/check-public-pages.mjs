@@ -86,6 +86,12 @@ export async function checkPublicPages(baseUrl) {
     `Public sign-up must stay closed, got ${signup.status}`,
   );
   for (const path of [
+    "/add",
+    "/review",
+    "/add.data",
+    "/review.data",
+    "/_agent-native/actions/list_evidence",
+    "/_agent-native/actions/list_documents",
     "/months",
     "/months/2026-11",
     "/navigator",

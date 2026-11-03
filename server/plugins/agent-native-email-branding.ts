@@ -2,7 +2,7 @@ import { defineAppConfig } from "@agent-native/core/server";
 
 export default defineAppConfig({
   auth: { requireEmailVerification: true },
-  privateBlob: { publicUploadFallback: false },
+  privateBlob: { provider: "hosted-private", publicUploadFallback: false },
   app: {
     id: "eighty",
     slug: "eighty",

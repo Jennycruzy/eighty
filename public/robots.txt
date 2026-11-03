@@ -8,6 +8,8 @@ Allow: /check$
 Allow: /check?lang=es$
 Allow: /check/account$
 Allow: /check/account?lang=es$
+Allow: /check/sign-in$
+Allow: /check/sign-in?lang=es$
 Allow: /states$
 Allow: /states?lang=es$
 Allow: /how-it-works$

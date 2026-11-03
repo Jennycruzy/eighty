@@ -59,6 +59,23 @@ export default runMigrations(
  ALTER TABLE eighty_member_events ADD COLUMN IF NOT EXISTS details jsonb;
  `,
     },
+    {
+      version: 3,
+      name: "eighty-document-rotation",
+      sql: `ALTER TABLE eighty_documents ADD COLUMN IF NOT EXISTS rotation integer NOT NULL DEFAULT 0 CHECK (rotation IN (0,90,180,270));`,
+    },
+    {
+      version: 4,
+      name: "eighty-file-deletion-retries",
+      sql: `CREATE TABLE IF NOT EXISTS eighty_document_deletions (
+        id uuid PRIMARY KEY, owner_email text NOT NULL, member_id uuid NOT NULL, handle jsonb NOT NULL,
+        attempts integer NOT NULL DEFAULT 0 CHECK (attempts >= 0), next_attempt_at timestamptz NOT NULL DEFAULT now(),
+        created_at timestamptz NOT NULL DEFAULT now(),
+        CHECK ((handle->'encrypted' = 'true'::jsonb) IS TRUE AND (handle->'opaque' = 'true'::jsonb) IS TRUE)
+      );
+      CREATE INDEX IF NOT EXISTS eighty_document_deletions_due ON eighty_document_deletions(next_attempt_at);
+      CREATE INDEX IF NOT EXISTS eighty_document_deletions_owner ON eighty_document_deletions(member_id,owner_email);`,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

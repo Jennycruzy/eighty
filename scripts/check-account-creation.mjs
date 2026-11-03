@@ -10,6 +10,7 @@ import {
 } from "@agent-native/core/secrets/crypto";
 import { chromium } from "@playwright/test";
 
+import { checkEvidenceBrowser } from "./check-evidence-browser.mjs";
 import "../server/plugins/agent-native-email-branding.ts";
 const execute = promisify(execFile);
 const [runId, container, baseURL] = process.argv.slice(2);
@@ -250,11 +251,12 @@ try {
       false,
       "No horizontal overflow on a phone.",
     );
-    sessions.push({ page, context, email, draft });
+    sessions.push({ page, context, email, draft, password });
     console.log(
       `PASS ${lang}: keyboard-only screener → account → captured verification → saved answers, with a real hashed password and verified identity.`,
     );
   }
+  await checkEvidenceBrowser(sessions, baseURL, choose);
   // A different signed-in person cannot claim the other account's draft.
   const own = sessions[0],
     other = sessions[1];
@@ -297,6 +299,18 @@ try {
   console.log(
     "PASS Wrong-account, expired and changed links are refused; existing profile answers are kept.",
   );
+} catch (error) {
+  for (const [index, session] of sessions.entries()) {
+    console.error(`Evidence browser ${index}: ${session.page.url()}`);
+    console.error(
+      (await session.page.locator("main").innerText()).slice(0, 6000),
+    );
+    await session.page.screenshot({
+      path: `.private/evidence-failure-${index}.png`,
+      fullPage: true,
+    });
+  }
+  throw error;
 } finally {
   await browser.close();
   await closeDbExec();

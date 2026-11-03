@@ -51,12 +51,35 @@ export const documents = pgTable(
     mime: text("mime").notNull(),
     bytes: integer("bytes").notNull(),
     pages: integer("pages"),
+    rotation: integer("rotation").notNull().default(0),
     hash: text("hash").notNull(),
     createdAt: createdAt(),
   },
   (table) => [
     uniqueIndex("eighty_documents_member_hash").on(table.memberId, table.hash),
     index("eighty_documents_owner").on(table.ownerEmail),
+  ],
+);
+// This row survives until storage confirms deletion, including after a failed request.
+export const documentDeletions = pgTable(
+  "eighty_document_deletions",
+  {
+    id: uuid("id").primaryKey(),
+    ownerEmail: text("owner_email").notNull(),
+    memberId: uuid("member_id").notNull(),
+    handle: jsonb("handle").$type<PrivateBlobHandle>().notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    nextAttemptAt: timestamp("next_attempt_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    index("eighty_document_deletions_due").on(table.nextAttemptAt),
+    index("eighty_document_deletions_owner").on(
+      table.memberId,
+      table.ownerEmail,
+    ),
   ],
 );
 export const evidence = pgTable(

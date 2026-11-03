@@ -88,3 +88,15 @@ Local change: `patches/@agent-native__core@0.222.2.patch` makes the shared priva
 After the patch, the regression passes. The live R2 check confirms different stored bytes, exact private reads, rejected anonymous access, no direct read link, rejected tampered handles and verified deletion. Forms' public uploader is unchanged and must still not receive sensitive documents.
 
 Duplicate searches on 2 November for `repo:BuilderIO/agent-native "private" "encryption" "bucket"` and `repo:BuilderIO/agent-native "s3-private" "encrypt"` returned no matches. No issue or pull request has been filed for this application-specific change. No upstream fix or merge is claimed.
+
+## 3 November: private-storage HTTP dependency missing from the Node image
+
+Steps: build the production container, verify a disposable account, then save a synthetic photo through `upload_document`. The account and file checks passed; the storage request failed with “SSRF protection is unavailable because the server dispatcher could not be loaded.” The Node image did not contain `undici`, which the framework loads through a variable import.
+
+Expected: the production image contains the HTTP dependency needed by the storage safety check. Actual: the dependency was installed during development but was absent from the final image.
+
+Local workaround: pin `undici` directly and include it through Nitro's `traceDeps` setting in `nitro.config.ts`. The production check now also resolves its `Agent` inside the final container, with networking disabled. The storage safety check stays enabled. See [Nitro dependency tracing](https://nitro.build/config/build).
+
+Duplicate search is not complete: the GitHub command is unavailable in this execution environment. No issue or pull request has been filed. This is a local packaging workaround; no upstream fix is claimed.
+
+The HEIC browser check also reproduced a Node packaging error: bundling the CommonJS decoder as an ES module left `__dirname` undefined. Keeping `libheif-js` external through `traceDeps` preserves its supported CommonJS entry. The container dependency check covers that entry too. This does not change the decoder or weaken upload checks. No upstream fix is claimed.

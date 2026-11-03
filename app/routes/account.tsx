@@ -68,6 +68,11 @@ export default function Account() {
   const hasAnswers = Object.keys(answers).length > 0;
   return (
     <>
+      <p>
+        <Link to={languageLink("/check/sign-in", lang)}>
+          {es ? "Ya tengo una cuenta: entrar" : "I have an account: sign in"}
+        </Link>
+      </p>
       <h1>{es ? "Seguir mis meses" : "Track my months"}</h1>
       {!open ? (
         <section className="card">

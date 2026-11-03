@@ -2,7 +2,13 @@ import {
   getBrowserCookieSession,
   runAuthGuard,
 } from "@agent-native/core/server";
-import { createError, defineEventHandler, getMethod, getRequestURL } from "h3";
+import {
+  createError,
+  defineEventHandler,
+  getMethod,
+  getRequestURL,
+  assertBodySize,
+} from "h3";
 
 import {
   isAllowedRequest,
@@ -15,6 +21,13 @@ import { registrationStatus } from "../lib/registration.ts";
 
 export default defineEventHandler(async (event) => {
   const path = getRequestURL(event).pathname;
+  if (
+    [
+      "/_agent-native/actions/inspect_document",
+      "/_agent-native/actions/upload_document",
+    ].includes(path)
+  )
+    assertBodySize(event, 22 * 1024 * 1024);
   // Deny unknown services as well as screens. A hidden navigation link is not a permission check.
   if (!isAllowedRequest(path, getMethod(event))) {
     throw createError({ statusCode: 404, statusMessage: "Not found" });
@@ -53,7 +66,12 @@ export default defineEventHandler(async (event) => {
     }
     if (path !== "/_agent-native/actions/finish_member_account") return;
   }
-  if (isMemberPage(path) && !(await getBrowserCookieSession(event))) {
+  if (isMemberPage(path) || path.startsWith("/_agent-native/actions/"))
+    event.res.headers.set("Cache-Control", "private, no-store");
+  if (
+    isMemberPage(path) &&
+    (await getBrowserCookieSession(event))?.emailVerified !== true
+  ) {
     throw createError({ statusCode: 401, statusMessage: "Sign in required" });
   }
   return runAuthGuard(event);

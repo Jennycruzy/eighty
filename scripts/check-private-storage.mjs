@@ -53,7 +53,7 @@ let handle,
 try {
   ensureS3PrivateBlobProviders();
   const ready = await getPrivateBlobStorageReadinessForRequest();
-  assert.equal(ready.providerId, "s3-private");
+  assert.equal(ready.providerId, "hosted-private");
   receipt.provider = ready.providerId;
   const original = Buffer.from(
     `Eighty synthetic storage check ${randomUUID()}`,
@@ -64,7 +64,9 @@ try {
     filename: "storage-check.txt",
     mimeType: "text/plain",
   });
-  assert(handle && handle.provider === "s3-private" && handle.opaque === true);
+  assert(
+    handle && handle.provider === "hosted-private" && handle.opaque === true,
+  );
   assert(handle.id.startsWith("s3:v1:"));
   descriptor = JSON.parse(decryptSecretValue(handle.id.slice("s3:v1:".length)));
   assert.equal(descriptor.bucket, config.bucket);

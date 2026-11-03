@@ -64,11 +64,11 @@ async function log(value) {
   await appendFile(logPath, `${text}\n`);
 }
 
-async function command(file, args, env = process.env) {
+async function command(file, args, env = process.env, timeout = 120_000) {
   try {
     const result = await execute(file, args, {
       env,
-      timeout: 120_000,
+      timeout,
       maxBuffer: 2_000_000,
     });
     await log(result.stdout);
@@ -108,10 +108,28 @@ try {
   assert.equal(metadata.Config.User, "node");
   assert(
     !metadata.Config.Env.some((value) =>
-      /^(DATABASE_URL|BETTER_AUTH_SECRET|SECRETS_ENCRYPTION_KEY|S3_ACCESS_KEY_ID|S3_SECRET_ACCESS_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY)=/.test(
+      /^(DATABASE_URL|BETTER_AUTH_SECRET|SECRETS_ENCRYPTION_KEY|S3_ACCESS_KEY_ID|S3_SECRET_ACCESS_KEY|R2_ACCESS_KEY_ID|R2_SECRET_ACCESS_KEY|AGENT_NATIVE_HOSTED_STORAGE_ACCESS_KEY_ID|AGENT_NATIVE_HOSTED_STORAGE_SECRET_ACCESS_KEY)=/.test(
         value,
       ),
     ),
+  );
+
+  step = "check the storage HTTP dependency";
+  await command("docker", [
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--cap-drop",
+    "ALL",
+    image,
+    "node",
+    "--input-type=module",
+    "-e",
+    "import {createRequire} from 'node:module'; const require=createRequire('/app/.output/server/index.mjs'); if(typeof require('undici').Agent !== 'function' || typeof require('libheif-js').HeifDecoder !== 'function') process.exit(1);",
+  ]);
+  console.log(
+    "PASS The image includes the HTTP safety checker and HEIC decoder.",
   );
 
   step = "start a separate test database";
@@ -400,8 +418,34 @@ try {
       "BETTER_AUTH_SECRET",
       "--env",
       "SECRETS_ENCRYPTION_KEY",
+      "--mount",
+      `type=bind,src=${fileURLToPath(new URL("../tests/helpers/capture-document-storage.mjs", import.meta.url))},dst=/tmp/capture-document-storage.mjs,readonly`,
       "--env",
-      "NODE_OPTIONS=--import=/tmp/capture-account-email.mjs",
+      "S3_ENDPOINT=https://eighty-storage.example.test",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_ENABLED=true",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_ENDPOINT=https://eighty-storage.example.test",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_BUCKET=eighty-disposable-documents",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_ACCESS_KEY_ID=eighty-disposable-storage",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_SECRET_ACCESS_KEY=eighty-disposable-storage-secret",
+      "--env",
+      "AGENT_NATIVE_HOSTED_STORAGE_REGION=auto",
+      "--env",
+      "S3_BUCKET=eighty-disposable-documents",
+      "--env",
+      "S3_REGION=auto",
+      "--env",
+      "S3_ACCESS_KEY_ID=eighty-disposable-storage",
+      "--env",
+      "S3_SECRET_ACCESS_KEY=eighty-disposable-storage-secret",
+      "--env",
+      "AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK=0",
+      "--env",
+      "NODE_OPTIONS=--import=/tmp/capture-account-email.mjs --import=/tmp/capture-document-storage.mjs",
       "--env",
       "AUTH_DISABLED=false",
       "--env",
@@ -439,6 +483,7 @@ try {
       SECRETS_ENCRYPTION_KEY: accountEncryptionKey,
       NODE_ENV: "production",
     },
+    240_000,
   );
   for (const line of accountOutput.split("\n"))
     if (line.startsWith("PASS ")) console.log(line);

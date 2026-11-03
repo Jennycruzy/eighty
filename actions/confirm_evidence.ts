@@ -1,4 +1,4 @@
-import { defineAction } from "@agent-native/core/action";
+import { defineAction, fail } from "@agent-native/core/action";
 
 import {
   confirmInput,
@@ -14,5 +14,22 @@ export default defineAction({
   agentTool: false,
   mcpTool: false,
   http: { method: "POST" },
-  run: (input, context) => changeEvidenceRecord("confirm", input, context),
+  run: async (input, context) => {
+    try {
+      return await changeEvidenceRecord("confirm", input, context);
+    } catch (error) {
+      const failure = error as {
+        statusCode?: number;
+        data?: Record<string, unknown>;
+        message?: string;
+      };
+      if (failure.data)
+        fail(failure.message || "Review this line", {
+          errorCode: "evidence-review",
+          statusCode: failure.statusCode || 409,
+          details: failure.data,
+        });
+      throw error;
+    }
+  },
 });
