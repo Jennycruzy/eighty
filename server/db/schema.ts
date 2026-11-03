@@ -12,6 +12,7 @@ import {
   primaryKey,
 } from "drizzle-orm/pg-core";
 
+import type { DuplicateChoice } from "../../shared/evidence-review.ts";
 import type { EvidenceFields } from "../../shared/evidence.ts";
 import type { MemberProfile } from "../../shared/member-profile.ts";
 
@@ -103,6 +104,7 @@ export const evidenceVersions = pgTable(
     createdBy: text("created_by", {
       enum: ["agent", "member", "navigator"],
     }).notNull(),
+    duplicateChoice: jsonb("duplicate_choice").$type<DuplicateChoice>(),
     createdAt: createdAt(),
   },
   (table) => [
@@ -121,6 +123,7 @@ export const memberEvents = pgTable(
     actorId: text("actor_id").notNull(),
     kind: text("kind").notNull(),
     targetId: uuid("target_id"),
+    details: jsonb("details").$type<DuplicateChoice>(),
     createdAt: createdAt(),
   },
   (table) => [index("eighty_events_owner").on(table.ownerEmail)],

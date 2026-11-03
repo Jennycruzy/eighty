@@ -51,6 +51,14 @@ export default runMigrations(
  CREATE INDEX IF NOT EXISTS eighty_ai_ledger_day ON eighty_ai_ledger(created_at);
  `,
     },
+    {
+      version: 2,
+      name: "eighty-separate-evidence-choice",
+      sql: `
+ ALTER TABLE eighty_evidence_versions ADD COLUMN IF NOT EXISTS duplicate_choice jsonb;
+ ALTER TABLE eighty_member_events ADD COLUMN IF NOT EXISTS details jsonb;
+ `,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

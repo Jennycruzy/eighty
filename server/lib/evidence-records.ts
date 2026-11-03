@@ -9,7 +9,15 @@ import {
   mightDuplicate,
   missingDuplicateKeys,
 } from "../../shared/evidence-duplicates.ts";
+import {
+  evidenceReference,
+  confirmInput,
+} from "../../shared/evidence-review.ts";
 import { evidenceFields } from "../../shared/evidence.ts";
+export {
+  evidenceReference,
+  confirmInput,
+} from "../../shared/evidence-review.ts";
 import { getDb } from "../db/index.ts";
 import {
   documents,
@@ -21,10 +29,6 @@ import {
 import { memberActor, reviewedMemberActor } from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
 
-export const evidenceReference = z.strictObject({
-  id: z.uuid(),
-  version: z.number().int().positive(),
-});
 export const draftInput = z.strictObject({
   fields: evidenceFields,
   documentId: z.uuid().optional(),
@@ -119,13 +123,19 @@ export async function createEvidenceDraft(
 
 export async function changeEvidenceRecord(
   operation: "edit" | "confirm" | "reject",
-  input: z.infer<typeof editInput> | z.infer<typeof evidenceReference>,
+  input: z.infer<typeof editInput> | z.infer<typeof confirmInput>,
   context: ActionRunContext | undefined,
 ) {
   const reference =
     operation === "edit"
       ? editInput.parse(input)
-      : evidenceReference.parse(input);
+      : operation === "confirm"
+        ? confirmInput.parse(input)
+        : evidenceReference.parse(input);
+  const separate =
+    operation === "confirm"
+      ? confirmInput.parse(input).duplicateChoice
+      : undefined;
   const actor = await reviewedMemberActor(context);
   const member = await getMemberRecord(actor);
   return getDb().transaction(async (tx) => {
@@ -167,7 +177,11 @@ export async function changeEvidenceRecord(
           data: { missing },
         });
       const confirmed = await tx
-        .select({ id: evidence.id, fields: evidence.fields })
+        .select({
+          id: evidence.id,
+          version: evidence.version,
+          fields: evidence.fields,
+        })
         .from(evidence)
         .where(
           and(
@@ -177,15 +191,31 @@ export async function changeEvidenceRecord(
             ne(evidence.id, current.id),
           ),
         );
-      const duplicates = confirmed
+      const compared = confirmed
         .filter((other) => mightDuplicate(fields, other.fields))
-        .map((other) => other.id);
-      if (duplicates.length)
+        .map(({ id, version }) => ({ id, version }));
+      const duplicates = compared.map((line) => line.id);
+      const unchangedComparison =
+        separate &&
+        compared.length === separate.compared.length &&
+        compared.every((line) =>
+          separate.compared.some(
+            (previous) =>
+              previous.id === line.id && previous.version === line.version,
+          ),
+        );
+      if (separate && !unchangedComparison)
+        throw createError({
+          statusCode: 409,
+          statusMessage: "The other lines changed. Review the warning again.",
+          data: { duplicates, compared },
+        });
+      if (duplicates.length && !separate)
         throw createError({
           statusCode: 409,
           statusMessage:
             "These dates may already count. Review the other line first.",
-          data: { duplicates },
+          data: { duplicates, compared },
         });
     }
     // Editing a confirmed line removes its confirmation before its new values can count.
@@ -217,13 +247,15 @@ export async function changeEvidenceRecord(
       fields: row.fields,
       status: row.status,
       createdBy: "member",
+      duplicateChoice: separate ?? null,
     });
     await tx.insert(memberEvents).values({
       id: randomUUID(),
       ownerEmail: actor.email,
       memberId: member.id,
       actorId: actor.userId,
-      kind: `evidence-${operation}`,
+      kind: separate ? "evidence-confirm-separate" : `evidence-${operation}`,
+      details: separate ?? null,
       targetId: row.id,
     });
     return row;

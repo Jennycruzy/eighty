@@ -13,6 +13,7 @@ import {
   changeEvidenceRecord,
   listEvidenceRecords,
 } from "../server/lib/evidence-records.ts";
+import { checkSeparateEvidence } from "./check-separate-evidence.mjs";
 
 // Called only after the parent has checked the unique disposable-database marker.
 export async function checkEvidenceRecords(owner, other, inAccount) {
@@ -276,6 +277,13 @@ export async function checkEvidenceRecords(owner, other, inAccount) {
       createEvidenceDraft({ fields: shift, documentId }, otherContext),
       { statusCode: 404 },
     ),
+  );
+  await checkSeparateEvidence(
+    owner,
+    other,
+    inAccount,
+    ownerContext,
+    otherContext,
   );
   const versions = await getDbExec().execute({
     sql: "SELECT version,status,fields FROM eighty_evidence_versions WHERE evidence_id=? ORDER BY version",

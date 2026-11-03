@@ -1,12 +1,13 @@
 import { defineAction } from "@agent-native/core/action";
 
 import {
-  evidenceReference,
+  confirmInput,
   changeEvidenceRecord,
 } from "../server/lib/evidence-records.ts";
 export default defineAction({
-  description: "Confirm one evidence line after reviewing it.",
-  schema: evidenceReference,
+  description:
+    "Confirm a reviewed line. Choose “These are separate” only after comparing the listed lines.",
+  schema: confirmInput,
   requiresAuth: true,
   audit: { recordInputs: false },
   uiOnly: true,
