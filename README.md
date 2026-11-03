@@ -36,3 +36,10 @@ The federal rules engine has [365 cited answer cases](docs/tests/results/answer-
 The [public-page checks](docs/tests/results/public-pages.md) cover signed-out English and Spanish pages, closed starter routes and phone-browser flows. The [real private storage check](docs/tests/results/private-storage.md) passes. Document reading and real email delivery remain unconfigured; sign-up and uploads remain closed.
 
 Private member-record helpers and the evidence proposal schema are [documented here](docs/evidence.md). Their database and authorization checks are tested separately; they are not yet exposed as member workflows.
+
+## Limits before sign-up opens
+
+- The database runs on this server with no independent backup. A local dump does not protect against losing the server.
+- The file encryption key is only on this server. It needs a separate secure recovery copy.
+
+Both must be fixed before sign-up opens.

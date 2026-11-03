@@ -90,6 +90,9 @@ Once the purchased domain resolves to this server, set `BETTER_AUTH_URL` in the 
 
 ## Before serving members
 
+The database runs on this server with no independent backup. The file encryption key is only on this server. A local database dump does not protect against server loss. Set up an independent backup, test restoration, and keep a secure recovery copy of the key before opening sign-up.
+
+
 Independent rules review, member workflows, private storage access checks, working email, deletion, navigator consent, backups, restore, monitoring and accessibility checks remain to be completed. A successful container check alone does not make this a member service.
 
 ## Public route boundary
@@ -107,3 +110,9 @@ Keep the R2 bucket private and use a bucket-scoped Object Read & Write key. Save
 `pnpm check:storage` loads that private file in a child process and runs a synthetic upload/read/delete check. For the local Compose database it connects through the localhost port. It never prints credentials, document contents or opaque handles. This is an operator check, separate from the account-free unit checks.
 
 The [storage results](tests/results/private-storage.md) describe the verification and its limits. The pinned core patch must be included before `pnpm install` in the container build; the Dockerfile copies `patches/` for that reason. A normal install uses the patch recorded in the lockfile.
+
+## Public search files and HTTPS
+
+`public/robots.txt` permits only public page addresses and the assets needed to read them. `public/sitemap.xml` lists all public pages and state pages in English and Spanish. Run `node scripts/update-public-index.mjs` after changing the public routes or the HTTPS origin. The automatic checks compare the files with the route and state lists, and check that the running container serves both files without an account.
+
+Caddy sets `Strict-Transport-Security: max-age=31536000` on the HTTPS site. Preloading remains off while the final domain is pending. The header applies to errors and closed routes as well as public pages.

@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 import { PUBLIC_PAGES } from "../shared/access.ts";
+import { checkPublicIndex } from "./check-public-index.mjs";
 const states = JSON.parse(
   await readFile(new URL("../data/states.json", import.meta.url), "utf8"),
 );
 export async function checkPublicPages(baseUrl) {
+  await checkPublicIndex(baseUrl);
   let count = 0;
   for (const path of [
     ...PUBLIC_PAGES,
@@ -41,6 +43,9 @@ export async function checkPublicPages(baseUrl) {
     }
   }
   for (const path of [
+    "/.dockerignore",
+    "/.git/config",
+    "/.env.production",
     "/home",
     "/chat",
     "/chat/test",

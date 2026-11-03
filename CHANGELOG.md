@@ -2,6 +2,11 @@
 
 ## 3 November 2026
 
+- Let members confirm separate shifts or payouts after comparing a duplicate warning. Keep the exact compared IDs and versions in the saved choice and event.
+- Exclude hidden container inputs through one general rule.
+- Publish search files for all 130 public language addresses.
+- Set the one-year HTTPS security header.
+
 - Add private evidence drafts, member-only review actions, duplicate checks and saved versions. Verify account isolation, conflicting saves and transaction rollback against PostgreSQL. The public account boundary remains closed.
 
 ## 2 November 2026
