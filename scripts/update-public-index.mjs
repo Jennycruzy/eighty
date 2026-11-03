@@ -1,8 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 
 import { PUBLIC_PAGES } from "../shared/access.ts";
-// Set the final HTTPS origin here when its DNS is ready, then regenerate the files.
-const origin = "https://38.49.219.205.sslip.io";
+import { SITE_ORIGIN as origin } from "../shared/site.ts";
 const states = JSON.parse(
   await readFile(new URL("../data/states.json", import.meta.url), "utf8"),
 );

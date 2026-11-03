@@ -43,14 +43,11 @@ test("Public search files list every public address and no member page", async (
   }
   for (const u of urls) {
     assert.equal(u.protocol, "https:");
-    assert.equal(u.origin, "https://38.49.219.205.sslip.io");
+    assert.equal(u.origin, "https://tryeighty.space");
   }
   assert(!sitemap.includes("/months"));
   assert(!sitemap.includes("/navigator"));
-  assert.match(
-    robots,
-    /Sitemap: https:\/\/38\.49\.219\.205\.sslip\.io\/sitemap.xml/,
-  );
+  assert.match(robots, /Sitemap: https:\/\/tryeighty\.space\/sitemap.xml/);
 });
 test("HTTPS policy lasts one year without preload", async () => {
   const config = await readFile(

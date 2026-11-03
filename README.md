@@ -2,7 +2,7 @@
 
 Eighty is intended to help Medicaid members collect evidence of work, school and service, check it against cited rules, and prepare proof for their state.
 
-The public tools run at [https://38.49.219.205.sslip.io](https://38.49.219.205.sslip.io). The manual month check, screener and public help pages need no account. Sign-up, uploads and member workflows remain closed. Do not send personal documents. The purchased domain will replace this temporary address.
+The public tools run at [https://tryeighty.space](https://tryeighty.space). The manual month check, screener and public help pages need no account. Sign-up, uploads and member workflows remain closed. Do not send personal documents. The site uses its registered domain.
 
 ## Setup
 

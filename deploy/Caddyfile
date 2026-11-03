@@ -1,4 +1,4 @@
-{$EIGHTY_HOST} {
+tryeighty.space {
 	encode zstd gzip
 
 	header {
@@ -17,5 +17,14 @@
 }
 
 http://{$EIGHTY_IP:127.0.0.1} {
-	redir https://{$EIGHTY_HOST}{uri} permanent
+	redir https://tryeighty.space{uri} permanent
+}
+
+www.tryeighty.space, 38.49.219.205.sslip.io {
+	header Strict-Transport-Security "max-age=31536000"
+	redir https://tryeighty.space{uri} permanent
+}
+
+http://www.tryeighty.space, http://38.49.219.205.sslip.io {
+	redir https://tryeighty.space{uri} permanent
 }

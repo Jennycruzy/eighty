@@ -138,4 +138,4 @@ Allow: /icon-180.svg$
 Allow: /robots.txt$
 Allow: /sitemap.xml$
 
-Sitemap: https://38.49.219.205.sslip.io/sitemap.xml
+Sitemap: https://tryeighty.space/sitemap.xml

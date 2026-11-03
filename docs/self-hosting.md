@@ -66,25 +66,25 @@ curl --fail 'http://127.0.0.1:3000/_agent-native/health?strict=1'
 
 `pnpm migrate:production` reads `.env`, not `.env.production`. Supply the values from `.env.production` in the migration process's environment using the server's secret manager; do not assume Compose exported them to the host shell.
 
-The container is bound to localhost. Its health check requires both server readiness and a reachable database. Caddy's configuration is in `deploy/Caddyfile`. Set `EIGHTY_HOST` in the Caddy service environment to the chosen host before installing that configuration. Validate it before restarting Caddy.
+The container is bound to localhost. Its health check requires both server readiness and a reachable database. Caddy's configuration is in `deploy/Caddyfile`. The Caddyfile names the canonical domain and its redirects explicitly. Validate it before loading it. `EIGHTY_IP` selects the HTTP IP redirect.
 
 Compose reads `.env.production` by default. `EIGHTY_ENV_FILE` can select a different service environment file, such as a separate preview configuration. Use an absolute path when overriding it. The production check uses its own empty temporary file and supplies its test database and signing key through the process environment; it never creates or edits `.env.production`.
 
 ## Current server preview
 
-The preview is served over HTTPS at `38.49.219.205.sslip.io`. The HTTP IP address redirects there. Caddy forwards to the production container on localhost and manages the certificate. The app runs as a regular user with login enabled and public upload fallback disabled.
+The preview is served over HTTPS at `tryeighty.space`. The HTTP IP address redirects there. Caddy forwards to the production container on localhost and manages the certificate. The app runs as a regular user with login enabled and public upload fallback disabled.
 
 For this preview, `deploy/compose.ip.yaml` adds PostgreSQL with the persistent `eighty_postgres_data` volume. The database port is bound to localhost. This is a local database on the VPS, not the planned managed database. Do not remove its volume when updating the application.
 
 ```sh
 docker compose --env-file .env.production -f deploy/compose.yaml -f deploy/compose.ip.yaml up -d
 docker compose --env-file .env.production -f deploy/compose.yaml -f deploy/compose.ip.yaml ps
-curl --fail 'https://38.49.219.205.sslip.io/_agent-native/health?strict=1'
+curl --fail --head 'https://tryeighty.space/'
 ```
 
 The server has a 4 GiB swap file at `/swapfile`, with permissions `600`. Its entry in `/etc/fstab` enables it after reboot. Check it with `swapon --show` and `findmnt --verify --tab-file /etc/fstab`. No reboot was needed to enable it.
 
-Once the purchased domain resolves to this server, set `BETTER_AUTH_URL` in the private production settings to its HTTPS origin. Change `EIGHTY_HOST` in `/etc/systemd/system/caddy.service.d/eighty.conf` to that domain without an HTTP prefix; keep `EIGHTY_IP` set to the server IP for the redirect. Validate the Caddyfile, recreate the app with the updated environment, reload the service settings, and restart Caddy. Caddy can then obtain and renew the HTTPS certificate. Verify HTTPS and sign-in before directing members to it.
+The canonical site is `https://tryeighty.space`. Its `www` name and the temporary preview name permanently redirect there, preserving the path and query. Caddy manages certificates for those names. `BETTER_AUTH_URL` must use the canonical origin. Keep registration disabled until the real email setup and member readiness are approved. The Caddyfile names the live domain explicitly; changing the domain requires updating it, `shared/site.ts`, the auth URL and the generated search files.
 
 `@agent-native/otel` is pinned to `0.1.29`. Its published package records core `0.222.2` as its development dependency and declares a core peer range that includes that version. The lockfile records the exact installed pair.
 

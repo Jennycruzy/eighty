@@ -11,7 +11,7 @@ Checked on 2 November 2026 with Node.js 22.23.4 and the production container.
 - A scheduled fixed job ran once and recorded success without a model or chat thread.
 - Test data survived application and database restarts.
 
-The 130 signed-out page checks also passed through the live HTTPS proxy at `https://38.49.219.205.sslip.io/`. Starter logos, the starter manifest, chat, terminal and database paths returned 404 through that proxy.
+Repeated on 3 November 2026 at `https://tryeighty.space/`: 132 signed-out page loads and 134 HEAD comparisons passed. Both domain certificates were trusted, and the `www` and former preview names permanently redirected with paths and queries preserved. Starter logos, the starter manifest, chat, terminal and database paths returned 404 through that proxy.
 
 Reproduce the container checks:
 
