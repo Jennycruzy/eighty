@@ -13,7 +13,9 @@ import {
   evidenceReference,
   confirmInput,
 } from "../../shared/evidence-review.ts";
-import { evidenceFields } from "../../shared/evidence.ts";
+import { evidenceFields, type EvidenceFields } from "../../shared/evidence.ts";
+import type { ReaderResult } from "../../shared/evidence.ts";
+import type { ReaderQuestion } from "../../shared/reader.ts";
 export {
   evidenceReference,
   confirmInput,
@@ -26,7 +28,11 @@ import {
   memberEvents,
   members,
 } from "../db/schema.ts";
-import { memberActor, reviewedMemberActor } from "./member-identity.ts";
+import {
+  memberActor,
+  reviewedMemberActor,
+  type MemberActor,
+} from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
 
 export const draftInput = z.strictObject({
@@ -53,6 +59,92 @@ export async function listEvidenceRecords(
     .orderBy(evidence.createdAt, evidence.id);
 }
 
+type Tx = Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0];
+type Member = Awaited<ReturnType<typeof getMemberRecord>>;
+interface ProposedLine {
+  fields: EvidenceFields;
+  documentId: string | null;
+  createdBy: "member" | "agent";
+  confidence?: number | null;
+  questions?: ReaderQuestion[];
+}
+
+// Typed entry and the reader both save through here: always "proposed",
+// version 1, with its history row and member event in the same transaction.
+async function insertProposedLine(
+  tx: Tx,
+  actor: MemberActor,
+  member: Member,
+  line: ProposedLine,
+) {
+  const [row] = await tx
+    .insert(evidence)
+    .values({
+      id: randomUUID(),
+      ownerEmail: actor.email,
+      memberId: member.id,
+      documentId: line.documentId,
+      fields: line.fields,
+      status: "proposed",
+      createdBy: line.createdBy,
+      confidence: line.confidence ?? null,
+      questions: line.questions ?? [],
+      version: 1,
+    })
+    .returning();
+  if (!row)
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Evidence could not be saved",
+    });
+  await tx.insert(evidenceVersions).values({
+    evidenceId: row.id,
+    version: row.version,
+    ownerEmail: actor.email,
+    fields: row.fields,
+    status: row.status,
+    createdBy: line.createdBy,
+  });
+  await tx.insert(memberEvents).values({
+    id: randomUUID(),
+    ownerEmail: actor.email,
+    memberId: member.id,
+    actorId: actor.userId,
+    kind: "evidence-proposed",
+    targetId: row.id,
+  });
+  return row;
+}
+
+async function lockMemberAndDocument(
+  tx: Tx,
+  actor: MemberActor,
+  member: Member,
+  documentId: string | undefined | null,
+) {
+  await tx
+    .select({ id: members.id })
+    .from(members)
+    .where(eq(members.id, member.id))
+    .for("update");
+  if (!documentId) return;
+  const [document] = await tx
+    .select({ id: documents.id })
+    .from(documents)
+    .where(
+      and(
+        eq(documents.id, documentId),
+        eq(documents.memberId, member.id),
+        eq(documents.ownerEmail, actor.email),
+      ),
+    );
+  if (!document)
+    throw createError({
+      statusCode: 404,
+      statusMessage: "Document not found",
+    });
+}
+
 export async function createEvidenceDraft(
   input: z.infer<typeof draftInput>,
   context: ActionRunContext | undefined,
@@ -61,63 +153,80 @@ export async function createEvidenceDraft(
   const actor = await reviewedMemberActor(context);
   const member = await getMemberRecord(actor);
   return getDb().transaction(async (tx) => {
-    await tx
-      .select({ id: members.id })
-      .from(members)
-      .where(eq(members.id, member.id))
-      .for("update");
-    if (parsed.documentId) {
-      const [document] = await tx
-        .select({ id: documents.id })
-        .from(documents)
-        .where(
-          and(
-            eq(documents.id, parsed.documentId),
-            eq(documents.memberId, member.id),
-            eq(documents.ownerEmail, actor.email),
-          ),
-        );
-      if (!document)
-        throw createError({
-          statusCode: 404,
-          statusMessage: "Document not found",
-        });
-    }
-    const [row] = await tx
-      .insert(evidence)
-      .values({
-        id: randomUUID(),
-        ownerEmail: actor.email,
-        memberId: member.id,
-        documentId: parsed.documentId ?? null,
-        fields: parsed.fields,
-        status: "proposed",
-        createdBy: "member",
-        version: 1,
-      })
-      .returning();
-    if (!row)
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Evidence could not be saved",
-      });
-    await tx.insert(evidenceVersions).values({
-      evidenceId: row.id,
-      version: row.version,
-      ownerEmail: actor.email,
-      fields: row.fields,
-      status: row.status,
+    await lockMemberAndDocument(tx, actor, member, parsed.documentId);
+    return insertProposedLine(tx, actor, member, {
+      fields: parsed.fields,
+      documentId: parsed.documentId ?? null,
       createdBy: "member",
     });
-    await tx.insert(memberEvents).values({
-      id: randomUUID(),
-      ownerEmail: actor.email,
-      memberId: member.id,
-      actorId: actor.userId,
-      kind: "evidence-proposed",
-      targetId: row.id,
-    });
-    return row;
+  });
+}
+
+/** Lines the reader already proposed from this document, in any status. */
+export async function readerLinesFor(
+  actor: MemberActor,
+  member: Member,
+  documentId: string,
+  tx: Tx | ReturnType<typeof getDb> = getDb(),
+) {
+  return tx
+    .select()
+    .from(evidence)
+    .where(
+      and(
+        eq(evidence.memberId, member.id),
+        eq(evidence.ownerEmail, actor.email),
+        eq(evidence.documentId, documentId),
+        eq(evidence.createdBy, "agent"),
+      ),
+    )
+    .orderBy(evidence.createdAt, evidence.id);
+}
+
+function sameFields(a: unknown, b: unknown): boolean {
+  const canonical = (value: unknown): unknown =>
+    value && typeof value === "object" && !Array.isArray(value)
+      ? Object.fromEntries(
+          Object.entries(value as Record<string, unknown>)
+            .filter(([, v]) => v !== undefined)
+            .sort(([x], [y]) => (x < y ? -1 : 1))
+            .map(([k, v]) => [k, canonical(v)]),
+        )
+      : value;
+  return JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
+}
+
+/**
+ * Saves a reading as proposed lines. A document is read into lines once: when
+ * it already has reader lines, those are returned and nothing new is saved.
+ * The member lock makes two reads of one document save one set of lines.
+ */
+export async function saveReaderProposals(
+  actor: MemberActor,
+  member: Member,
+  documentId: string,
+  proposals: ReaderResult["proposals"],
+) {
+  return getDb().transaction(async (tx) => {
+    await lockMemberAndDocument(tx, actor, member, documentId);
+    const existing = await readerLinesFor(actor, member, documentId, tx);
+    if (existing.length) return { lines: existing, created: false };
+    const lines = [];
+    const seen: unknown[] = [];
+    for (const proposal of proposals) {
+      if (seen.some((fields) => sameFields(fields, proposal.fields))) continue;
+      seen.push(proposal.fields);
+      lines.push(
+        await insertProposedLine(tx, actor, member, {
+          fields: evidenceFields.parse(proposal.fields),
+          documentId,
+          createdBy: "agent",
+          confidence: Math.round(proposal.confidence * 10_000),
+          questions: proposal.questions,
+        }),
+      );
+    }
+    return { lines, created: lines.length > 0 };
   });
 }
 
@@ -231,6 +340,8 @@ export async function changeEvidenceRecord(
         fields,
         status,
         version: current.version + 1,
+        // The member's own edit answers the reader's questions.
+        ...(operation === "edit" ? { questions: [] } : {}),
         updatedAt: new Date(),
       })
       .where(ownRow)

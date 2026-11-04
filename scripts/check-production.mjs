@@ -143,10 +143,10 @@ try {
     "node",
     "--input-type=module",
     "-e",
-    "import {createRequire} from 'node:module'; const require=createRequire('/app/.output/server/index.mjs'); if(typeof require('undici').Agent !== 'function' || typeof require('libheif-js').HeifDecoder !== 'function') process.exit(1);",
+    "import {createRequire} from 'node:module'; const require=createRequire('/app/.output/server/index.mjs'); if(typeof require('undici').Agent !== 'function' || typeof require('libheif-js').HeifDecoder !== 'function' || typeof require('@napi-rs/canvas').createCanvas !== 'function' || !require('node:fs').existsSync(require('node:path').join(require('node:path').dirname(require.resolve('pdfjs-dist/package.json')), 'standard_fonts', 'LiberationSans-Regular.ttf'))) process.exit(1);",
   ]);
   console.log(
-    "PASS The image includes the HTTP safety checker and HEIC decoder.",
+    "PASS The image includes the HTTP safety checker, HEIC decoder and PDF page renderer.",
   );
 
   step = "start a separate test database";

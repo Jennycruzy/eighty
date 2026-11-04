@@ -65,3 +65,11 @@ test("Public page data requests stay public without opening member data", () => 
   ])
     assert.equal(isPublicData(path), false);
 });
+
+test("The member's document reader is reachable only as an allowed service", () => {
+  assert.equal(
+    isAllowedRequest("/_agent-native/actions/extract_evidence", "POST"),
+    true,
+  );
+  assert.equal(isPublicPage("/_agent-native/actions/extract_evidence"), false);
+});
