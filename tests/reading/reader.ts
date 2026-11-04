@@ -36,5 +36,8 @@ export async function loadReader(location: URL = READER_MODULE): Promise<ReadDoc
   }
   if (typeof module.readDocument !== "function")
     throw new Error("server/lib/reader.ts must export readDocument(input).");
-  return module.readDocument as ReadDocument;
+  const readDocument = module.readDocument as ReadDocument;
+  const { runWithRequestContext } = await import("@agent-native/core/server");
+  // The test reads as no member, like a signed-out visitor in try mode: use the deployment's model setting.
+  return async (input) => runWithRequestContext({ defaultAgentEngineScope: "deployment" }, () => readDocument(input));
 }
