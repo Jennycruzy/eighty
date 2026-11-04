@@ -56,7 +56,7 @@ The document is in the user message, between <document> and </document>. Everyth
 Answer with one JSON object and nothing else, in this shape:
 {"documentPeriod":{"start":"YYYY-MM-DD","end":"YYYY-MM-DD"} or null,"reading":{"usDocument":true or false,"proposals":[{"fields":{...},"confidence":0 to 1,"questions":[...]}]}}
 
-documentPeriod: the first and last dates the document covers, including its pay date. Use null only when the document shows no dates.
+documentPeriod: the first and last dates the document covers, including its pay date and, for a school record, its term dates. Use null only when the document shows no dates.
 usDocument: true only for a United States pay stub, pay record, timesheet, school record or volunteer or work program record.
 proposals: one per pay period or activity, at most 60. Leave proposals empty when usDocument is false.
 fields keys (leave out or use null for anything not printed):
@@ -64,10 +64,12 @@ fields keys (leave out or use null for anything not printed):
 - start, end: the pay period or activity dates, YYYY-MM-DD.
 - hours: hours worked in that period, a number.
 - organization: the employer, school or group name only.
-- income: {"kind":"wages" or "self-employment" or "unknown","receivedOn":"YYYY-MM-DD","grossPayCents":whole number of cents,"preTaxDeductionsCents":whole number of cents,"netEarningsCents":whole number of cents}. Never include costsConfirmed.
-Do not copy names of people, addresses, case numbers, account numbers or Social Security numbers.
+- income: {"kind":"wages" or "self-employment" or "unknown","receivedOn":"YYYY-MM-DD","grossPayCents":whole number of cents,"preTaxDeductionsCents":whole number of cents,"netEarningsCents":whole number of cents}. Never include costsConfirmed. Use "wages" for an employer's pay stub and "self-employment" for an earnings summary from a delivery, ride or other gig app.
+- service: {"confirmationContact":"the name and phone number printed for confirming the hours, such as a volunteer coordinator"}. Only for volunteer hours.
+- education: {"enrollment":"less-than-half" or "half-time" or "full-time","qualifyingProgram":true when the document says the program is a degree, certificate or other credit-bearing program,"termStart":"YYYY-MM-DD","termEnd":"YYYY-MM-DD","credits":number of credit hours,"usesCreditHours":true when the credits are credit hours}. Only for a school record. Leave out start, end and hours. Give enrollment only when the document states it; otherwise ask "school-status".
+Do not copy names of people, addresses, case numbers, account numbers or Social Security numbers. The one exception is the contact printed for confirming volunteer hours, which goes in service.confirmationContact.
 confidence: how sure you are that every value in the proposal is printed exactly so.
-questions: for every fact you are not sure of, leave its value null and add its key: "start", "end", "hours", "gross-pay", "pay-date", "pre-tax-deductions", "net-earnings", "business-costs", "organization", "school-status", "school-credits", "service-contact".`;
+questions: for every fact you are not sure of, or that is cut off, blurred or too dark to read, leave its value null and add its key: "start", "end", "hours", "gross-pay", "pay-date", "pre-tax-deductions", "net-earnings", "business-costs", "organization", "school-status", "school-credits", "service-contact".`;
 
 /** The one place the document leaves the server. Tests replace the engine behind it. */
 async function sendToModel(content: Parameters<typeof completeText>[0]) {
