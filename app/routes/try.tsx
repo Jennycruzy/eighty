@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 import type { RuleResult } from "../../server/rules/types";
-import { checkTryMonth, type TryInput } from "../../shared/try-month";
+import {
+  checkTryMonth,
+  type TryFill,
+  type TryInput,
+} from "../../shared/try-month";
+import { TryReader } from "../components/evidence/TryReader";
 import { MissingFacts } from "../components/public/MissingFacts";
 import { ResultMath } from "../components/public/ResultMath";
 import { useLanguage, languageLink } from "../lib/language";
@@ -24,6 +29,21 @@ export default function TryMonth() {
     setForm({ ...form, [key]: value });
     setResult(null);
   };
+  // The reader only suggests numbers; the visitor checks them and confirms.
+  function fillFromReading(fill: TryFill) {
+    setForm((current) => ({
+      ...current,
+      month: fill.month || current.month,
+      kind: fill.kind || current.kind,
+      gross: fill.gross,
+      deductions: fill.deductions,
+      net: fill.net,
+      hours: fill.hours,
+      costsConfirmed: false,
+      confirmed: false,
+    }));
+    setResult(null);
+  }
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setWorking(true);
@@ -60,10 +80,15 @@ export default function TryMonth() {
           ? "Revisa la parte de trabajo y pago de la regla federal. Esto no revisa todas las exclusiones ni las opciones de tu estado."
           : "Check the work and pay part of the federal rule. This does not check all exclusions or your state’s choices."}
       </p>
-      <p className="online-state">
+      <TryReader
+        es={es}
+        onFill={fillFromReading}
+        onTypeInstead={() => document.getElementById("month")?.focus()}
+      />
+      <p className="note">
         {es
-          ? "El lector de documentos no está disponible. Puedes escribir los números. No pongas tu nombre ni número de caso."
-          : "The document reader is unavailable. You can type the numbers. Do not enter your name or case number."}
+          ? "Puedes escribir los números. No pongas tu nombre ni número de caso."
+          : "You can type the numbers. Do not enter your name or case number."}
       </p>
       <form onSubmit={submit}>
         <label htmlFor="month">{es ? "Mes" : "Month"}</label>

@@ -331,6 +331,28 @@
       "loading": "Opening your photo…",
       "failed": "Your phone could not black out this photo. Try a smaller photo or type the numbers instead.",
       "image": "Your photo. Covered parts show in black."
+    },
+    "try": {
+      "title": "Read a pay stub",
+      "intro": "Add one photo or PDF of a pay stub. We read it, fill in the numbers below and delete it. Nothing is saved. Cover your name and case number first.",
+      "choose": "Choose a photo or PDF",
+      "read": "Read my document",
+      "another": "Read a different document",
+      "filled": "We filled in what we found. Check every number against your document before you check the month.",
+      "unsureIntro": "We were not sure of these, so they are blank:",
+      "labels": {
+        "month": "Month",
+        "gross": "Monthly gross pay",
+        "deductions": "Pre-tax deductions",
+        "net": "Monthly net earnings",
+        "hours": "Work hours"
+      },
+      "deleted": "Your document was deleted at {time}.",
+      "visitorLimit": "You have used today's document reads. You can still type the numbers below.",
+      "budgetUsed": "Document reading is used up for today. You can still type the numbers below.",
+      "offline": "You are offline. Reading needs a connection. You can still type the numbers below.",
+      "fileProblem": "We could not open this file on your phone. Choose another file or type the numbers below.",
+      "typeBelow": "Type the numbers below"
     }
   }
 }

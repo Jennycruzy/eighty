@@ -331,6 +331,28 @@
       "loading": "Abriendo tu foto…",
       "failed": "Tu teléfono no pudo tapar esta foto. Prueba con una foto más pequeña o escribe los números.",
       "image": "Tu foto. Las partes tapadas se ven en negro."
+    },
+    "try": {
+      "title": "Leer un recibo de pago",
+      "intro": "Añade una foto o un PDF de un recibo de pago. Lo leemos, llenamos los números de abajo y lo borramos. No se guarda nada. Primero tapa tu nombre y tu número de caso.",
+      "choose": "Elegir una foto o un PDF",
+      "read": "Leer mi documento",
+      "another": "Leer otro documento",
+      "filled": "Llenamos lo que encontramos. Revisa cada número con tu documento antes de revisar el mes.",
+      "unsureIntro": "No estábamos seguros de estos datos, así que están en blanco:",
+      "labels": {
+        "month": "Mes",
+        "gross": "Pago bruto del mes",
+        "deductions": "Deducciones antes de impuestos",
+        "net": "Ganancias netas del mes",
+        "hours": "Horas de trabajo"
+      },
+      "deleted": "Tu documento se borró a las {time}.",
+      "visitorLimit": "Ya usaste las lecturas de documentos de hoy. Todavía puedes escribir los números abajo.",
+      "budgetUsed": "Las lecturas de documentos se acabaron por hoy. Todavía puedes escribir los números abajo.",
+      "offline": "No tienes conexión. Para leer hace falta conexión. Todavía puedes escribir los números abajo.",
+      "fileProblem": "Tu teléfono no pudo abrir este archivo. Elige otro archivo o escribe los números abajo.",
+      "typeBelow": "Escribir los números abajo"
     }
   }
 }

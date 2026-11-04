@@ -16,7 +16,7 @@ const { NODE_TEST_CONTEXT: _testContext, ...parentEnv } = process.env;
 // Each reader check file runs in its own process with a disposable PGlite
 // database, a local S3 transport and the test engine selected through the
 // framework's AGENT_ENGINE setting. Everything else is real app and framework code.
-async function runReaderCheck(name) {
+async function runReaderCheck(name, env = {}) {
   const directory = await mkdtemp(join(tmpdir(), "eighty-reader-"));
   const storage = await startLocalS3();
   const file = fileURLToPath(
@@ -37,6 +37,7 @@ async function runReaderCheck(name) {
           DATABASE_URL: `pglite:${join(directory, "db")}`,
           NETLIFY_DATABASE_URL: "",
           AGENT_ENGINE: TEST_ENGINE,
+          ...env,
         },
       },
     );
@@ -71,4 +72,12 @@ test("Extraction: owner check, proposed lines only, no duplicates, one ledger ro
       false,
       "Stored documents stay encrypted",
     );
+});
+
+test("Try mode: in memory only, nothing stored, visitor limits and a daily budget", async () => {
+  const { storage } = await runReaderCheck("try", {
+    EIGHTY_TRY_READS_PER_VISITOR: "2",
+    EIGHTY_TRY_READS_PER_DAY: "3",
+  });
+  assert.equal(storage.writes(), 0, "Try mode never writes to storage");
 });
