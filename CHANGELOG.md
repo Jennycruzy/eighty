@@ -1,5 +1,9 @@
 # Changes
 
+## 4 November 2026
+
+- Read photos and PDFs into lines you check before they count.
+
 ## 3 November 2026
 
 - Accept large photos and PDFs without the upload check failing.
