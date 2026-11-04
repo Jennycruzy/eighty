@@ -1,0 +1,36 @@
+{
+  "document": "hard-rotated-talon-es.png",
+  "type": "pay-stub",
+  "language": "es",
+  "conditions": [
+    "rotated"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-19",
+          "end": "2026-10-25",
+          "hours": 30,
+          "organization": "Jardinería Sol y Tierra",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-30",
+            "grossPayCents": 48000,
+            "preTaxDeductionsCents": 1440,
+            "netEarningsCents": 39739
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Short",
+  "reason": "$480.00 gross minus $14.40 pre-tax is $465.60; 30 hours."
+}

@@ -1,0 +1,36 @@
+{
+  "document": "hard-rotated-paystub-en.png",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [
+    "rotated"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-12",
+          "end": "2026-10-25",
+          "hours": 84,
+          "organization": "Summit Auto Parts",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-30",
+            "grossPayCents": 129000,
+            "preTaxDeductionsCents": 6775,
+            "netEarningsCents": 100652
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "$1,290.00 gross minus $67.75 pre-tax is $1,222.25."
+}

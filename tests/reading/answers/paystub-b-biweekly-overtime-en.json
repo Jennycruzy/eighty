@@ -1,0 +1,34 @@
+{
+  "document": "paystub-b-biweekly-overtime-en.png",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-14",
+          "end": "2026-09-27",
+          "hours": 76,
+          "organization": "Harbor View Care Center",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-02",
+            "grossPayCents": 130350,
+            "preTaxDeductionsCents": 5450,
+            "netEarningsCents": 101055
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "Paid October 2: $1,303.50 gross minus $54.50 pre-tax is $1,249.00."
+}

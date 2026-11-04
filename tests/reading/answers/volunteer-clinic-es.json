@@ -1,0 +1,72 @@
+{
+  "document": "volunteer-clinic-es.pdf",
+  "type": "volunteer-sheet",
+  "language": "es",
+  "conditions": [],
+  "month": "2026-09",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-05",
+          "end": "2026-09-05",
+          "hours": 4,
+          "organization": "Clínica Comunitaria Buena Salud",
+          "service": {
+            "confirmationContact": "Jorge Salinas, (555) 010-5512"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-12",
+          "end": "2026-09-12",
+          "hours": 4,
+          "organization": "Clínica Comunitaria Buena Salud",
+          "service": {
+            "confirmationContact": "Jorge Salinas, (555) 010-5512"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-19",
+          "end": "2026-09-19",
+          "hours": 3,
+          "organization": "Clínica Comunitaria Buena Salud",
+          "service": {
+            "confirmationContact": "Jorge Salinas, (555) 010-5512"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-26",
+          "end": "2026-09-26",
+          "hours": 4,
+          "organization": "Clínica Comunitaria Buena Salud",
+          "service": {
+            "confirmationContact": "Jorge Salinas, (555) 010-5512"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "15 volunteer hours, and the service facts still need answers."
+}

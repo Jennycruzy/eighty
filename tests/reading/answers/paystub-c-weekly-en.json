@@ -1,0 +1,34 @@
+{
+  "document": "paystub-c-weekly-en.jpg",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-21",
+          "end": "2026-09-27",
+          "hours": 25,
+          "organization": "Copper Kettle Restaurant",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-02",
+            "grossPayCents": 45000,
+            "preTaxDeductionsCents": 2000,
+            "netEarningsCents": 35410
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Short",
+  "reason": "Paid October 2: $450.00 minus $20.00 pre-tax is $430.00; the hours are in September."
+}

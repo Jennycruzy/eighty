@@ -1,0 +1,45 @@
+{
+  "document": "hard-cropped-gig-en.png",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [
+    "cropped"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-05",
+          "end": "2026-10-11",
+          "hours": 26,
+          "organization": "Roadshare",
+          "income": {
+            "kind": "self-employment",
+            "grossPayCents": 53920
+          }
+        },
+        "confidence": 1,
+        "questions": [
+          "net-earnings",
+          "pay-date"
+        ]
+      }
+    ]
+  },
+  "unreadable": [
+    {
+      "proposal": 0,
+      "question": "net-earnings"
+    },
+    {
+      "proposal": 0,
+      "question": "pay-date"
+    }
+  ],
+  "expectedOutcome": "Not sure yet",
+  "reason": "The net payout and payout date are cut off."
+}

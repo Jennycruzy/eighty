@@ -1,0 +1,34 @@
+{
+  "document": "talon-d-semanal-es.png",
+  "type": "pay-stub",
+  "language": "es",
+  "conditions": [],
+  "month": "2026-09",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-14",
+          "end": "2026-09-20",
+          "hours": 40,
+          "organization": "Limpieza Estrella",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-09-25",
+            "grossPayCents": 61500,
+            "preTaxDeductionsCents": 2500,
+            "netEarningsCents": 48586
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "$615.00 gross minus $25.00 pre-tax is $590.00, just over $580."
+}

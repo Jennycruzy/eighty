@@ -1,0 +1,17 @@
+{
+  "document": "hard-photo-notice-en.jpg",
+  "type": "state-notice",
+  "language": "en",
+  "conditions": [
+    "photo"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": []
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "A notice about the rule is not proof."
+}

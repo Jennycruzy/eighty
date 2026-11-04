@@ -1,0 +1,80 @@
+{
+  "document": "hard-blurred-volunteer-en.png",
+  "type": "volunteer-sheet",
+  "language": "en",
+  "conditions": [
+    "blurred"
+  ],
+  "month": "2026-09",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-03",
+          "end": "2026-09-03",
+          "hours": 3,
+          "organization": "Northside Senior Center",
+          "service": {
+            "confirmationContact": "Kim Alvarez, (555) 010-8834"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-10",
+          "end": "2026-09-10",
+          "hours": 3,
+          "organization": "Northside Senior Center",
+          "service": {
+            "confirmationContact": "Kim Alvarez, (555) 010-8834"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-17",
+          "end": "2026-09-17",
+          "organization": "Northside Senior Center",
+          "service": {
+            "confirmationContact": "Kim Alvarez, (555) 010-8834"
+          }
+        },
+        "confidence": 1,
+        "questions": [
+          "hours"
+        ]
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-09-24",
+          "end": "2026-09-24",
+          "hours": 3,
+          "organization": "Northside Senior Center",
+          "service": {
+            "confirmationContact": "Kim Alvarez, (555) 010-8834"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [
+    {
+      "proposal": 2,
+      "question": "hours"
+    }
+  ],
+  "expectedOutcome": "Not sure yet",
+  "reason": "One day's hours are blurred and must be asked."
+}

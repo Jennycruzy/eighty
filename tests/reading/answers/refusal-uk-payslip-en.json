@@ -1,0 +1,17 @@
+{
+  "document": "refusal-uk-payslip-en.png",
+  "type": "refusal",
+  "language": "en",
+  "conditions": [
+    "outside-us"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": false,
+    "proposals": []
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "A pay slip from England is not US evidence."
+}

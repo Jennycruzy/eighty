@@ -1,0 +1,35 @@
+{
+  "document": "hard-dark-gig-en.jpg",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [
+    "dark"
+  ],
+  "month": "2026-09",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-21",
+          "end": "2026-09-27",
+          "hours": 18.5,
+          "organization": "QuickBite Courier",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-09-30",
+            "grossPayCents": 32950,
+            "netEarningsCents": 28007
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "Gig pay needs confirmed business costs; 18.5 hours."
+}

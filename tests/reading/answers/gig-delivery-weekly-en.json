@@ -1,0 +1,33 @@
+{
+  "document": "gig-delivery-weekly-en.png",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-05",
+          "end": "2026-10-11",
+          "hours": 21.25,
+          "organization": "QuickBite Courier",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-10-14",
+            "grossPayCents": 41235,
+            "netEarningsCents": 35050
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "Gig pay needs the member to confirm business costs; 21.25 hours is under 80."
+}

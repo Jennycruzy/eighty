@@ -1,0 +1,36 @@
+{
+  "document": "class-schedule-en.pdf",
+  "type": "class-schedule",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "education",
+          "organization": "Lakeview Community College",
+          "education": {
+            "termStart": "2026-08-24",
+            "termEnd": "2026-12-12",
+            "credits": 10
+          }
+        },
+        "confidence": 1,
+        "questions": [
+          "school-status"
+        ]
+      }
+    ]
+  },
+  "unreadable": [
+    {
+      "proposal": 0,
+      "question": "school-status"
+    }
+  ],
+  "expectedOutcome": "Not sure yet",
+  "reason": "10 credits, but the schedule does not say the enrollment status."
+}

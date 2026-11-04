@@ -1,0 +1,46 @@
+{
+  "document": "hard-cropped-paystub-en.png",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [
+    "cropped"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-12",
+          "end": "2026-10-25",
+          "hours": 48,
+          "organization": "Lakeside Diner",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-30",
+            "grossPayCents": 72000
+          }
+        },
+        "confidence": 1,
+        "questions": [
+          "pre-tax-deductions",
+          "net-earnings"
+        ]
+      }
+    ]
+  },
+  "unreadable": [
+    {
+      "proposal": 0,
+      "question": "pre-tax-deductions"
+    },
+    {
+      "proposal": 0,
+      "question": "net-earnings"
+    }
+  ],
+  "expectedOutcome": "Not sure yet",
+  "reason": "Gross is $720.00, but the pre-tax deductions are cut off. Without them the month cannot be decided."
+}
