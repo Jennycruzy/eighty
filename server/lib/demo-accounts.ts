@@ -1,4 +1,5 @@
 import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { isIP } from "node:net";
 
 import { fail, type ActionRunContext } from "@agent-native/core/action";
 import { getDbExec } from "@agent-native/core/db";
@@ -26,6 +27,8 @@ import {
 } from "./demo-identity.ts";
 import { assessDemoMonths, type SavedLine } from "./demo-month.ts";
 import { DEMO_PEOPLE, DEMO_PROFILES, type DemoPerson } from "./demo-people.ts";
+import { removeDemoAccount } from "./demo-reset.ts";
+import { processDocumentDeletion } from "./document-deletions.ts";
 import { demoSamplePdf } from "./demo-sample.ts";
 import { demoAccounts } from "./demo-schema.ts";
 import { saveDocument } from "./document-records.ts";
@@ -70,6 +73,30 @@ export function demoSettings(read: SettingReader = readDeployCredentialEnv) {
 }
 export type DemoSettings = ReturnType<typeof demoSettings>;
 
+// IPv6 visitors share one limit per /64, the block one home or phone is
+// usually given. An IPv4 address written in IPv6 form counts as that IPv4.
+export function visitorAddress(address: string): string {
+  if (isIP(address) !== 6) return address;
+  const host = new URL(`http://[${address.split("%")[0]}]`).hostname.slice(1, -1);
+  const mapped = /^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/.exec(host);
+  if (mapped) {
+    const high = parseInt(mapped[1] ?? "0", 16);
+    const low = parseInt(mapped[2] ?? "0", 16);
+    return [high >> 8, high & 255, low >> 8, low & 255].join(".");
+  }
+  const [left = "", right] = host.split("::");
+  const first = left ? left.split(":") : [];
+  const last = right ? right.split(":") : [];
+  const groups =
+    right === undefined
+      ? first
+      : [...first, ...Array(8 - first.length - last.length).fill("0"), ...last];
+  return groups
+    .slice(0, 4)
+    .map((part) => part.padStart(4, "0"))
+    .join(":");
+}
+
 // The app sits behind Caddy on 127.0.0.1, which sets X-Forwarded-For to the
 // connecting address. Only a hash is kept, never the address itself.
 export function visitorKey(headers: Headers | undefined): string {
@@ -79,8 +106,9 @@ export function visitorKey(headers: Headers | undefined): string {
     .map((part) => part.trim())
     .filter(Boolean)
     .pop();
+  const visitor = visitorAddress(forwarded || "direct");
   return createHash("sha256")
-    .update(`eighty-demo-visitor:${forwarded || "direct"}`)
+    .update(`eighty-demo-visitor:${visitor}`)
     .digest("hex");
 }
 export function assertSameSite(headers: Headers | undefined) {
@@ -250,14 +278,29 @@ export async function startDemo(
     });
   });
   // The marked row exists before the account, so the reset can always find it.
-  const now = new Date();
-  await getDbExec().execute({
-    sql: 'INSERT INTO "user" (id, name, email, email_verified, created_at, updated_at) VALUES (?, ?, ?, true, ?, ?)',
-    args: [userId, `${DEMO_PROFILES[person].name} (demo)`, email, now, now],
-  });
-  await joinDemoOrganization(email);
-  await seedDemoMember(person, language, { email, userId });
-  return { ticket, person };
+  try {
+    const now = new Date().toISOString();
+    await getDbExec().execute({
+      sql: 'INSERT INTO "user" (id, name, email, email_verified, created_at, updated_at) VALUES (?, ?, ?, true, ?, ?)',
+      args: [userId, `${DEMO_PROFILES[person].name} (demo)`, email, now, now],
+    });
+    await joinDemoOrganization(email);
+    await seedDemoMember(person, language, { email, userId });
+    return { ticket, person };
+  } catch (error) {
+    // A failed start leaves nothing behind and does not use up a start.
+    const files: string[] = [];
+    await removeDemoAccount(userId, files);
+    invalidateMemberOrgCaches();
+    for (const file of files) {
+      try {
+        await processDocumentDeletion(file);
+      } catch {
+        /* The durable record stays for the retry job. */
+      }
+    }
+    throw error;
+  }
 }
 
 // Exchanges a one-time ticket for a signed-in browser session.

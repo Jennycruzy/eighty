@@ -121,7 +121,7 @@ export async function realMember(email = "real.member@example.test") {
   const { saveMemberRecord } =
     await import("../../server/lib/member-records.ts");
   const userId = randomUUID();
-  const now = new Date();
+  const now = new Date().toISOString();
   await getDbExec().execute({
     sql: 'INSERT INTO "user" (id, name, email, email_verified, created_at, updated_at) VALUES (?, ?, ?, true, ?, ?)',
     args: [userId, "Real member", email, now, now],

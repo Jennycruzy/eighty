@@ -54,7 +54,11 @@ Settings (all optional; a missing or wrong value uses the default):
 | `EIGHTY_DEMO_STARTS_PER_VISITOR_HOUR` | 5       | Starts per visitor per hour (1–50)           |
 | `EIGHTY_DEMO_STARTS_PER_HOUR`         | 120     | Starts across all visitors per hour (1–5000) |
 
-A visitor is a hash of the address Caddy passes in `X-Forwarded-For`. The address itself is not kept.
+When the hourly total of 120 starts is used up, the visitor sees “Too many demos were opened from here. Try again in an hour.” The server returns 429. Raise `EIGHTY_DEMO_STARTS_PER_HOUR` to allow more starts, up to 5000 per hour. Failed starts do not count toward either limit.
+
+A visitor is a hash of the address Caddy passes in `X-Forwarded-For`. IPv6 addresses share one limit per /64 prefix. The address itself is not kept.
+
+Run the PostgreSQL proof with `node scripts/prove-demo-postgres.mjs`. It starts its own PostgreSQL 17 container, runs `start_demo` with the production driver, and removes the container when done. It first runs the source from `5c30deb` and requires the Date error, then runs the current source and requires Maria's saved month numbers.
 
 ## The nightly reset
 

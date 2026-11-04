@@ -16,6 +16,7 @@ import { promisify } from "node:util";
 
 import postgres from "postgres";
 
+import { checkDemo } from "./check-demo.mjs";
 import { checkPublicHeads } from "./check-public-heads.mjs";
 import { checkPublicPages } from "./check-public-pages.mjs";
 
@@ -298,6 +299,7 @@ try {
   };
   await waitUntil(health, "application and database readiness");
   console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
+  await checkDemo(baseUrl, sql);
   const closedSignup = await fetch(
     `${baseUrl}/_agent-native/auth/ba/sign-up/email`,
     {

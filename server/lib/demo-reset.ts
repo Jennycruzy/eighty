@@ -12,10 +12,10 @@ import { processDocumentDeletion } from "./document-deletions.ts";
 export const DEMO_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const demoAddress = `%@${DEMO_EMAIL_DOMAIN}`;
 
-// Removes demo accounts older than a day, with their member record, evidence,
-// versions, events and documents. Every delete names a demo address in the
-// query itself, so a real member can never match.
-async function removeAccount(userId: string, documentIds: string[]) {
+// Removes one demo account with its member record, evidence, versions, events
+// and documents. Every delete names a demo address in the query itself, so a
+// real member can never match.
+export async function removeDemoAccount(userId: string, documentIds: string[]) {
   return getDb().transaction(async (tx) => {
     const [account] = await tx
       .select()
@@ -118,7 +118,7 @@ export async function runDemoReset(
     for (const row of old) {
       if (signal?.aborted) throw new Error("The reset ran out of time.");
       const files: string[] = [];
-      if (await removeAccount(row.userId, files)) accountsRemoved++;
+      if (await removeDemoAccount(row.userId, files)) accountsRemoved++;
       queued.push(...files);
     }
     invalidateMemberOrgCaches();

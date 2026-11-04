@@ -201,6 +201,91 @@ test("The per-visitor limit refuses the extra start, and the total limit holds",
   );
 });
 
+test("IPv6 addresses share a visitor limit within their /64 prefix", async () => {
+  const key = (ip) => demo.visitorKey(siteHeaders(ip));
+  assert.equal(
+    key("2001:db8:1234:5678::1"),
+    key("2001:0db8:1234:5678:abcd:ef01:2345:6789"),
+  );
+  assert.equal(key("::1"), key("0:0:0:0:0:0:0:2"));
+  assert.equal(key("fe80::1%eth0"), key("fe80::2%eth1"));
+  assert.equal(key("::ffff:192.0.2.1"), key("::ffff:c000:201"));
+  assert.equal(key("::ffff:192.0.2.1"), key("192.0.2.1"));
+  assert.notEqual(key("::ffff:192.0.2.1"), key("::ffff:192.0.2.2"));
+  assert.equal(demo.visitorAddress("::ffff:c000:202"), "192.0.2.2");
+  assert.equal(demo.visitorAddress("2001:db8::1"), "2001:0db8:0000:0000");
+  assert.notEqual(key("2001:db8:1234:5678::1"), key("2001:db8:1234:5679::1"));
+  assert.notEqual(key("192.0.2.1"), key("192.0.2.2"));
+  const settings = { enabled: true, perVisitor: 1, total: 120 };
+  await openDemo("rosa", "2001:db8:1234:5678::1", settings);
+  await assert.rejects(openDemo("rosa", "2001:db8:1234:5678::2", settings), {
+    statusCode: 429,
+  });
+  await openDemo("rosa", "2001:db8:1234:5679::1", settings);
+});
+
+test("Failed starts remove their account data and free both limits", async () => {
+  const tables = [
+    "eighty_demo_accounts",
+    "user",
+    "org_members",
+    "session",
+    "account",
+    "eighty_members",
+    "eighty_evidence",
+    "eighty_evidence_versions",
+    "eighty_member_events",
+    "eighty_documents",
+  ];
+  const counts = async () =>
+    Promise.all(
+      tables.map(
+        async (table) =>
+          (await rows(`SELECT count(*)::int AS n FROM "${table}"`))[0].n,
+      ),
+    );
+  let suffix = 230;
+  for (const table of [
+    "user",
+    "org_members",
+    "eighty_members",
+    "eighty_evidence_versions",
+  ]) {
+    const ip = `192.0.2.${suffix++}`;
+    const before = await counts();
+    const [{ n }] = await rows(
+      "SELECT count(*)::int AS n FROM eighty_demo_accounts WHERE created_at > now() - interval '1 hour'",
+    );
+    const settings = { enabled: true, perVisitor: 1, total: n + 1 };
+    await sql.execute(
+      `CREATE FUNCTION fail_demo_start() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Demo write refused'; END $$`,
+    );
+    const condition =
+      table === "eighty_evidence_versions"
+        ? "WHEN (NEW.fields->>'kind' = 'service')"
+        : "";
+    await sql.execute(
+      `CREATE TRIGGER fail_demo_start BEFORE INSERT ON "${table}" FOR EACH ROW ${condition} EXECUTE FUNCTION fail_demo_start()`,
+    );
+    try {
+      for (let attempt = 0; attempt < 6; attempt++) {
+        await assert.rejects(openDemo("maria", ip, settings), (error) => {
+          assert.match(
+            String(error.cause?.message ?? error.message),
+            /Demo write refused/,
+          );
+          return true;
+        });
+        assert.deepEqual(await counts(), before);
+      }
+    } finally {
+      await sql.execute(`DROP TRIGGER fail_demo_start ON "${table}"`);
+      await sql.execute("DROP FUNCTION fail_demo_start()");
+    }
+    await openDemo("maria", ip, settings);
+  }
+});
+
 test("Demo settings are plain, with safe defaults for missing or wrong values", () => {
   const read = (values) => (key) => values[key];
   assert.deepEqual(demo.demoSettings(read({})), {
