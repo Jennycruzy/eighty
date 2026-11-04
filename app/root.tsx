@@ -12,6 +12,7 @@ import {
 import type { LoaderFunctionArgs } from "react-router";
 
 import type { ScreenerAnswers } from "../shared/screener";
+import { DemoBand } from "./components/demo/DemoBand";
 import { ConnectionNotice } from "./components/public/ConnectionNotice";
 import { LanguageContext, languageLink } from "./lib/language";
 import { ScreenerDraftContext } from "./lib/screener-draft";
@@ -76,6 +77,7 @@ export default function Root() {
       <ScreenerDraftContext value={{ answers, setAnswers, step, setStep }}>
         <main id="main">
           <ConnectionNotice />
+          <DemoBand />
           <Outlet />
         </main>
       </ScreenerDraftContext>

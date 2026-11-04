@@ -1,5 +1,6 @@
 import { defineAction } from "@agent-native/core/action";
 
+import { refuseDemoContext } from "../server/lib/demo-accounts.ts";
 import {
   finishRegistrationInput,
   finishMemberAccount,
@@ -15,5 +16,8 @@ export default defineAction({
   audit: { recordInputs: false },
   maxBodyBytes: 8192,
   http: { method: "POST" },
-  run: finishMemberAccount,
+  run: async (input, context) => {
+    await refuseDemoContext(context);
+    return finishMemberAccount(input, context);
+  },
 });

@@ -3,6 +3,7 @@
 ## 4 November 2026
 
 - Read photos and PDFs into lines you check before they count.
+- Open a made-up member's month in one tap, with no account.
 
 ## 3 November 2026
 

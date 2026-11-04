@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router";
 import { type EvidenceFields } from "../../shared/evidence";
 import { type DuplicateChoice } from "../../shared/evidence-review";
 import { needsCheck, type ReaderQuestion } from "../../shared/reader";
+import { DemoSample } from "../components/demo/DemoSample";
 import {
   DocumentView,
   type DocumentData,
@@ -318,6 +319,17 @@ export default function Evidence() {
       )}
       {!loading && error !== "load" && (
         <>
+          {!reviewMode && (
+            <DemoSample
+              busy={busy}
+              work={work}
+              onSaved={async (id) => {
+                setDocumentId(id);
+                setEditing("new");
+                await refresh();
+              }}
+            />
+          )}
           {!reviewMode && (
             <UploadProof
               es={es}

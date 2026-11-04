@@ -354,5 +354,84 @@
       "fileProblem": "Tu teléfono no pudo abrir este archivo. Elige otro archivo o escribe los números abajo.",
       "typeBelow": "Escribir los números abajo"
     }
+  },
+  "demo": {
+    "landing": {
+      "title": "Míralo funcionar con un mes inventado",
+      "intro": "Abre el mes de una persona con un toque, sin cuenta. Las personas son inventadas. Lo que añadas se borra en un día.",
+      "maria": "Abrir el mes de María",
+      "others": "O abre otro mes inventado:",
+      "daniel": "Daniel, estudiante",
+      "rosa": "Rosa, cuidadora",
+      "opening": "Abriendo la demostración…",
+      "limit": "Se abrieron demasiadas demostraciones desde aquí. Inténtalo en una hora.",
+      "closed": "La demostración está cerrada ahora. Inténtalo más tarde.",
+      "offline": "No tienes conexión. Conéctate e inténtalo de nuevo.",
+      "error": "La demostración no se abrió. Inténtalo de nuevo."
+    },
+    "band": {
+      "label": "Demostración",
+      "text": "Demostración. {name} es una persona inventada. Lo que añadas se borra en un día.",
+      "again": "Empezar de nuevo",
+      "leave": "Salir de la demostración",
+      "working": "Un momento…",
+      "error": "No funcionó. Revisa tu conexión e inténtalo de nuevo."
+    },
+    "people": {
+      "maria": {
+        "name": "María",
+        "about": "María tiene 34 años y vive en Omaha, Nebraska. Hace entregas con una aplicación, así que sus semanas no son iguales. Es voluntaria en un banco de comida los sábados. Usa solo su teléfono. En casa habla español y en el trabajo, inglés. Renueva su cobertura en enero."
+      },
+      "daniel": {
+        "name": "Daniel",
+        "about": "Daniel tiene 22 años y vive en Billings, Montana. Toma 6 créditos en un colegio comunitario, menos de medio tiempo. También tiene un trabajo de unas 20 horas al mes."
+      },
+      "rosa": {
+        "name": "Rosa",
+        "about": "Rosa tiene 51 años y vive en Lincoln, Nebraska. Cuida todos los días a su madre, que tiene demencia y vive con ella."
+      }
+    },
+    "month": {
+      "eyebrow": "Demostración · persona inventada",
+      "title": "El mes de {name}",
+      "loading": "Cargando el mes…",
+      "error": "No pudimos cargar el mes. Revisa tu conexión e inténtalo de nuevo.",
+      "notDemo": "Esta página es solo para la demostración. Abre un mes inventado desde la página principal.",
+      "home": "Ir a la página principal",
+      "retry": "Volver a cargar",
+      "thisMonth": "Este mes",
+      "lastMonth": "El mes pasado",
+      "hours": "{hours} de {target} horas",
+      "pay": "Pago contado: {amount}",
+      "rule": "Regla",
+      "missing": "Datos que faltan: {count}",
+      "waiting": "Líneas por revisar: {count}",
+      "none": "No hay nada por revisar.",
+      "review": "Revisar las líneas",
+      "add": "Añadir pruebas",
+      "stateDecides": "Esto usa solo las reglas federales. El estado toma la decisión real.",
+      "status": {
+        "Meets": "Cumple la regla",
+        "Short": "Falta para llegar a la meta",
+        "Exempt": "La regla no le aplica",
+        "Deemed": "Se cuenta como que cumple",
+        "Not sure yet": "Aún no sabemos"
+      },
+      "next": {
+        "maria": "A María le faltan 19 horas este mes. Su pago de entregas puede contar en su lugar. Añade su resumen de ganancias, escribe los datos y confírmalos.",
+        "daniel": "Los 6 créditos de Daniel cuentan como 77.94 horas (6 × 3 × 4.33). Sus horas de trabajo pasan el mes de 80.",
+        "rosa": "Rosa no lo sabía: como cuidadora familiar de alguien que vive con ella, la regla no le aplica."
+      }
+    },
+    "sample": {
+      "title": "Pruébalo con el resumen de ganancias de muestra de María",
+      "intro": "Un toque añade un resumen de ganancias inventado a los archivos privados de María. Luego escribe sus datos.",
+      "button": "Añadir la muestra de María",
+      "working": "Añadiendo la muestra…",
+      "saved": "La muestra está guardada. Escribe sus datos abajo.",
+      "hint": "Elige Pago y luego Trabajo por cuenta propia. El resumen muestra $824.45 en ganancias totales. María gastó $206.60 en gasolina y teléfono para las entregas, así que su pago neto después de gastos es $617.85. Responde Sí a la pregunta de los gastos del negocio. Cuenta el pago neto, no el total.",
+      "picture": "Ver la muestra como imagen",
+      "error": "La muestra no se guardó. Aún puedes escribir los datos."
+    }
   }
 }
