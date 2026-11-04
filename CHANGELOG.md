@@ -1,5 +1,9 @@
 # Changes
 
+## 4 November 2026
+
+- Open a made-up member's month in one tap, with no account.
+
 ## 3 November 2026
 
 - Accept large photos and PDFs without the upload check failing.
