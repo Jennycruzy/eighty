@@ -76,6 +76,8 @@ export function isAllowedService(path: string): boolean {
         "list_documents",
         "get_document",
         "remove_document",
+        "extract_evidence",
+        "try_read_document",
       ].map((name) => `/_agent-native/actions/${name}`),
       "/_agent-native/actions/prepare_member_account",
       "/_agent-native/actions/finish_member_account",

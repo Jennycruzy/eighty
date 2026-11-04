@@ -76,6 +76,12 @@ export default runMigrations(
       CREATE INDEX IF NOT EXISTS eighty_document_deletions_due ON eighty_document_deletions(next_attempt_at);
       CREATE INDEX IF NOT EXISTS eighty_document_deletions_owner ON eighty_document_deletions(member_id,owner_email);`,
     },
+    {
+      version: 5,
+      name: "eighty-reader-questions",
+      sql: `ALTER TABLE eighty_evidence ADD COLUMN IF NOT EXISTS questions jsonb NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(questions) = 'array');
+      CREATE INDEX IF NOT EXISTS eighty_evidence_document ON eighty_evidence(document_id);`,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

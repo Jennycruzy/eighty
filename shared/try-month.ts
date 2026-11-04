@@ -1,6 +1,7 @@
 import { monthBounds, validMonth, validDate } from "../server/rules/dates.ts";
 import { combineHours, incomeTest } from "../server/rules/index.ts";
 import type { IncomeFacts, RuleResult } from "../server/rules/types.ts";
+import type { ReaderResult } from "./evidence.ts";
 export function moneyCents(value: string): number | null {
   if (!/^-?\d+(?:\.\d{1,2})?$/.test(value.trim())) return null;
   const [whole, fraction = ""] = value.trim().replace("-", "").split(".");
@@ -87,4 +88,93 @@ export function checkTryMonth(input: TryInput): RuleResult {
           missing: pay.missing,
         }
       : { ...pay, math: { ...pay.math, work: activity.math } };
+}
+
+export interface TryFill {
+  month: string;
+  kind: "wages" | "gig" | "";
+  gross: string;
+  deductions: string;
+  net: string;
+  hours: string;
+  /** Facts the reader was not sure of or could not add up. They stay blank. */
+  unsure: Array<"month" | "gross" | "deductions" | "net" | "hours">;
+}
+type Proposal = ReaderResult["proposals"][number];
+const dollars = (cents: number) => (cents / 100).toFixed(2);
+function sumOf(
+  proposals: Proposal[],
+  value: (proposal: Proposal) => number | null | undefined,
+): number | null {
+  if (!proposals.length) return null;
+  let total = 0;
+  for (const proposal of proposals) {
+    const amount = value(proposal);
+    if (typeof amount !== "number") return null;
+    total += amount;
+  }
+  // Cents must stay whole; hours may have decimals.
+  return Number.isFinite(total) && total <= Number.MAX_SAFE_INTEGER
+    ? total
+    : null;
+}
+/**
+ * Turns a reading into suggestions for the try form. A value is filled only
+ * when every line that should carry it does; anything else stays blank and is
+ * named so the visitor checks it. The visitor still confirms before the month
+ * is worked out.
+ */
+export function tryFieldsFromReading(result: ReaderResult): TryFill {
+  const fill: TryFill = {
+    month: "",
+    kind: "",
+    gross: "",
+    deductions: "",
+    net: "",
+    hours: "",
+    unsure: [],
+  };
+  const pay = result.proposals.filter((p) => p.fields.income);
+  const gig = pay.some((p) => p.fields.income?.kind === "self-employment");
+  const months = new Set(
+    result.proposals
+      .map((p) => p.fields.income?.receivedOn ?? p.fields.end ?? null)
+      .filter((value): value is string => !!value)
+      .map((value) => value.slice(0, 7)),
+  );
+  if (months.size === 1) fill.month = [...months][0]!;
+  else if (result.proposals.length) fill.unsure.push("month");
+  if (pay.length) {
+    fill.kind = gig ? "gig" : "wages";
+    if (gig) {
+      const net = sumOf(pay, (p) => p.fields.income?.netEarningsCents);
+      if (net === null) fill.unsure.push("net");
+      else fill.net = dollars(net);
+    } else {
+      const gross = sumOf(pay, (p) => p.fields.income?.grossPayCents);
+      const deductions = sumOf(
+        pay,
+        (p) => p.fields.income?.preTaxDeductionsCents,
+      );
+      if (gross === null) fill.unsure.push("gross");
+      else fill.gross = dollars(gross);
+      if (deductions === null) fill.unsure.push("deductions");
+      else fill.deductions = dollars(deductions);
+    }
+  }
+  const worked = result.proposals.filter(
+    (p) =>
+      p.fields.kind === "work" ||
+      p.fields.kind === "income" ||
+      p.questions.includes("hours"),
+  );
+  const hours = sumOf(worked, (p) =>
+    p.questions.includes("hours") ? null : (p.fields.hours ?? null),
+  );
+  if (hours !== null) fill.hours = String(Math.round(hours * 100) / 100);
+  else if (
+    worked.some((p) => p.fields.hours != null || p.questions.includes("hours"))
+  )
+    fill.unsure.push("hours");
+  return fill;
 }

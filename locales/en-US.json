@@ -276,5 +276,83 @@
         "proof": "Keep your Medicaid coverage letter. Bring any papers that support an answer you gave."
       }
     }
+  },
+  "reader": {
+    "intro": "After you save a file, an AI model reads it and suggests lines. Nothing counts until you check and confirm each line. Fixed rules, not the model, work out your month.",
+    "reading": "Reading your document…",
+    "slow": "Still reading. Clear photos of one page are fastest; long PDFs take longer. You can stay on this page.",
+    "done": "We read your document. Check each new line below. A line does not count until you confirm it.",
+    "already": "This file was read before. Its lines are in the list below.",
+    "pagesLimit": "We read the first {read} of {total} pages. Type facts from the other pages by hand.",
+    "nothing": "We did not find work, pay or school facts in this file. You can type the numbers instead.",
+    "unreadable": "We couldn't read this. You can type the numbers instead.",
+    "notUs": "We can't read this as a US pay stub. You can type the numbers instead.",
+    "unavailable": "The document reader is not available right now. You can type the numbers instead.",
+    "failed": "We could not reach the reader. Check your connection, then try again. You can also type the numbers.",
+    "offline": "You are offline. We will read the file when you are back online. You can also type the numbers.",
+    "readAgain": "Try reading again",
+    "readFile": "Read this file",
+    "typeInstead": "Type the numbers",
+    "fromDocument": "Suggested from your document",
+    "checkThis": "Check this",
+    "unsureOf": "We were not sure of these. They are blank:",
+    "unsureHelp": "If your document shows them, add them with Edit.",
+    "lowConfidence": "The reader was not sure about this line. Compare each value with your document.",
+    "questions": {
+      "start": "Start date",
+      "end": "End date",
+      "hours": "Hours",
+      "gross-pay": "Gross pay",
+      "pay-date": "Pay date",
+      "pre-tax-deductions": "Pre-tax deductions",
+      "net-earnings": "Net business pay",
+      "business-costs": "Business costs",
+      "organization": "Employer, group or school",
+      "school-status": "School time",
+      "school-credits": "Credits",
+      "service-contact": "Person who can confirm"
+    },
+    "cover": {
+      "open": "Cover private parts",
+      "title": "Cover private parts",
+      "help": "Black out your name, case number and account numbers before the photo leaves your phone. Drag across a part of the photo to cover it.",
+      "keyboardHelp": "With a keyboard: choose Add a box. Use the arrow keys to move it, and Shift with the arrow keys to change its size. Press Delete to remove it.",
+      "add": "Add a box",
+      "undo": "Remove last box",
+      "clear": "Remove all boxes",
+      "done": "Black out and use this copy",
+      "cancel": "Cancel",
+      "box": "Box {number}: {left}% from the left, {top}% from the top, {width}% wide, {height}% tall",
+      "added": "Box {number} added.",
+      "removed": "Box removed. {count} left.",
+      "applied": "The covered parts are blacked out in the copy we send. The photo on your phone is unchanged.",
+      "notPhoto": "Covering works on photos. For a PDF, remove private details before you choose it, or type the numbers instead.",
+      "working": "Blacking out…",
+      "loading": "Opening your photo…",
+      "failed": "Your phone could not black out this photo. Try a smaller photo or type the numbers instead.",
+      "image": "Your photo. Covered parts show in black."
+    },
+    "try": {
+      "title": "Read a pay stub",
+      "intro": "Add one photo or PDF of a pay stub. We read it, fill in the numbers below and delete it. Nothing is saved. Cover your name and case number first.",
+      "choose": "Choose a photo or PDF",
+      "read": "Read my document",
+      "another": "Read a different document",
+      "filled": "We filled in what we found. Check every number against your document before you check the month.",
+      "unsureIntro": "We were not sure of these, so they are blank:",
+      "labels": {
+        "month": "Month",
+        "gross": "Monthly gross pay",
+        "deductions": "Pre-tax deductions",
+        "net": "Monthly net earnings",
+        "hours": "Work hours"
+      },
+      "deleted": "Your document was deleted at {time}.",
+      "visitorLimit": "You have used today's document reads. You can still type the numbers below.",
+      "budgetUsed": "Document reading is used up for today. You can still type the numbers below.",
+      "offline": "You are offline. Reading needs a connection. You can still type the numbers below.",
+      "fileProblem": "We could not open this file on your phone. Choose another file or type the numbers below.",
+      "typeBelow": "Type the numbers below"
+    }
   }
 }

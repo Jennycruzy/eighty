@@ -4,12 +4,14 @@ import { Link, useLocation } from "react-router";
 
 import { type EvidenceFields } from "../../shared/evidence";
 import { type DuplicateChoice } from "../../shared/evidence-review";
+import { needsCheck, type ReaderQuestion } from "../../shared/reader";
 import {
   DocumentView,
   type DocumentData,
 } from "../components/evidence/DocumentView";
 import { EvidenceForm } from "../components/evidence/EvidenceForm";
 import { fieldsFor, getField, kinds } from "../components/evidence/fields";
+import { fillIn, readerCopy } from "../components/evidence/reader-copy";
 import { UploadProof } from "../components/evidence/UploadProof";
 import { useLanguage, languageLink } from "../lib/language";
 
@@ -25,6 +27,19 @@ interface Line {
   status: "proposed" | "confirmed" | "rejected";
   fields: EvidenceFields;
   documentId: string | null;
+  createdBy: "agent" | "member" | "navigator";
+  confidence: number | null;
+  questions: ReaderQuestion[];
+}
+type ReadOutcome =
+  "read" | "nothing-found" | "not-us-document" | "unreadable" | "unavailable";
+interface Reading {
+  documentId: string;
+  phase: "reading" | "slow" | "done" | "failed" | "offline";
+  outcome?: ReadOutcome;
+  created?: boolean;
+  pages?: number;
+  pagesRead?: number;
 }
 interface FileRow {
   id: string;
@@ -36,7 +51,8 @@ export default function Evidence() {
   const reviewMode = useLocation().pathname === "/review";
   const lang = useLanguage(),
     es = lang === "es",
-    link = (path: string) => languageLink(path, lang);
+    link = (path: string) => languageLink(path, lang),
+    copy = readerCopy(es);
   const [lines, setLines] = useState<Line[]>([]),
     [files, setFiles] = useState<FileRow[]>([]),
     [loading, setLoading] = useState(true),
@@ -46,6 +62,7 @@ export default function Evidence() {
   const [editing, setEditing] = useState<Line | "new" | null>(null),
     [documentId, setDocumentId] = useState(""),
     [view, setView] = useState<DocumentData | null>(null);
+  const [reading, setReading] = useState<Reading | null>(null);
   const [duplicate, setDuplicate] = useState<{
     id: string;
     version: number;
@@ -59,6 +76,65 @@ export default function Evidence() {
     setLines(nextLines as Line[]);
     setFiles(nextFiles as FileRow[]);
   }
+  function openTypedEntry(id: string) {
+    setDocumentId(id);
+    setEditing("new");
+  }
+  // Reading runs beside the rest of the page; the member can keep working.
+  async function read(id: string) {
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      setReading({ documentId: id, phase: "offline" });
+      return;
+    }
+    setReading({ documentId: id, phase: "reading" });
+    const slow = setTimeout(
+      () =>
+        setReading((current) =>
+          current?.documentId === id && current.phase === "reading"
+            ? { ...current, phase: "slow" }
+            : current,
+        ),
+      15_000,
+    );
+    try {
+      const result = (await callAction(
+        "extract_evidence",
+        { documentId: id },
+        { method: "POST" },
+      )) as {
+        outcome: ReadOutcome;
+        created: boolean;
+        pages: number;
+        pagesRead: number;
+      };
+      setReading({
+        documentId: id,
+        phase: "done",
+        outcome: result.outcome,
+        created: result.created,
+        pages: result.pages,
+        pagesRead: result.pagesRead,
+      });
+      if (result.outcome !== "read") openTypedEntry(id);
+      await refresh().catch(() => setError("load"));
+    } catch {
+      setReading({
+        documentId: id,
+        phase:
+          typeof navigator !== "undefined" && !navigator.onLine
+            ? "offline"
+            : "failed",
+      });
+    } finally {
+      clearTimeout(slow);
+    }
+  }
+  useEffect(() => {
+    if (reading?.phase !== "offline") return;
+    const retry = () => void read(reading.documentId);
+    window.addEventListener("online", retry);
+    return () => window.removeEventListener("online", retry);
+  }, [reading]);
   useEffect(() => {
     let active = true;
     Promise.all([
@@ -191,11 +267,7 @@ export default function Evidence() {
           ? "Solo tú puedes ver estos archivos. Una línea no cuenta hasta que la confirmes. Confirmar los datos no decide si tu mes cumple la regla."
           : "Only you can see these files. A line does not count until you confirm it. Confirming facts does not decide if your month meets the rule."}
       </p>
-      <p>
-        {es
-          ? "Escribe los datos a mano. Aquí no se usa un lector de IA."
-          : "Type the facts by hand. No AI reader is used here."}
-      </p>
+      <p>{copy.intro}</p>
       {loading && (
         <p role="status">
           {es ? "Cargando tus pruebas…" : "Loading your proof…"}
@@ -252,12 +324,74 @@ export default function Evidence() {
               busy={busy}
               work={work}
               onSaved={async (id) => {
-                setDocumentId(id);
-                setEditing("new");
                 setNotice("saved");
                 await refresh();
+                void read(id);
               }}
             />
+          )}
+          {reading && (
+            <section
+              className="card reading-state"
+              role={
+                reading.phase === "failed" ||
+                (reading.phase === "done" && reading.outcome !== "read")
+                  ? "alert"
+                  : "status"
+              }
+              aria-live="polite"
+              aria-busy={
+                reading.phase === "reading" || reading.phase === "slow"
+              }
+            >
+              <p>
+                {reading.phase === "reading"
+                  ? copy.reading
+                  : reading.phase === "slow"
+                    ? `${copy.reading} ${copy.slow}`
+                    : reading.phase === "offline"
+                      ? copy.offline
+                      : reading.phase === "failed"
+                        ? copy.failed
+                        : reading.outcome === "read"
+                          ? reading.created
+                            ? copy.done
+                            : copy.already
+                          : reading.outcome === "nothing-found"
+                            ? copy.nothing
+                            : reading.outcome === "not-us-document"
+                              ? copy.notUs
+                              : reading.outcome === "unavailable"
+                                ? copy.unavailable
+                                : copy.unreadable}
+              </p>
+              {reading.phase === "done" &&
+                (reading.pages ?? 1) > (reading.pagesRead ?? 1) && (
+                  <p>
+                    {fillIn(copy.pagesLimit, {
+                      read: reading.pagesRead ?? 1,
+                      total: reading.pages ?? 1,
+                    })}
+                  </p>
+                )}
+              {(reading.phase === "failed" || reading.phase === "offline") && (
+                <div className="actions">
+                  <button
+                    disabled={reading.phase === "offline"}
+                    onClick={() => void read(reading.documentId)}
+                  >
+                    {copy.readAgain}
+                  </button>
+                  <button
+                    className="secondary"
+                    disabled={busy}
+                    onClick={() => openTypedEntry(reading.documentId)}
+                  >
+                    {copy.typeInstead}
+                  </button>
+                </div>
+              )}
+            </section>
           )}
           {(!reviewMode || editing) && (
             <section className="card">
@@ -375,6 +509,33 @@ export default function Evidence() {
                           : "Needs review; does not count"}
                   </strong>
                 </p>
+                {line.createdBy === "agent" && <p>{copy.fromDocument}</p>}
+                {line.createdBy === "agent" &&
+                  line.status === "proposed" &&
+                  needsCheck({
+                    confidence:
+                      line.confidence === null
+                        ? null
+                        : line.confidence / 10_000,
+                    questions: line.questions,
+                  }) && (
+                    <div className="check-this">
+                      <h4>{copy.checkThis}</h4>
+                      {line.questions.length ? (
+                        <>
+                          <p>{copy.unsureOf}</p>
+                          <ul>
+                            {line.questions.map((question) => (
+                              <li key={question}>{copy.questions[question]}</li>
+                            ))}
+                          </ul>
+                          <p>{copy.unsureHelp}</p>
+                        </>
+                      ) : (
+                        <p>{copy.lowConfidence}</p>
+                      )}
+                    </div>
+                  )}
                 {summary(line.fields)}
                 <div className="actions">
                   {line.documentId && (
@@ -523,6 +684,23 @@ export default function Evidence() {
                   >
                     {es ? "Ver archivo" : "View file"}
                   </button>
+                  {!reviewMode &&
+                    !lines.some(
+                      (line) =>
+                        line.documentId === row.id &&
+                        line.createdBy === "agent",
+                    ) && (
+                      <button
+                        className="secondary"
+                        disabled={
+                          reading?.phase === "reading" ||
+                          reading?.phase === "slow"
+                        }
+                        onClick={() => void read(row.id)}
+                      >
+                        {copy.readFile}
+                      </button>
+                    )}
                   {!lines.some(
                     (line) =>
                       line.documentId === row.id && line.status !== "rejected",

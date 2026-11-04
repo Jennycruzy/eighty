@@ -21,7 +21,11 @@ import {
 } from "../db/schema.ts";
 import { inspectDocument } from "./document-content.ts";
 import { processDocumentDeletion } from "./document-deletions.ts";
-import { reviewedMemberActor, browserMemberActor } from "./member-identity.ts";
+import {
+  reviewedMemberActor,
+  browserMemberActor,
+  type MemberActor,
+} from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
 
 const publicColumns = {
@@ -140,12 +144,15 @@ export async function listDocuments(context: ActionRunContext | undefined) {
     )
     .orderBy(documents.createdAt);
 }
-export async function readDocument(
+/**
+ * The signed-in member's own document. Another member's id is refused exactly
+ * like a missing one.
+ */
+export async function ownDocumentRow(
   id: string,
-  context: ActionRunContext | undefined,
+  actor: MemberActor,
+  member: { id: string },
 ) {
-  const actor = await browserMemberActor(context),
-    member = await getMemberRecord(actor);
   const [row] = await getDb()
     .select()
     .from(documents)
@@ -158,6 +165,15 @@ export async function readDocument(
     );
   if (!row)
     throw createError({ statusCode: 404, statusMessage: "File not found" });
+  return row;
+}
+export async function readDocument(
+  id: string,
+  context: ActionRunContext | undefined,
+) {
+  const actor = await browserMemberActor(context),
+    member = await getMemberRecord(actor);
+  const row = await ownDocumentRow(id, actor, member);
   const original = Buffer.from((await readPrivateBlob(row.handle)).data);
   const inspected = await inspectDocument(original, row.rotation);
   return { id: row.id, original: original.toString("base64"), ...inspected };

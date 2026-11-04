@@ -143,6 +143,16 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
     );
     save = await upload(png, "synthetic.png", "image/png");
     await choose(page, save, "Enter");
+    // This check runs with no model configured: reading starts on its own,
+    // says so plainly and opens typed entry for the saved file.
+    await page
+      .getByText(
+        es
+          ? "El lector de documentos no está disponible ahora. Puedes escribir los números."
+          : "The document reader is not available right now. You can type the numbers instead.",
+        { exact: true },
+      )
+      .waitFor({ timeout: 60000 });
     const employer = page.getByLabel(
       es ? "Empleador, grupo o escuela" : "Employer, group or school",
     );

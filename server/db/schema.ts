@@ -14,6 +14,7 @@ import {
 
 import type { DuplicateChoice } from "../../shared/evidence-review.ts";
 import type { EvidenceFields } from "../../shared/evidence.ts";
+import type { ReaderQuestion } from "../../shared/reader.ts";
 import type { MemberProfile } from "../../shared/member-profile.ts";
 
 const createdAt = () =>
@@ -98,6 +99,11 @@ export const evidence = pgTable(
     }).notNull(),
     fields: jsonb("fields").$type<EvidenceFields>().notNull(),
     confidence: integer("confidence"),
+    // Facts the reader was not sure of. Their values stay blank.
+    questions: jsonb("questions")
+      .$type<ReaderQuestion[]>()
+      .notNull()
+      .default([]),
     createdBy: text("created_by", {
       enum: ["agent", "member", "navigator"],
     }).notNull(),
@@ -110,6 +116,7 @@ export const evidence = pgTable(
   (table) => [
     index("eighty_evidence_member_status").on(table.memberId, table.status),
     index("eighty_evidence_owner").on(table.ownerEmail),
+    index("eighty_evidence_document").on(table.documentId),
   ],
 );
 export const evidenceVersions = pgTable(

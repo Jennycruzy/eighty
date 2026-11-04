@@ -37,7 +37,7 @@ The [public-page checks](docs/tests/results/public-pages.md) cover signed-out En
 
 The [initial check and account handoff](docs/screener.md) use 13 optional questions, cited reasons and proof checklists. Account creation stays closed on the preview. Public HEAD requests are checked against GET in the production checks.
 
-The [evidence guide](docs/evidence.md) explains private photo and PDF uploads, manual entry, review cards, duplicate comparisons and saved versions. The flow uses no model reader. See [the production evidence checks](docs/tests/results/evidence.md).
+The [evidence guide](docs/evidence.md) explains private photo and PDF uploads, manual entry, review cards, duplicate comparisons and saved versions. A model can read a saved file into proposed lines; the member checks and confirms each one, and the fixed rules decide the month. See [the production evidence checks](docs/tests/results/evidence.md).
 
 ## Limits before sign-up opens
 

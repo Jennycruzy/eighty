@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
     [
       "/_agent-native/actions/inspect_document",
       "/_agent-native/actions/upload_document",
+      "/_agent-native/actions/try_read_document",
     ].includes(path)
   )
     assertBodySize(event, 22 * 1024 * 1024);

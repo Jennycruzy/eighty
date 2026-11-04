@@ -16,7 +16,23 @@ Darkness and blur checks produce warnings, never evidence or a decision. The mem
 
 Only original bytes are stored, through the framework's encrypted private storage. The app selects its app-owned `hosted-private` bucket and registers the provider at startup; member requests do not borrow a deployment owner's generic storage credentials. The database requires an encrypted, opaque handle. Viewing copies are made in memory and are not saved. Reads check both the verified browser session and the member's ownership. Responses use `private, no-store`. No storage handle or public document URL is returned to the browser. SHA-256 detects a repeated file within that member's account. Limits are 200 files and 300 MB per member.
 
-An unused file, or a file linked only to rejected evidence, can be deleted. Proposed or confirmed lines keep their files as proof. Storage failures leave manual entry available. No document reader or model is used in this work.
+An unused file, or a file linked only to rejected evidence, can be deleted. Proposed or confirmed lines keep their files as proof. Storage failures leave manual entry available.
+
+## Reading documents
+
+After a member saves a photo or PDF, the evidence screen reads it on its own and shows "Reading your document…" while it waits. The member's own agent can ask for the same reading. The reader proposes facts: dates, hours, employer and pay amounts. It never decides a month. Every reading is saved as proposed lines through the same path as typed entry, with versions and duplicate warnings. Nothing counts until the member confirms a line in the browser; the reader and the agent cannot confirm, and the reader cannot confirm business costs.
+
+The app uses the model the deployment already has, through the framework's one-off completion call. Photos are sent as the same decoded, size-limited copy the upload check makes, with rotation applied. A PDF is drawn page by page on the server; only the first 10 pages are read, and the screen says so. The document goes to the model as fenced data with plain instructions that its text is never an instruction.
+
+The answer must be one exact JSON object. Anything else, extra fields, a confirmed status or owner, impossible dates, dates outside the document's own period, negative or fractional-cent amounts, hours that fail the hours check, or more than 60 lines make the whole read fail: the member sees "We couldn't read this. You can type the numbers instead." with typed entry open. A fact the model is unsure of is left blank and listed as a question. A line with questions or below 0.85 confidence is marked "Check this". A document that is not a US record gives "We can't read this as a US pay stub." A file is read into lines once; reading it again adds nothing.
+
+Each call adds one row to `eighty_ai_ledger` with the purpose and token counts only, never document content or numbers. Saved files are kept as described above, until the member removes them.
+
+Before a photo leaves the phone, the member can black out parts of it, such as a name, case number or account numbers, by dragging boxes or by keyboard. The boxes are painted into a new copy on the phone; only that copy is sent, without camera metadata.
+
+Try mode reads one document for a visitor with no account. It is checked with the same size limits, read in memory, never written to the database or storage, and cleared as soon as the answer is ready. The page says when it was deleted. The numbers fill the try form for the visitor to check and confirm. The ledger keeps only that a try happened. Each visitor can read 3 documents a day and the site 50 a day, set with `EIGHTY_TRY_READS_PER_VISITOR` and `EIGHTY_TRY_READS_PER_DAY`; 0 turns reading off. Per-visitor counts are kept in memory under a keyed hash of the address and reset on restart. When a limit is reached, try mode still works by typing and says so.
+
+Tests replace only the model engine. Parsing, refusals, fencing, page limits, saving, owner checks, the ledger and try mode run as real code against a disposable database. These tests do not measure reading accuracy.
 
 ## Checks
 
@@ -24,7 +40,7 @@ An unused file, or a file linked only to rejected evidence, can be deleted. Prop
 
 `pnpm check:production IMAGE` creates a separate database and two verified browser accounts. It checks English and Spanish at 360 px, file inspection and retake, encrypted storage, exact original bytes, ownership, multiple PDF pages, manual evidence, confirmation, duplicate comparisons, editing, rejection and restoration. Its private-storage transport runs only in that disposable container; encryption and decryption use the real provider. `pnpm check:storage` separately checks the configured private bucket.
 
-Remaining launch limits: there is no independent database backup, and the file encryption key exists only on this server. Registration stays closed. The model reader is separate work.
+Remaining launch limits: there is no independent database backup, and the file encryption key exists only on this server. Registration stays closed. Reading quality with a live model has not been measured here.
 
 ## File size and removal safeguards
 
