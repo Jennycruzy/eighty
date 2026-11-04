@@ -276,5 +276,84 @@
         "proof": "Keep your Medicaid coverage letter. Bring any papers that support an answer you gave."
       }
     }
+  },
+  "demo": {
+    "landing": {
+      "title": "See it work on a made-up month",
+      "intro": "Open a member's month in one tap, with no account. The people are made up. Anything you add is deleted within a day.",
+      "maria": "Open Maria's month",
+      "others": "Or open another made-up month:",
+      "daniel": "Daniel, a student",
+      "rosa": "Rosa, a caregiver",
+      "opening": "Opening the demo…",
+      "limit": "Too many demos were opened from here. Try again in an hour.",
+      "closed": "The demo is closed right now. Try again later.",
+      "offline": "You are offline. Connect and try again.",
+      "error": "The demo did not open. Try again."
+    },
+    "band": {
+      "label": "Demo",
+      "text": "Demo. {name} is made up. Anything you add is deleted within a day.",
+      "again": "Start again",
+      "leave": "Leave demo",
+      "working": "One moment…",
+      "error": "That did not work. Check your connection and try again."
+    },
+    "people": {
+      "maria": {
+        "name": "Maria",
+        "about": "Maria is 34 and lives in Omaha, Nebraska. She delivers through an app, so her weeks are uneven. She volunteers at a food pantry on Saturdays. She uses only her phone. She speaks Spanish at home and English at work. Her renewal is in January."
+      },
+      "daniel": {
+        "name": "Daniel",
+        "about": "Daniel is 22 and lives in Billings, Montana. He takes 6 credits at a community college, which is less than half-time. He also has a part-time job of about 20 hours a month."
+      },
+      "rosa": {
+        "name": "Rosa",
+        "about": "Rosa is 51 and lives in Lincoln, Nebraska. Every day she cares for her mother, who has dementia and lives with her."
+      }
+    },
+    "month": {
+      "eyebrow": "Demo · made-up member",
+      "title": "{name}'s month",
+      "loading": "Loading the month…",
+      "error": "We could not load the month. Check your connection and try again.",
+      "notDemo": "This page is only for the demo. Open a made-up month from the home page.",
+      "home": "Go to the home page",
+      "retry": "Load again",
+      "thisMonth": "This month",
+      "lastMonth": "Last month",
+      "hours": "{hours} of {target} hours",
+      "pay": "Pay counted: {amount}",
+      "rule": "Rule",
+      "missing": "Facts still needed: {count}",
+      "waiting": "Lines waiting for review: {count}",
+      "none": "Nothing is waiting for review.",
+      "review": "Review the lines",
+      "add": "Add proof",
+      "stateDecides": "These are the federal rules only. The state makes the real decision.",
+      "status": {
+        "Meets": "Meets the rule",
+        "Short": "Below the line",
+        "Exempt": "The rule does not apply",
+        "Deemed": "Counted as meeting the rule",
+        "Not sure yet": "Not sure yet"
+      },
+      "next": {
+        "maria": "Maria is 19 hours short this month. Her delivery pay may count instead. Add her earnings summary, type its facts and confirm them.",
+        "daniel": "Daniel's 6 credits count as 77.94 hours (6 × 3 × 4.33). His job hours bring the month past 80.",
+        "rosa": "Rosa did not know this: as a family caregiver for someone who lives with her, the rule does not apply to her."
+      }
+    },
+    "sample": {
+      "title": "Try it with Maria's sample earnings summary",
+      "intro": "One tap adds a made-up earnings summary to Maria's private files. Then type its facts.",
+      "button": "Add Maria's sample",
+      "working": "Adding the sample…",
+      "saved": "The sample is saved. Type the facts from it below.",
+      "hint": "Choose Pay, then Gig or own business. The summary shows $824.45 in total earnings. Maria spent $206.60 on gas and her phone for deliveries, so her net pay after costs is $617.85. Answer Yes to the business-costs question. Net pay is what counts, not the total.",
+      "picture": "See the sample as a picture",
+      "error": "The sample was not saved. You can still type the facts."
+    }
   }
 }

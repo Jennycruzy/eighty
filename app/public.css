@@ -3,3 +3,4 @@
 
 .result[data-status="Not sure yet"]{border-color:#7b8487}.result[data-status="Not sure yet"] h2,.status[data-status="Not sure yet"]{color:#50585a}.status[data-status="Short"]{color:#755313}
 .photo-preview,.document-view img{display:block;max-width:100%;max-height:70vh;object-fit:contain;margin:auto}.document-view{max-width:100%;overflow:auto}.document-view canvas{display:block;max-width:none}.evidence-line{margin:20px 0}button{overflow-wrap:anywhere}dl div{min-width:0}dd{overflow-wrap:anywhere}
+.demo-band{margin:0 0 28px;padding:16px 20px;border:2px solid #ab542e;border-radius:12px;background:#fff6ee}.demo-band p{margin:0}.demo-band .actions{margin-top:12px}.demo-start{margin:28px 0}.demo-others{margin-top:16px}.link-button{display:inline;min-height:44px;padding:8px 2px;background:none;border:0;color:#215e4e;font-weight:600;text-decoration:underline;text-underline-offset:4px}.link-button:disabled{opacity:.65}

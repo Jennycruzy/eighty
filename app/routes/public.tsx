@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import proof from "../../data/proof.json";
 import en from "../../locales/en-US.json";
 import es from "../../locales/es-US.json";
+import { DemoStart } from "../components/demo/DemoStart";
 import { useLanguage, languageLink } from "../lib/language";
 export default function PublicPage() {
   const lang = useLanguage(),
@@ -55,6 +56,7 @@ export default function PublicPage() {
             </a>
           </section>
         </div>
+        <DemoStart />
         <p>
           {spanish
             ? "Conoce la regla. Revisa tus datos. Guarda tus pruebas."
@@ -124,7 +126,7 @@ export default function PublicPage() {
         </section>
       </>
     );
-  const key = path.slice(1) as Exclude<keyof typeof en, "screener">;
+  const key = path.slice(1) as Exclude<keyof typeof en, "screener" | "demo">;
   const content = (spanish ? es : en)[key];
   return (
     <>
