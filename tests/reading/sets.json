@@ -1,0 +1,412 @@
+{
+  "about": "Practice documents may be read while building the reader. Locked documents are read only by the release runs; nobody looks at reader output for them while building. The demo's sample earnings summary in public/demo/ belongs to no set.",
+  "asOf": "2026-11-04",
+  "practice": [
+    {
+      "document": "paystub-a-weekly-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "44ce6cca47662252697c3d1c982bf9319751a76a1a0f9e94c7b2e8061e026cea"
+    },
+    {
+      "document": "paystub-b-biweekly-overtime-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "0340591bc6ab55909fdac0a0ff30e0cec9ef20a9e164479d48ea1d91c2195fbe"
+    },
+    {
+      "document": "paystub-c-monthly-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "57380d18999f78be10e443526cba15e1d1acf93c606d90407254f17fc3db52ca"
+    },
+    {
+      "document": "paystub-d-weekly-overtime-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "dae566ddbee4ba9c4a6a920edc4ddfff56c1d656aaad69ddd345789d0baed2c7"
+    },
+    {
+      "document": "paystub-b-monthly-ytd-en.jpg",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "ff5a51ec604b2c95ddd5e1552648bc4dfeb2d9392999d4ba2a983c610d65b25f"
+    },
+    {
+      "document": "talon-a-quincenal-es.pdf",
+      "type": "pay-stub",
+      "language": "es",
+      "conditions": [],
+      "sha256": "5b00a1136df20ed829b8cfc60b77e321c13f665f24aae78a4bc51fcda7c81c3c"
+    },
+    {
+      "document": "gig-delivery-weekly-en.png",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "sha256": "601581213870c6150737fc17fd49869bcb7032537ee606a50dc6827952434b6c"
+    },
+    {
+      "document": "gig-ride-monthly-en.pdf",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "sha256": "fbfb846d67eb57b869b810d753d9fc08f93559f73ac60612ec73c8ab5864bc7e"
+    },
+    {
+      "document": "gig-ride-weekly-es.png",
+      "type": "gig-summary",
+      "language": "es",
+      "conditions": [],
+      "sha256": "7bf31516152eca96ef9f89f14446d05404a5d63b197b37e83bc9946030ab41a1"
+    },
+    {
+      "document": "volunteer-pantry-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [],
+      "sha256": "f689367408a6cf117fa014ad1584618b13791fc3cec125dff0bf4160cab73564"
+    },
+    {
+      "document": "volunteer-shelter-handwritten-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [
+        "handwriting"
+      ],
+      "sha256": "859ef4c96cbb2143e875b82ca717ef3b087ca0b44916f73639eba9006437e22d"
+    },
+    {
+      "document": "volunteer-library-es.png",
+      "type": "volunteer-sheet",
+      "language": "es",
+      "conditions": [],
+      "sha256": "7f7e5b2d3fd3b37cfcfcff456fbf4d4f22ded53780de55876b4e8411fe4b861c"
+    },
+    {
+      "document": "class-schedule-en.pdf",
+      "type": "class-schedule",
+      "language": "en",
+      "conditions": [],
+      "sha256": "1688fae6b71572fa4d6f5f12540129955a45f8ec0d7074bc8f314aeca69cc249"
+    },
+    {
+      "document": "enrollment-half-time-en.pdf",
+      "type": "enrollment-letter",
+      "language": "en",
+      "conditions": [],
+      "sha256": "996d480b4a02fbae6d9fd3615b2f5f383f24a83d3d86ed8d3ccc7cf64a86f7af"
+    },
+    {
+      "document": "enrollment-less-than-half-en.png",
+      "type": "enrollment-letter",
+      "language": "en",
+      "conditions": [],
+      "sha256": "58efe3ab70f971242a4da82d3c16679710f2817efcb03c68132a741bb3ff6774"
+    },
+    {
+      "document": "state-notice-en.pdf",
+      "type": "state-notice",
+      "language": "en",
+      "conditions": [],
+      "sha256": "4d918950c756c5f6adb554616f36a1ce59644edd7f2689b83c427b0d675a1f53"
+    },
+    {
+      "document": "hard-blurred-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "blurred"
+      ],
+      "sha256": "2e4e5ecf98dccac2af3af87c2d530c391ce4ffd2aa0b76d0b9410984657367ce"
+    },
+    {
+      "document": "hard-rotated-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "rotated"
+      ],
+      "sha256": "28d908fc72f6d0632f78a138b8a739edabf3e74410bb2684f617df6553cee5c3"
+    },
+    {
+      "document": "hard-dark-gig-en.jpg",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "dark"
+      ],
+      "sha256": "1a964fe2fa9ad9e803021ce93ff462a920c347aa6d92a1294c803694de8eaf29"
+    },
+    {
+      "document": "hard-cropped-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "cropped"
+      ],
+      "sha256": "fcfc0d941e3a4809558deaf1bfcdfd427af90f12e6b4f96f75e72337f5555d9d"
+    },
+    {
+      "document": "hard-screen-gig-en.jpg",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "photo-of-screen"
+      ],
+      "sha256": "64f908fb778f404f81e1a65ed2f7da975f519c2f33568f88b90b91419138f38d"
+    },
+    {
+      "document": "hard-two-page-paystub-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "two-pages"
+      ],
+      "sha256": "1948bdfc6ca4b7b42c362a797e17ce29a176ac24af74d391a9396113aedb33b8"
+    },
+    {
+      "document": "refusal-uk-payslip-en.png",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "outside-us"
+      ],
+      "sha256": "52a195d6f47aac39e1979ef296f88ea59afb8fa3843e2929a165538248a51a80"
+    },
+    {
+      "document": "refusal-grocery-receipt-en.png",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "nothing-relevant"
+      ],
+      "sha256": "1294a302d92d3ceb0b278aae5aa69effd724c7c70d16b869a216bc5c7737090d"
+    },
+    {
+      "document": "refusal-injection-en.pdf",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "instructions-in-text"
+      ],
+      "sha256": "6560500f90dcd2d17243dbe3f55735d0e38733cc0b0adeff523e4d882091ca9b"
+    }
+  ],
+  "locked": [
+    {
+      "document": "paystub-a-biweekly-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "bbda244344445ee2a9b903d81148c042afa281977fc64143b7521fbb01fc15c9"
+    },
+    {
+      "document": "paystub-c-weekly-en.jpg",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "f4bcf969892b5e72295db1da04d75269779b55cffb8ef5213c2aecfa13e2a2da"
+    },
+    {
+      "document": "paystub-d-biweekly-overtime-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "86ae4c563d346aced53aa84db990e1c8200b4efcac2cbb618b80d927579d9a3d"
+    },
+    {
+      "document": "paystub-b-weekly-injection-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "instructions-in-text"
+      ],
+      "sha256": "3723fc4043284025938cd6353b294636098a96e709606d99fd11c47e43c8b470"
+    },
+    {
+      "document": "paystub-c-biweekly-ytd-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "sha256": "054f35f656c88f11a5b79782a7f197697eecc08c4bfaf7537e269e7ccfed292a"
+    },
+    {
+      "document": "talon-d-semanal-es.png",
+      "type": "pay-stub",
+      "language": "es",
+      "conditions": [],
+      "sha256": "691a8faecfb0cf4932ef32f994a26b10e6ca3398cf4a2c7dab209156bec68782"
+    },
+    {
+      "document": "gig-delivery-monthly-en.png",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "sha256": "6c263572d7f02ddf60b21d366fb1ee0bba2b0262b89636eec903e08caa13105f"
+    },
+    {
+      "document": "gig-ride-weekly-en.pdf",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "sha256": "07a8f77b02444278547de4a84f6426b79c2108a56e4ccf6a4726c1f12c46cdf9"
+    },
+    {
+      "document": "gig-delivery-weekly-es.pdf",
+      "type": "gig-summary",
+      "language": "es",
+      "conditions": [],
+      "sha256": "8854f30e0a5930b285a082496da5b3ce68568d4c1c2743cb393015b4933371be"
+    },
+    {
+      "document": "volunteer-literacy-en.pdf",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [],
+      "sha256": "55af481a5935d98b73b7dfac2ec68ccd4f01a6ff1fe98d4de31920b7ca0f0872"
+    },
+    {
+      "document": "volunteer-garden-handwritten-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [
+        "handwriting"
+      ],
+      "sha256": "e8fae74d506156ab935e53419278d5071f00f3eb7f1e77d6fa87f091df02595a"
+    },
+    {
+      "document": "volunteer-clinic-es.pdf",
+      "type": "volunteer-sheet",
+      "language": "es",
+      "conditions": [],
+      "sha256": "2cdd34b60f30980adc0300725bc4d6de06a579cd8ea6ce27100fb1e2c1fd09dc"
+    },
+    {
+      "document": "class-schedule-es.png",
+      "type": "class-schedule",
+      "language": "es",
+      "conditions": [],
+      "sha256": "4108e2699301587d976966cf37e5c5079c935cf24a7604ac2e526094d9b47e66"
+    },
+    {
+      "document": "enrollment-half-time-es.png",
+      "type": "enrollment-letter",
+      "language": "es",
+      "conditions": [],
+      "sha256": "696c55236e56350681900eddac810adb1e41c7abfa4db034d4cbaa835df795d1"
+    },
+    {
+      "document": "enrollment-less-than-half-es.pdf",
+      "type": "enrollment-letter",
+      "language": "es",
+      "conditions": [],
+      "sha256": "45ca47de3e864737c8e9670847e31fec497d60d54c2d1319cab7c84238e9198a"
+    },
+    {
+      "document": "state-notice-es.pdf",
+      "type": "state-notice",
+      "language": "es",
+      "conditions": [],
+      "sha256": "5fdf828fc6eff00b40d7d30bac2beea872570527718f122d1e9af4bf72aee2ba"
+    },
+    {
+      "document": "hard-blurred-volunteer-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [
+        "blurred"
+      ],
+      "sha256": "3bf83e42149e86262eeed53a8f7742bfb99fbc9728279ff7325316e0923e2241"
+    },
+    {
+      "document": "hard-rotated-talon-es.png",
+      "type": "pay-stub",
+      "language": "es",
+      "conditions": [
+        "rotated"
+      ],
+      "sha256": "42a1eb97dca3f3bb364644464c29d9fcb76644aaf6a306662d969443ac3c0fd8"
+    },
+    {
+      "document": "hard-dark-enrollment-en.jpg",
+      "type": "enrollment-letter",
+      "language": "en",
+      "conditions": [
+        "dark"
+      ],
+      "sha256": "c552ec82781ae36c29e8ed8cf2097defee676bbb0cf7a985fab5ef1248190bdb"
+    },
+    {
+      "document": "hard-cropped-gig-en.png",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "cropped"
+      ],
+      "sha256": "9aa8ac414af6241099be17dfe74533d0f7c1ce8427d244f23a6a602efd05fe32"
+    },
+    {
+      "document": "hard-screen-gig-es.jpg",
+      "type": "gig-summary",
+      "language": "es",
+      "conditions": [
+        "photo-of-screen"
+      ],
+      "sha256": "799846f624aed9e4e6b6df3abfbbb1be4f89950b4c3939ebe8dac6128c2e6898"
+    },
+    {
+      "document": "hard-two-page-gig-en.pdf",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "two-pages"
+      ],
+      "sha256": "5bd9d9f60e449c1eb020e4a5aa9e98e7ab4cc735d173651d8b3fc2f4526ebc40"
+    },
+    {
+      "document": "hard-photo-notice-en.jpg",
+      "type": "state-notice",
+      "language": "en",
+      "conditions": [
+        "photo"
+      ],
+      "sha256": "c200374c54e0db4402b21cef2dfe3c859959e53da1ba0230ce21fab29500dbdd"
+    },
+    {
+      "document": "refusal-mexico-recibo-es.png",
+      "type": "refusal",
+      "language": "es",
+      "conditions": [
+        "outside-us"
+      ],
+      "sha256": "0853434ce090285034025840c683b3faeaf2e74348b718ef493a8ab2c46fe6aa"
+    },
+    {
+      "document": "refusal-pharmacy-receipt-en.png",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "nothing-relevant"
+      ],
+      "sha256": "a81a5cd045ba808ebe9addc3c1907ee8ead9cf1326461c87ac029d6f51356784"
+    },
+    {
+      "document": "refusal-injection-es.png",
+      "type": "refusal",
+      "language": "es",
+      "conditions": [
+        "instructions-in-text"
+      ],
+      "sha256": "01b8b49189e14473af99728aebbd04ca23f4b56264e1768dfd46ad8e0c00d72e"
+    }
+  ],
+  "notInAnySet": [
+    "public/demo/"
+  ]
+}
