@@ -1,0 +1,36 @@
+{
+  "document": "hard-two-page-paystub-en.pdf",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [
+    "two-pages"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-05",
+          "end": "2026-10-18",
+          "hours": 67,
+          "organization": "Evergreen Home Health",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-23",
+            "grossPayCents": 116450,
+            "preTaxDeductionsCents": 11023,
+            "netEarningsCents": 86819
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "$1,164.50 gross minus $110.23 pre-tax is $1,054.27. The totals are on page 2."
+}

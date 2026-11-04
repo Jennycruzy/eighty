@@ -1,0 +1,128 @@
+{
+  "document": "volunteer-literacy-en.pdf",
+  "type": "volunteer-sheet",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-08",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-04",
+          "end": "2026-08-04",
+          "hours": 2,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-06",
+          "end": "2026-08-06",
+          "hours": 2,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-11",
+          "end": "2026-08-11",
+          "hours": 2.5,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-13",
+          "end": "2026-08-13",
+          "hours": 2,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-18",
+          "end": "2026-08-18",
+          "hours": 3,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-20",
+          "end": "2026-08-20",
+          "hours": 2,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-25",
+          "end": "2026-08-25",
+          "hours": 2.5,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-08-27",
+          "end": "2026-08-27",
+          "hours": 2,
+          "organization": "Harbor Literacy Project",
+          "service": {
+            "confirmationContact": "Morgan Lee, (555) 010-4410"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "18 hours in August. The 112 is the program's year total, not this person's month."
+}

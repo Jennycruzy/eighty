@@ -1,0 +1,32 @@
+{
+  "document": "enrollment-half-time-en.pdf",
+  "type": "enrollment-letter",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "education",
+          "organization": "Lakeview Community College",
+          "education": {
+            "enrollment": "half-time",
+            "qualifyingProgram": true,
+            "termStart": "2026-08-24",
+            "termEnd": "2026-12-12",
+            "credits": 7,
+            "usesCreditHours": true
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "Half-time in a credit-bearing degree program during October."
+}

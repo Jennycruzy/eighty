@@ -1,0 +1,34 @@
+{
+  "document": "hard-dark-enrollment-en.jpg",
+  "type": "enrollment-letter",
+  "language": "en",
+  "conditions": [
+    "dark"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "education",
+          "organization": "Harborview State College",
+          "education": {
+            "enrollment": "half-time",
+            "qualifyingProgram": true,
+            "termStart": "2026-08-26",
+            "termEnd": "2026-12-16",
+            "credits": 6,
+            "usesCreditHours": true
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "Half-time in a credit-bearing degree program during October."
+}

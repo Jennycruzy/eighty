@@ -1,0 +1,35 @@
+{
+  "document": "hard-two-page-gig-en.pdf",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [
+    "two-pages"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-01",
+          "end": "2026-10-31",
+          "hours": 84,
+          "organization": "Roadshare",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-11-03",
+            "grossPayCents": 192140,
+            "netEarningsCents": 143850
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "84 hours driving in October, shown on page 2."
+}

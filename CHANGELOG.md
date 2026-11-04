@@ -4,6 +4,7 @@
 
 - Read photos and PDFs into lines you check before they count.
 - Open a made-up member's month in one tap, with no account.
+- Test the document reader on 51 made-up documents, with the answers written first.
 
 ## 3 November 2026
 

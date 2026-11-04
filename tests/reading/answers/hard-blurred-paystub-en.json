@@ -1,0 +1,50 @@
+{
+  "document": "hard-blurred-paystub-en.png",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [
+    "blurred"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-05",
+          "end": "2026-10-18",
+          "hours": 76,
+          "organization": "Pinecrest Grocery",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-10-23"
+          }
+        },
+        "confidence": 1,
+        "questions": [
+          "gross-pay",
+          "pre-tax-deductions",
+          "net-earnings"
+        ]
+      }
+    ]
+  },
+  "unreadable": [
+    {
+      "proposal": 0,
+      "question": "gross-pay"
+    },
+    {
+      "proposal": 0,
+      "question": "pre-tax-deductions"
+    },
+    {
+      "proposal": 0,
+      "question": "net-earnings"
+    }
+  ],
+  "expectedOutcome": "Not sure yet",
+  "reason": "The money is blurred, so pay must be asked; 76 hours is under 80."
+}

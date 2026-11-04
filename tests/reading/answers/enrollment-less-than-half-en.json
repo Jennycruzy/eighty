@@ -1,0 +1,32 @@
+{
+  "document": "enrollment-less-than-half-en.png",
+  "type": "enrollment-letter",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "education",
+          "organization": "Riverbend Technical College",
+          "education": {
+            "enrollment": "less-than-half",
+            "qualifyingProgram": true,
+            "termStart": "2026-08-31",
+            "termEnd": "2026-12-19",
+            "credits": 5,
+            "usesCreditHours": true
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "5 credits count as 64.95 hours, under 80; income is unknown."
+}

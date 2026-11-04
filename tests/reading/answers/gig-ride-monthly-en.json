@@ -1,0 +1,33 @@
+{
+  "document": "gig-ride-monthly-en.pdf",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-09",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-01",
+          "end": "2026-09-30",
+          "hours": 96,
+          "organization": "Roadshare",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-10-03",
+            "grossPayCents": 187420,
+            "netEarningsCents": 140565
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Meets",
+  "reason": "96 hours driving in September."
+}

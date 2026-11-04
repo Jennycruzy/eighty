@@ -1,0 +1,32 @@
+{
+  "document": "enrollment-less-than-half-es.pdf",
+  "type": "enrollment-letter",
+  "language": "es",
+  "conditions": [],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "education",
+          "organization": "Colegio Técnico Riverbend",
+          "education": {
+            "enrollment": "less-than-half",
+            "qualifyingProgram": true,
+            "termStart": "2026-08-31",
+            "termEnd": "2026-12-19",
+            "credits": 4,
+            "usesCreditHours": true
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "4 credits count as 51.96 hours, under 80; income is unknown."
+}

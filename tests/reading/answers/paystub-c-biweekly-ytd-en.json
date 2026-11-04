@@ -1,0 +1,34 @@
+{
+  "document": "paystub-c-biweekly-ytd-en.png",
+  "type": "pay-stub",
+  "language": "en",
+  "conditions": [],
+  "month": "2026-08",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-08-03",
+          "end": "2026-08-16",
+          "hours": 36,
+          "organization": "Valley Print Shop",
+          "income": {
+            "kind": "wages",
+            "receivedOn": "2026-08-21",
+            "grossPayCents": 54000,
+            "preTaxDeductionsCents": 0,
+            "netEarningsCents": 44469
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Short",
+  "reason": "$540.00 for the period; 36 hours. The year-to-date column is not this period."
+}

@@ -1,0 +1,35 @@
+{
+  "document": "hard-screen-gig-es.jpg",
+  "type": "gig-summary",
+  "language": "es",
+  "conditions": [
+    "photo-of-screen"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-09-28",
+          "end": "2026-10-04",
+          "hours": 24,
+          "organization": "QuickBite Courier",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-10-07",
+            "grossPayCents": 44350,
+            "netEarningsCents": 37697
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "Gig pay needs confirmed business costs; the week crosses two months."
+}

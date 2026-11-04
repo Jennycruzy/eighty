@@ -1,0 +1,74 @@
+{
+  "document": "volunteer-garden-handwritten-en.png",
+  "type": "volunteer-sheet",
+  "language": "en",
+  "conditions": [
+    "handwriting"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-10-04",
+          "end": "2026-10-04",
+          "hours": 3,
+          "organization": "Westside Community Garden",
+          "service": {
+            "confirmationContact": "Robin Shaw, (555) 010-3390"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-10-11",
+          "end": "2026-10-11",
+          "hours": 4,
+          "organization": "Westside Community Garden",
+          "service": {
+            "confirmationContact": "Robin Shaw, (555) 010-3390"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-10-18",
+          "end": "2026-10-18",
+          "hours": 3.5,
+          "organization": "Westside Community Garden",
+          "service": {
+            "confirmationContact": "Robin Shaw, (555) 010-3390"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      },
+      {
+        "fields": {
+          "kind": "service",
+          "start": "2026-10-25",
+          "end": "2026-10-25",
+          "hours": 4,
+          "organization": "Westside Community Garden",
+          "service": {
+            "confirmationContact": "Robin Shaw, (555) 010-3390"
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "14.5 volunteer hours, and the service facts still need answers."
+}

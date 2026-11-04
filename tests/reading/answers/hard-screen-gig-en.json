@@ -1,0 +1,35 @@
+{
+  "document": "hard-screen-gig-en.jpg",
+  "type": "gig-summary",
+  "language": "en",
+  "conditions": [
+    "photo-of-screen"
+  ],
+  "month": "2026-10",
+  "asOf": "2026-11-04",
+  "expected": {
+    "usDocument": true,
+    "proposals": [
+      {
+        "fields": {
+          "kind": "income",
+          "start": "2026-10-12",
+          "end": "2026-10-18",
+          "hours": 22.75,
+          "organization": "Basket Run",
+          "income": {
+            "kind": "self-employment",
+            "receivedOn": "2026-10-20",
+            "grossPayCents": 40200,
+            "netEarningsCents": 40001
+          }
+        },
+        "confidence": 1,
+        "questions": []
+      }
+    ]
+  },
+  "unreadable": [],
+  "expectedOutcome": "Not sure yet",
+  "reason": "Gig pay needs confirmed business costs; 22.75 hours."
+}
