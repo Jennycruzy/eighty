@@ -7,7 +7,9 @@ import {
   preparePhoneFile,
   type PhoneFileError,
 } from "../../lib/prepare-photo";
+import { CoverTool } from "./CoverTool";
 import { DocumentView, type DocumentData } from "./DocumentView";
+import { readerCopy } from "./reader-copy";
 interface Checked extends DocumentData {
   quality: { dark: boolean; blurry: boolean } | null;
 }
@@ -29,7 +31,10 @@ export function UploadProof({
     [acceptQuality, setAcceptQuality] = useState(false);
   const [smaller, setSmaller] = useState(false),
     [smallerSaved, setSmallerSaved] = useState(false),
-    [fileError, setFileError] = useState<PhoneFileError | null>(null);
+    [fileError, setFileError] = useState<PhoneFileError | null>(null),
+    [covering, setCovering] = useState(false),
+    [covered, setCovered] = useState(false);
+  const cover = readerCopy(es).cover;
   return (
     <section className="card">
       <h2>{es ? "Añadir una foto o PDF" : "Add a photo or PDF"}</h2>
@@ -55,6 +60,8 @@ export function UploadProof({
             setChecked(null);
             setAcceptQuality(false);
             setLocalPreview(null);
+            setCovering(false);
+            setCovered(false);
             if (next)
               void work(async () => {
                 try {
@@ -107,15 +114,43 @@ export function UploadProof({
             : "We saved a smaller copy of your photo."}
         </p>
       )}
-      {localPreview && !checked && (
+      {covered && file && !checked && <p role="status">{cover.applied}</p>}
+      {file && !checked && !localPreview && !covering && (
+        <p className="note">{cover.notPhoto}</p>
+      )}
+      {covering && file && (
+        <CoverTool
+          file={file}
+          rotation={rotation}
+          es={es}
+          onCancel={() => setCovering(false)}
+          onDone={async (copy) => {
+            setLocalPreview(await phonePreview(copy, 0));
+            setFile(copy);
+            setRotation(0);
+            setCovering(false);
+            setCovered(true);
+          }}
+        />
+      )}
+      {localPreview && !checked && !covering && (
         <img
           className="photo-preview"
           src={localPreview}
           alt={es ? "Vista de tu foto" : "Your photo preview"}
         />
       )}
-      {file && !checked && (
+      {file && !checked && !covering && (
         <div className="actions">
+          {localPreview && (
+            <button
+              className="secondary"
+              disabled={busy}
+              onClick={() => setCovering(true)}
+            >
+              {cover.open}
+            </button>
+          )}
           <button
             className="secondary"
             disabled={busy}
@@ -195,6 +230,7 @@ export function UploadProof({
                   setFile(null);
                   setChecked(null);
                   setLocalPreview(null);
+                  setCovered(false);
                 })
               }
             >

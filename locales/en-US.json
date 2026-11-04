@@ -311,6 +311,26 @@
       "school-status": "School time",
       "school-credits": "Credits",
       "service-contact": "Person who can confirm"
+    },
+    "cover": {
+      "open": "Cover private parts",
+      "title": "Cover private parts",
+      "help": "Black out your name, case number and account numbers before the photo leaves your phone. Drag across a part of the photo to cover it.",
+      "keyboardHelp": "With a keyboard: choose Add a box. Use the arrow keys to move it, and Shift with the arrow keys to change its size. Press Delete to remove it.",
+      "add": "Add a box",
+      "undo": "Remove last box",
+      "clear": "Remove all boxes",
+      "done": "Black out and use this copy",
+      "cancel": "Cancel",
+      "box": "Box {number}: {left}% from the left, {top}% from the top, {width}% wide, {height}% tall",
+      "added": "Box {number} added.",
+      "removed": "Box removed. {count} left.",
+      "applied": "The covered parts are blacked out in the copy we send. The photo on your phone is unchanged.",
+      "notPhoto": "Covering works on photos. For a PDF, remove private details before you choose it, or type the numbers instead.",
+      "working": "Blacking out…",
+      "loading": "Opening your photo…",
+      "failed": "Your phone could not black out this photo. Try a smaller photo or type the numbers instead.",
+      "image": "Your photo. Covered parts show in black."
     }
   }
 }

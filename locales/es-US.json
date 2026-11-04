@@ -311,6 +311,26 @@
       "school-status": "Tiempo de estudios",
       "school-credits": "Créditos",
       "service-contact": "Persona que puede confirmar"
+    },
+    "cover": {
+      "open": "Tapar datos privados",
+      "title": "Tapar datos privados",
+      "help": "Tapa en negro tu nombre, número de caso y números de cuenta antes de que la foto salga de tu teléfono. Arrastra sobre una parte de la foto para taparla.",
+      "keyboardHelp": "Con teclado: elige Añadir un recuadro. Usa las flechas para moverlo y Mayús con las flechas para cambiar su tamaño. Pulsa Suprimir para quitarlo.",
+      "add": "Añadir un recuadro",
+      "undo": "Quitar el último recuadro",
+      "clear": "Quitar todos los recuadros",
+      "done": "Tapar en negro y usar esta copia",
+      "cancel": "Cancelar",
+      "box": "Recuadro {number}: {left}% desde la izquierda, {top}% desde arriba, {width}% de ancho, {height}% de alto",
+      "added": "Recuadro {number} añadido.",
+      "removed": "Recuadro quitado. Quedan {count}.",
+      "applied": "Las partes tapadas quedan en negro en la copia que enviamos. La foto de tu teléfono no cambia.",
+      "notPhoto": "Tapar funciona con fotos. En un PDF, quita los datos privados antes de elegirlo, o escribe los números.",
+      "working": "Tapando en negro…",
+      "loading": "Abriendo tu foto…",
+      "failed": "Tu teléfono no pudo tapar esta foto. Prueba con una foto más pequeña o escribe los números.",
+      "image": "Tu foto. Las partes tapadas se ven en negro."
     }
   }
 }
