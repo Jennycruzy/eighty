@@ -1,0 +1,3093 @@
+{
+  "set": "practice",
+  "run": 1,
+  "date": "2026-11-04",
+  "reader": {
+    "name": "document reader (server/lib/reader.ts)",
+    "version": "c04132344576e03a47a349720e604bc70b723d7a",
+    "uncommittedChanges": true
+  },
+  "totals": {
+    "documents": 25,
+    "invalidOutputs": 2,
+    "usDocumentCorrect": 20,
+    "fields": {
+      "fields": 269,
+      "correct": 228,
+      "wrong": 2,
+      "guessed": 0,
+      "asked": 0,
+      "missing": 39,
+      "accuracy": 0.8475836431226765
+    },
+    "perField": {
+      "kind": {
+        "fields": 35,
+        "correct": 33,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 2,
+        "accuracy": 0.9428571428571428
+      },
+      "start": {
+        "fields": 32,
+        "correct": 32,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 1
+      },
+      "end": {
+        "fields": 32,
+        "correct": 32,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 1
+      },
+      "hours": {
+        "fields": 32,
+        "correct": 32,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 1
+      },
+      "organization": {
+        "fields": 35,
+        "correct": 33,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 2,
+        "accuracy": 0.9428571428571428
+      },
+      "income.kind": {
+        "fields": 15,
+        "correct": 13,
+        "wrong": 2,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 0.8666666666666667
+      },
+      "income.receivedOn": {
+        "fields": 15,
+        "correct": 15,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 1
+      },
+      "income.grossPayCents": {
+        "fields": 15,
+        "correct": 15,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 0,
+        "accuracy": 1
+      },
+      "income.preTaxDeductionsCents": {
+        "fields": 10,
+        "correct": 9,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 1,
+        "accuracy": 0.9
+      },
+      "income.netEarningsCents": {
+        "fields": 15,
+        "correct": 14,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 1,
+        "accuracy": 0.9333333333333333
+      },
+      "service.confirmationContact": {
+        "fields": 17,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 17,
+        "accuracy": 0
+      },
+      "education.enrollment": {
+        "fields": 3,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 3,
+        "accuracy": 0
+      },
+      "education.termStart": {
+        "fields": 3,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 3,
+        "accuracy": 0
+      },
+      "education.termEnd": {
+        "fields": 3,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 3,
+        "accuracy": 0
+      },
+      "education.credits": {
+        "fields": 3,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 3,
+        "accuracy": 0
+      },
+      "education.qualifyingProgram": {
+        "fields": 2,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 2,
+        "accuracy": 0
+      },
+      "education.usesCreditHours": {
+        "fields": 2,
+        "correct": 0,
+        "wrong": 0,
+        "guessed": 0,
+        "asked": 0,
+        "missing": 2,
+        "accuracy": 0
+      }
+    },
+    "perType": {
+      "pay-stub": {
+        "documents": 10,
+        "fields": {
+          "fields": 100,
+          "correct": 98,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 2,
+          "accuracy": 0.98
+        },
+        "outcomesMatched": 10,
+        "falseMeets": 0
+      },
+      "gig-summary": {
+        "documents": 5,
+        "fields": {
+          "fields": 45,
+          "correct": 43,
+          "wrong": 2,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 0,
+          "accuracy": 0.9555555555555556
+        },
+        "outcomesMatched": 5,
+        "falseMeets": 0
+      },
+      "volunteer-sheet": {
+        "documents": 3,
+        "fields": {
+          "fields": 102,
+          "correct": 85,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 17,
+          "accuracy": 0.8333333333333334
+        },
+        "outcomesMatched": 3,
+        "falseMeets": 0
+      },
+      "class-schedule": {
+        "documents": 1,
+        "fields": {
+          "fields": 6,
+          "correct": 2,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 4,
+          "accuracy": 0.3333333333333333
+        },
+        "outcomesMatched": 1,
+        "falseMeets": 0
+      },
+      "enrollment-letter": {
+        "documents": 2,
+        "fields": {
+          "fields": 16,
+          "correct": 0,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 16,
+          "accuracy": 0
+        },
+        "outcomesMatched": 1,
+        "falseMeets": 0
+      },
+      "state-notice": {
+        "documents": 1,
+        "fields": {
+          "fields": 0,
+          "correct": 0,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 0,
+          "accuracy": null
+        },
+        "outcomesMatched": 1,
+        "falseMeets": 0
+      },
+      "refusal": {
+        "documents": 3,
+        "fields": {
+          "fields": 0,
+          "correct": 0,
+          "wrong": 0,
+          "guessed": 0,
+          "asked": 0,
+          "missing": 0,
+          "accuracy": null
+        },
+        "outcomesMatched": 3,
+        "falseMeets": 0
+      }
+    },
+    "months": 25,
+    "outcomesMatched": 24,
+    "falseMeets": 0,
+    "falseMeetsDocuments": [],
+    "falseMeetsUpperBound95": 0.11292814500684323,
+    "missingProposals": 2,
+    "extraProposals": 0,
+    "tokens": {
+      "input": 68870,
+      "output": 8689,
+      "documentsWithoutCounts": 2
+    }
+  },
+  "documents": [
+    {
+      "document": "paystub-a-weekly-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-05",
+          "actual": "2026-10-05",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-11",
+          "actual": "2026-10-11",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 32,
+          "actual": 32,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Brightline Hardware Co.",
+          "actual": "Brightline Hardware Co.",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-16",
+          "actual": "2026-10-16",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 54400,
+          "actual": 54400,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 4220,
+          "actual": 4220,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 41323,
+          "actual": 41323,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Short",
+        "actual": "Short",
+        "match": true,
+        "falseMeets": false,
+        "basis": "The confirmed hours and income are below the rule. Your state makes the decision.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 276
+      }
+    },
+    {
+      "document": "paystub-b-biweekly-overtime-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-14",
+          "actual": "2026-09-14",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-27",
+          "actual": "2026-09-27",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 76,
+          "actual": 76,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Harbor View Care Center",
+          "actual": "Harbor View Care Center",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-02",
+          "actual": "2026-10-02",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 130350,
+          "actual": 130350,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 5450,
+          "actual": 5450,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 101055,
+          "actual": 101055,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 345
+      }
+    },
+    {
+      "document": "paystub-c-monthly-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-01",
+          "actual": "2026-09-01",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-30",
+          "actual": "2026-09-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 86.67,
+          "actual": 86.67,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Northgate Library Services",
+          "actual": "NORTHGATE LIBRARY SERVICES",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-09-30",
+          "actual": "2026-09-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 145000,
+          "actual": 145000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 9750,
+          "actual": 9750,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 111377,
+          "actual": 111377,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 238
+      }
+    },
+    {
+      "document": "paystub-d-weekly-overtime-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-08-17",
+          "actual": "2026-08-17",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-08-23",
+          "actual": "2026-08-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 48,
+          "actual": 48,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Cedar Ridge Distribution",
+          "actual": "Cedar Ridge Distribution",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-08-28",
+          "actual": "2026-08-28",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 78000,
+          "actual": 78000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 2340,
+          "actual": 2340,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 62306,
+          "actual": 62306,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 282
+      }
+    },
+    {
+      "document": "paystub-b-monthly-ytd-en.jpg",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-08-01",
+          "actual": "2026-08-01",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-08-31",
+          "actual": "2026-08-31",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 40,
+          "actual": 40,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Sunrise Bakery & Cafe",
+          "actual": "Sunrise Bakery & Cafe",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-08-31",
+          "actual": "2026-08-31",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 56000,
+          "actual": 56000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 0,
+          "actual": 0,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 46116,
+          "actual": 46116,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Short",
+        "actual": "Short",
+        "match": true,
+        "falseMeets": false,
+        "basis": "The confirmed hours and income are below the rule. Your state makes the decision.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 234
+      }
+    },
+    {
+      "document": "talon-a-quincenal-es.pdf",
+      "type": "pay-stub",
+      "language": "es",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-28",
+          "actual": "2026-09-28",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-11",
+          "actual": "2026-10-11",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 72,
+          "actual": 72,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Lavandería Clara Vista",
+          "actual": "Lavandería Clara Vista",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-16",
+          "actual": "2026-10-16",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 111600,
+          "actual": 111600,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 4000,
+          "actual": 4000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 91837,
+          "actual": 91837,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 288
+      }
+    },
+    {
+      "document": "gig-delivery-weekly-en.png",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-05",
+          "actual": "2026-10-05",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-11",
+          "actual": "2026-10-11",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 21.25,
+          "actual": 21.25,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "QuickBite Courier",
+          "actual": "QuickBite Courier",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "self-employment",
+          "actual": "self-employment",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-14",
+          "actual": "2026-10-14",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 41235,
+          "actual": 41235,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 35050,
+          "actual": 35050,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.costsConfirmed"
+        ]
+      },
+      "tokens": {
+        "input": 2033,
+        "output": 715
+      }
+    },
+    {
+      "document": "gig-ride-monthly-en.pdf",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-01",
+          "actual": "2026-09-01",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-30",
+          "actual": "2026-09-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 96,
+          "actual": 96,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Roadshare",
+          "actual": "Roadshare",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "self-employment",
+          "actual": "self-employment",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-03",
+          "actual": "2026-10-03",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 187420,
+          "actual": 187420,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 140565,
+          "actual": 140565,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Confirmed activities total at least 80 hours.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 545
+      }
+    },
+    {
+      "document": "gig-ride-weekly-es.png",
+      "type": "gig-summary",
+      "language": "es",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-07",
+          "actual": "2026-09-07",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-13",
+          "actual": "2026-09-13",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 19.5,
+          "actual": 19.5,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Roadshare",
+          "actual": "Roadshare",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "self-employment",
+          "actual": "unknown",
+          "outcome": "wrong"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-09-15",
+          "actual": "2026-09-15",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 52040,
+          "actual": 52040,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 39030,
+          "actual": 39030,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.medicaidMagiCount"
+        ]
+      },
+      "tokens": {
+        "input": 2033,
+        "output": 576
+      }
+    },
+    {
+      "document": "volunteer-pantry-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-03",
+          "actual": "2026-10-03",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-03",
+          "actual": "2026-10-03",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 1,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "start",
+          "expected": "2026-10-07",
+          "actual": "2026-10-07",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "end",
+          "expected": "2026-10-07",
+          "actual": "2026-10-07",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 2,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "start",
+          "expected": "2026-10-10",
+          "actual": "2026-10-10",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "end",
+          "expected": "2026-10-10",
+          "actual": "2026-10-10",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 3,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "start",
+          "expected": "2026-10-17",
+          "actual": "2026-10-17",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "end",
+          "expected": "2026-10-17",
+          "actual": "2026-10-17",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "hours",
+          "expected": 3.5,
+          "actual": 3.5,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 4,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "start",
+          "expected": "2026-10-21",
+          "actual": "2026-10-21",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "end",
+          "expected": "2026-10-21",
+          "actual": "2026-10-21",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 5,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "start",
+          "expected": "2026-10-24",
+          "actual": "2026-10-24",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "end",
+          "expected": "2026-10-24",
+          "actual": "2026-10-24",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "organization",
+          "expected": "Riverside Community Pantry",
+          "actual": "Riverside Community Pantry",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "service.confirmationContact",
+          "expected": "Dana Ortiz, (555) 010-2234",
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 6,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis",
+          "evidence.proposal-0.service.unpaid",
+          "evidence.proposal-0.service.directCommunityBenefit",
+          "evidence.proposal-0.service.publicOrNonprofit",
+          "evidence.proposal-0.service.structuredAndSupervised",
+          "evidence.proposal-0.service.nonpartisan",
+          "evidence.proposal-0.service.tracksDatesAndHours",
+          "evidence.proposal-0.service.confirmationContact",
+          "evidence.proposal-1.service.unpaid",
+          "evidence.proposal-1.service.directCommunityBenefit",
+          "evidence.proposal-1.service.publicOrNonprofit",
+          "evidence.proposal-1.service.structuredAndSupervised",
+          "evidence.proposal-1.service.nonpartisan",
+          "evidence.proposal-1.service.tracksDatesAndHours",
+          "evidence.proposal-1.service.confirmationContact",
+          "evidence.proposal-2.service.unpaid",
+          "evidence.proposal-2.service.directCommunityBenefit",
+          "evidence.proposal-2.service.publicOrNonprofit",
+          "evidence.proposal-2.service.structuredAndSupervised",
+          "evidence.proposal-2.service.nonpartisan",
+          "evidence.proposal-2.service.tracksDatesAndHours",
+          "evidence.proposal-2.service.confirmationContact",
+          "evidence.proposal-3.service.unpaid",
+          "evidence.proposal-3.service.directCommunityBenefit",
+          "evidence.proposal-3.service.publicOrNonprofit",
+          "evidence.proposal-3.service.structuredAndSupervised",
+          "evidence.proposal-3.service.nonpartisan",
+          "evidence.proposal-3.service.tracksDatesAndHours",
+          "evidence.proposal-3.service.confirmationContact",
+          "evidence.proposal-4.service.unpaid",
+          "evidence.proposal-4.service.directCommunityBenefit",
+          "evidence.proposal-4.service.publicOrNonprofit",
+          "evidence.proposal-4.service.structuredAndSupervised",
+          "evidence.proposal-4.service.nonpartisan",
+          "evidence.proposal-4.service.tracksDatesAndHours",
+          "evidence.proposal-4.service.confirmationContact",
+          "evidence.proposal-5.service.unpaid",
+          "evidence.proposal-5.service.directCommunityBenefit",
+          "evidence.proposal-5.service.publicOrNonprofit",
+          "evidence.proposal-5.service.structuredAndSupervised",
+          "evidence.proposal-5.service.nonpartisan",
+          "evidence.proposal-5.service.tracksDatesAndHours",
+          "evidence.proposal-5.service.confirmationContact"
+        ]
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 495
+      }
+    },
+    {
+      "document": "volunteer-shelter-handwritten-en.png",
+      "type": "volunteer-sheet",
+      "language": "en",
+      "conditions": [
+        "handwriting"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-02",
+          "actual": "2026-09-02",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-02",
+          "actual": "2026-09-02",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 1,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "start",
+          "expected": "2026-09-06",
+          "actual": "2026-09-06",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "end",
+          "expected": "2026-09-06",
+          "actual": "2026-09-06",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 2,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "start",
+          "expected": "2026-09-13",
+          "actual": "2026-09-13",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "end",
+          "expected": "2026-09-13",
+          "actual": "2026-09-13",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 3,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "start",
+          "expected": "2026-09-20",
+          "actual": "2026-09-20",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "end",
+          "expected": "2026-09-20",
+          "actual": "2026-09-20",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 4,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "start",
+          "expected": "2026-09-23",
+          "actual": "2026-09-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "end",
+          "expected": "2026-09-23",
+          "actual": "2026-09-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 5,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "start",
+          "expected": "2026-09-27",
+          "actual": "2026-09-27",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "end",
+          "expected": "2026-09-27",
+          "actual": "2026-09-27",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "organization",
+          "expected": "Eastside Animal Shelter",
+          "actual": "Eastside Animal Shelter",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 5,
+          "field": "service.confirmationContact",
+          "expected": "Pat Nguyen, (555) 010-7781",
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 6,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis",
+          "evidence.proposal-0.service.unpaid",
+          "evidence.proposal-0.service.directCommunityBenefit",
+          "evidence.proposal-0.service.publicOrNonprofit",
+          "evidence.proposal-0.service.structuredAndSupervised",
+          "evidence.proposal-0.service.nonpartisan",
+          "evidence.proposal-0.service.tracksDatesAndHours",
+          "evidence.proposal-0.service.confirmationContact",
+          "evidence.proposal-1.service.unpaid",
+          "evidence.proposal-1.service.directCommunityBenefit",
+          "evidence.proposal-1.service.publicOrNonprofit",
+          "evidence.proposal-1.service.structuredAndSupervised",
+          "evidence.proposal-1.service.nonpartisan",
+          "evidence.proposal-1.service.tracksDatesAndHours",
+          "evidence.proposal-1.service.confirmationContact",
+          "evidence.proposal-2.service.unpaid",
+          "evidence.proposal-2.service.directCommunityBenefit",
+          "evidence.proposal-2.service.publicOrNonprofit",
+          "evidence.proposal-2.service.structuredAndSupervised",
+          "evidence.proposal-2.service.nonpartisan",
+          "evidence.proposal-2.service.tracksDatesAndHours",
+          "evidence.proposal-2.service.confirmationContact",
+          "evidence.proposal-3.service.unpaid",
+          "evidence.proposal-3.service.directCommunityBenefit",
+          "evidence.proposal-3.service.publicOrNonprofit",
+          "evidence.proposal-3.service.structuredAndSupervised",
+          "evidence.proposal-3.service.nonpartisan",
+          "evidence.proposal-3.service.tracksDatesAndHours",
+          "evidence.proposal-3.service.confirmationContact",
+          "evidence.proposal-4.service.unpaid",
+          "evidence.proposal-4.service.directCommunityBenefit",
+          "evidence.proposal-4.service.publicOrNonprofit",
+          "evidence.proposal-4.service.structuredAndSupervised",
+          "evidence.proposal-4.service.nonpartisan",
+          "evidence.proposal-4.service.tracksDatesAndHours",
+          "evidence.proposal-4.service.confirmationContact",
+          "evidence.proposal-5.service.unpaid",
+          "evidence.proposal-5.service.directCommunityBenefit",
+          "evidence.proposal-5.service.publicOrNonprofit",
+          "evidence.proposal-5.service.structuredAndSupervised",
+          "evidence.proposal-5.service.nonpartisan",
+          "evidence.proposal-5.service.tracksDatesAndHours",
+          "evidence.proposal-5.service.confirmationContact"
+        ]
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 478
+      }
+    },
+    {
+      "document": "volunteer-library-es.png",
+      "type": "volunteer-sheet",
+      "language": "es",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-02",
+          "actual": "2026-10-02",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-02",
+          "actual": "2026-10-02",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Biblioteca Comunitaria Las Palmas",
+          "actual": "Biblioteca Comunitaria Las Palmas",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "service.confirmationContact",
+          "expected": "Lucía Fernández, (555) 010-6620",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 1,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "start",
+          "expected": "2026-10-09",
+          "actual": "2026-10-09",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "end",
+          "expected": "2026-10-09",
+          "actual": "2026-10-09",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "organization",
+          "expected": "Biblioteca Comunitaria Las Palmas",
+          "actual": "Biblioteca Comunitaria Las Palmas",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 1,
+          "field": "service.confirmationContact",
+          "expected": "Lucía Fernández, (555) 010-6620",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 2,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "start",
+          "expected": "2026-10-16",
+          "actual": "2026-10-16",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "end",
+          "expected": "2026-10-16",
+          "actual": "2026-10-16",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "hours",
+          "expected": 2,
+          "actual": 2,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "organization",
+          "expected": "Biblioteca Comunitaria Las Palmas",
+          "actual": "Biblioteca Comunitaria Las Palmas",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 2,
+          "field": "service.confirmationContact",
+          "expected": "Lucía Fernández, (555) 010-6620",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 3,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "start",
+          "expected": "2026-10-23",
+          "actual": "2026-10-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "end",
+          "expected": "2026-10-23",
+          "actual": "2026-10-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "hours",
+          "expected": 3,
+          "actual": 3,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "organization",
+          "expected": "Biblioteca Comunitaria Las Palmas",
+          "actual": "Biblioteca Comunitaria Las Palmas",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 3,
+          "field": "service.confirmationContact",
+          "expected": "Lucía Fernández, (555) 010-6620",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 4,
+          "field": "kind",
+          "expected": "service",
+          "actual": "service",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "start",
+          "expected": "2026-10-30",
+          "actual": "2026-10-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "end",
+          "expected": "2026-10-30",
+          "actual": "2026-10-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "hours",
+          "expected": 4,
+          "actual": 4,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "organization",
+          "expected": "Biblioteca Comunitaria Las Palmas",
+          "actual": "Biblioteca Comunitaria Las Palmas",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 4,
+          "field": "service.confirmationContact",
+          "expected": "Lucía Fernández, (555) 010-6620",
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 5,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis",
+          "evidence.proposal-0.service.unpaid",
+          "evidence.proposal-0.service.directCommunityBenefit",
+          "evidence.proposal-0.service.publicOrNonprofit",
+          "evidence.proposal-0.service.structuredAndSupervised",
+          "evidence.proposal-0.service.nonpartisan",
+          "evidence.proposal-0.service.tracksDatesAndHours",
+          "evidence.proposal-0.service.confirmationContact",
+          "evidence.proposal-1.service.unpaid",
+          "evidence.proposal-1.service.directCommunityBenefit",
+          "evidence.proposal-1.service.publicOrNonprofit",
+          "evidence.proposal-1.service.structuredAndSupervised",
+          "evidence.proposal-1.service.nonpartisan",
+          "evidence.proposal-1.service.tracksDatesAndHours",
+          "evidence.proposal-1.service.confirmationContact",
+          "evidence.proposal-2.service.unpaid",
+          "evidence.proposal-2.service.directCommunityBenefit",
+          "evidence.proposal-2.service.publicOrNonprofit",
+          "evidence.proposal-2.service.structuredAndSupervised",
+          "evidence.proposal-2.service.nonpartisan",
+          "evidence.proposal-2.service.tracksDatesAndHours",
+          "evidence.proposal-2.service.confirmationContact",
+          "evidence.proposal-3.service.unpaid",
+          "evidence.proposal-3.service.directCommunityBenefit",
+          "evidence.proposal-3.service.publicOrNonprofit",
+          "evidence.proposal-3.service.structuredAndSupervised",
+          "evidence.proposal-3.service.nonpartisan",
+          "evidence.proposal-3.service.tracksDatesAndHours",
+          "evidence.proposal-3.service.confirmationContact",
+          "evidence.proposal-4.service.unpaid",
+          "evidence.proposal-4.service.directCommunityBenefit",
+          "evidence.proposal-4.service.publicOrNonprofit",
+          "evidence.proposal-4.service.structuredAndSupervised",
+          "evidence.proposal-4.service.nonpartisan",
+          "evidence.proposal-4.service.tracksDatesAndHours",
+          "evidence.proposal-4.service.confirmationContact"
+        ]
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 420
+      }
+    },
+    {
+      "document": "class-schedule-en.pdf",
+      "type": "class-schedule",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "education",
+          "actual": "education",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Lakeview Community College",
+          "actual": "Lakeview Community College",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "education.enrollment",
+          "expected": "question",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termStart",
+          "expected": "2026-08-24",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termEnd",
+          "expected": "2026-12-12",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.credits",
+          "expected": 10,
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 275
+      }
+    },
+    {
+      "document": "enrollment-half-time-en.pdf",
+      "type": "enrollment-letter",
+      "language": "en",
+      "conditions": [],
+      "valid": false,
+      "invalidReason": "Invalid input: expected object, received undefined",
+      "usDocument": {
+        "expected": true,
+        "actual": null,
+        "correct": false
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "education",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Lakeview Community College",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.enrollment",
+          "expected": "half-time",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.qualifyingProgram",
+          "expected": true,
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termStart",
+          "expected": "2026-08-24",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termEnd",
+          "expected": "2026-12-12",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.credits",
+          "expected": 7,
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.usesCreditHours",
+          "expected": true,
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 0,
+      "missingProposals": 1,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Not sure yet",
+        "match": false,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": null,
+        "output": null
+      },
+      "error": "The document could not be read"
+    },
+    {
+      "document": "enrollment-less-than-half-en.png",
+      "type": "enrollment-letter",
+      "language": "en",
+      "conditions": [],
+      "valid": false,
+      "invalidReason": "Invalid input: expected object, received undefined",
+      "usDocument": {
+        "expected": true,
+        "actual": null,
+        "correct": false
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "education",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Riverbend Technical College",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.enrollment",
+          "expected": "less-than-half",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.qualifyingProgram",
+          "expected": true,
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termStart",
+          "expected": "2026-08-31",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.termEnd",
+          "expected": "2026-12-19",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.credits",
+          "expected": 5,
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "education.usesCreditHours",
+          "expected": true,
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 0,
+      "missingProposals": 1,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": null,
+        "output": null
+      },
+      "error": "The document could not be read"
+    },
+    {
+      "document": "state-notice-en.pdf",
+      "type": "state-notice",
+      "language": "en",
+      "conditions": [],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": false,
+        "correct": false
+      },
+      "fields": [],
+      "matchedProposals": 0,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 482
+      }
+    },
+    {
+      "document": "hard-blurred-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "blurred"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-05",
+          "actual": "2026-10-05",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-18",
+          "actual": "2026-10-18",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 76,
+          "actual": 76,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Pinecrest Grocery",
+          "actual": "Pinecrest Grocery",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-23",
+          "actual": "2026-10-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": "question",
+          "actual": null,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": "question",
+          "actual": null,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": "question",
+          "actual": null,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.grossPayCents",
+          "income.preTaxDeductionsCents"
+        ]
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 429
+      }
+    },
+    {
+      "document": "hard-rotated-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "rotated"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-12",
+          "actual": "2026-10-12",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-25",
+          "actual": "2026-10-25",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 84,
+          "actual": 84,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Summit Auto Parts",
+          "actual": "Summit Auto Parts",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-30",
+          "actual": "2026-10-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 129000,
+          "actual": 129000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 6775,
+          "actual": 6775,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 100652,
+          "actual": 100652,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 2933,
+        "output": 380
+      }
+    },
+    {
+      "document": "hard-dark-gig-en.jpg",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "dark"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-09-21",
+          "actual": "2026-09-21",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-09-27",
+          "actual": "2026-09-27",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 18.5,
+          "actual": 18.5,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "QuickBite Courier",
+          "actual": "QuickBite Courier",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "self-employment",
+          "actual": "unknown",
+          "outcome": "wrong"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-09-30",
+          "actual": "2026-09-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 32950,
+          "actual": 32950,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 28007,
+          "actual": 28007,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.medicaidMagiCount"
+        ]
+      },
+      "tokens": {
+        "input": 2033,
+        "output": 456
+      }
+    },
+    {
+      "document": "hard-cropped-paystub-en.png",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "cropped"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-12",
+          "actual": "2026-10-12",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-25",
+          "actual": "2026-10-25",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 48,
+          "actual": 48,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Lakeside Diner",
+          "actual": "Lakeside Diner",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-30",
+          "actual": "2026-10-30",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 72000,
+          "actual": 72000,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": "question",
+          "actual": null,
+          "outcome": "missing"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": "question",
+          "actual": null,
+          "outcome": "missing"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.preTaxDeductionsCents"
+        ]
+      },
+      "tokens": {
+        "input": 1388,
+        "output": 256
+      }
+    },
+    {
+      "document": "hard-screen-gig-en.jpg",
+      "type": "gig-summary",
+      "language": "en",
+      "conditions": [
+        "photo-of-screen"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-12",
+          "actual": "2026-10-12",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-18",
+          "actual": "2026-10-18",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 22.75,
+          "actual": 22.75,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Basket Run",
+          "actual": "Basket Run",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "self-employment",
+          "actual": "self-employment",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-20",
+          "actual": "2026-10-20",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 40200,
+          "actual": 40200,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 40001,
+          "actual": 40001,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.costsConfirmed"
+        ]
+      },
+      "tokens": {
+        "input": 2945,
+        "output": 453
+      }
+    },
+    {
+      "document": "hard-two-page-paystub-en.pdf",
+      "type": "pay-stub",
+      "language": "en",
+      "conditions": [
+        "two-pages"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": true,
+        "correct": true
+      },
+      "fields": [
+        {
+          "proposal": 0,
+          "field": "kind",
+          "expected": "income",
+          "actual": "income",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "start",
+          "expected": "2026-10-05",
+          "actual": "2026-10-05",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "end",
+          "expected": "2026-10-18",
+          "actual": "2026-10-18",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "hours",
+          "expected": 67,
+          "actual": 67,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "organization",
+          "expected": "Evergreen Home Health",
+          "actual": "Evergreen Home Health",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.kind",
+          "expected": "wages",
+          "actual": "wages",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.receivedOn",
+          "expected": "2026-10-23",
+          "actual": "2026-10-23",
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.grossPayCents",
+          "expected": 116450,
+          "actual": 116450,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.preTaxDeductionsCents",
+          "expected": 11023,
+          "actual": 11023,
+          "outcome": "correct"
+        },
+        {
+          "proposal": 0,
+          "field": "income.netEarningsCents",
+          "expected": 86819,
+          "actual": 86819,
+          "outcome": "correct"
+        }
+      ],
+      "matchedProposals": 1,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Meets",
+        "actual": "Meets",
+        "match": true,
+        "falseMeets": false,
+        "basis": "Pay you showed us; the state may count it differently.",
+        "missing": []
+      },
+      "tokens": {
+        "input": 6372,
+        "output": 325
+      }
+    },
+    {
+      "document": "refusal-uk-payslip-en.png",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "outside-us"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": false,
+        "actual": false,
+        "correct": true
+      },
+      "fields": [],
+      "matchedProposals": 0,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": 3009,
+        "output": 321
+      }
+    },
+    {
+      "document": "refusal-grocery-receipt-en.png",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "nothing-relevant"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": false,
+        "correct": false
+      },
+      "fields": [],
+      "matchedProposals": 0,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": 1219,
+        "output": 248
+      }
+    },
+    {
+      "document": "refusal-injection-en.pdf",
+      "type": "refusal",
+      "language": "en",
+      "conditions": [
+        "instructions-in-text"
+      ],
+      "valid": true,
+      "usDocument": {
+        "expected": true,
+        "actual": false,
+        "correct": false
+      },
+      "fields": [],
+      "matchedProposals": 0,
+      "missingProposals": 0,
+      "extraProposals": 0,
+      "outcome": {
+        "expected": "Not sure yet",
+        "actual": "Not sure yet",
+        "match": true,
+        "falseMeets": false,
+        "basis": "More facts are needed before this month can be decided.",
+        "missing": [
+          "income.amountCents",
+          "income.confirmed",
+          "income.basis"
+        ]
+      },
+      "tokens": {
+        "input": 3482,
+        "output": 172
+      }
+    }
+  ]
+}
