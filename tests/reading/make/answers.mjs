@@ -217,6 +217,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const document of documents)
     await writeFile(path.join(outDir, `${document.id}.json`), `${JSON.stringify(answerFor(document), null, 2)}\n`);
   const rows = documents.map((document) => `| ${fileName(document)} | | | | |`);
+  // A filled second reading is never overwritten.
   await writeFile(
     path.join(outDir, "SECOND-READING.md"),
     [
@@ -231,6 +232,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       ...rows,
       "",
     ].join("\n"),
-  );
+    { flag: "wx" },
+  ).catch((error) => {
+    if (error.code !== "EEXIST") throw error;
+  });
   console.log(`Wrote ${documents.length} answer files.`);
 }

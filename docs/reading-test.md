@@ -47,7 +47,7 @@ How the answers are written:
 - An enrollment letter states the status, the term and credits, and that the program carries credit.
 - Notices, receipts, foreign pay slips and notes that give orders have no proposals. Foreign pay slips have `usDocument: false`.
 
-A reviewer outside this branch reads every rendered document again, before any reader run, and fills in `answers/SECOND-READING.md`. Any difference is settled before the locked runs.
+A reviewer outside this branch reads every rendered document again, before any reader run, and fills in `answers/SECOND-READING.md`. Any difference is settled before the locked runs. The second reading was done on 4 November 2026: all 51 answer files match their documents.
 
 ## Practice and locked sets
 
