@@ -16,6 +16,7 @@
     "check:production": "node scripts/check-production.mjs",
     "agent-native:doctor": "agent-native doctor",
     "test:answer-key": "node --test tests/answer-key/answer-key.test.mjs",
+    "test:reading": "tsx scripts/run-reading-test.mjs",
     "test:rules": "node --experimental-test-coverage --test --test-coverage-include='server/rules/*.ts' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/unit/notice-deadline.test.mjs tests/answer-key/answer-key.test.mjs",
     "test:browser": "playwright test",
     "check:storage": "node scripts/check-private-storage-launcher.mjs"
