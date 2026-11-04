@@ -208,6 +208,13 @@ const sum = (values: (number | null | undefined)[]) =>
 
 // The month as the member would see it after confirming every value the reader gave and answering no question.
 // The person is otherwise a plain expansion adult with nothing else to report, so only this document decides the month.
+// The rules take optional fields as absent, never as undefined.
+function withoutUndefined<T extends object>(value: T): { [K in keyof T]: Exclude<T[K], undefined> } {
+  return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined)) as {
+    [K in keyof T]: Exclude<T[K], undefined>;
+  };
+}
+
 export function buildMonth(result: ReaderResult, month: string, asOf: string): MonthInput {
   const proposals = result.proposals;
   const paid = proposals.filter((item) => item.fields.income);
@@ -252,12 +259,14 @@ export function buildMonth(result: ReaderResult, month: string, asOf: string): M
       end: fields.end ?? "",
       hours: fields.hours ?? null,
       organization: fields.organization ?? null,
-      ...(fields.service ? { service: fields.service } : {}),
-      ...(fields.program ? { program: fields.program } : {}),
+      ...(fields.service ? { service: withoutUndefined(fields.service) } : {}),
+      ...(fields.program ? { program: withoutUndefined(fields.program) } : {}),
     });
   });
   const school = proposals.find((item) => item.fields.kind === "education")?.fields.education;
-  const education: EducationFacts = school ? { ...school, confirmed: true } : { enrollment: "none" };
+  const education: EducationFacts = school
+    ? { ...withoutUndefined(school), confirmed: true }
+    : { enrollment: "none" };
   return { ...BASE, month, asOf, education, income, evidence };
 }
 
@@ -274,7 +283,7 @@ export function scoreDocument(answer: Answer, output: unknown): DocumentScore {
   const pairs = matchProposals(answer.expected.proposals, actual.proposals);
   answer.expected.proposals.forEach((want, index) => {
     const pair = pairs[index];
-    const have = pair === null ? null : actual.proposals[pair];
+    const have = pair == null ? null : actual.proposals[pair];
     for (const field of FIELDS) {
       const expected = read(want.fields, field.path);
       const unreadable = field.question ? want.questions.includes(field.question) : false;

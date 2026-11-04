@@ -32,7 +32,7 @@ export function judgeRun(run: AgentRunOutput, answer: Answer): Judgement {
   if (!run.ok) return { score: 0, reason: `The agent run failed: ${run.error ?? "no reason given"}.` };
   if (calls.length !== 1) return { score: 0, reason: `Expected one ${READ_TOOL} call, saw ${calls.length}.` };
   const call = calls[0];
-  if (call.isError || call.completed === false || typeof call.result !== "string")
+  if (!call || call.isError || call.completed === false || typeof call.result !== "string")
     return { score: 0, reason: `${READ_TOOL} did not finish without an error.` };
   let parsed: unknown;
   try {

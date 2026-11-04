@@ -40,7 +40,7 @@ export function datesIn(text: string, dayFirst = false): string[] {
     } else if (match[4]) {
       const month = MONTHS[match[4].toLowerCase()];
       value = month ? iso(Number(match[6]), month, Number(match[5])) : null;
-    } else {
+    } else if (match[8]) {
       const month = MONTHS[match[8].toLowerCase()];
       value = month ? iso(Number(match[9]), month, Number(match[7])) : null;
     }
@@ -66,12 +66,12 @@ function rowNumbers(lines: string[], label: RegExp): number[] | null {
 // A label in a header row whose value sits in the same column of the next line.
 function columnValue(lines: string[], label: RegExp): string | null {
   for (let index = 0; index < lines.length - 1; index++) {
-    const head = cells(lines[index]);
+    const head = cells(lines[index] ?? "");
     const column = head.findIndex((cell) => label.test(cell));
     if (column === -1) continue;
-    let below = cells(lines[index + 1]);
-    if (below.length === head.length + 1 && !numbersIn(below[0]).length) below = below.slice(1);
-    if (below.length === head.length) return below[column];
+    let below = cells(lines[index + 1] ?? "");
+    if (below.length === head.length + 1 && !numbersIn(below[0] ?? "").length) below = below.slice(1);
+    if (below.length === head.length) return below[column] ?? null;
   }
   return null;
 }
@@ -85,11 +85,11 @@ function payStub(lines: string[]): Fields {
   if (range) [fields.start, fields.end] = datesIn(range[0]);
   else if (header) {
     const line = lines[lines.findIndex((item) => /PERIOD BEGINNING|INICIO DEL PERIODO/i.test(item)) + 1];
-    [fields.start, fields.end] = datesIn(line);
+    [fields.start, fields.end] = datesIn(line ?? "");
   }
   const paid = text.match(/(?:pay date|fecha de pago):?\s*([^\n]+)/i);
   const check = columnValue(lines, /CHECK DATE|FECHA DEL CHEQUE/i);
-  const receivedOn = paid ? datesIn(paid[1])[0] : check ? datesIn(check)[0] : undefined;
+  const receivedOn = paid ? datesIn(paid[1] ?? "")[0] : check ? datesIn(check)[0] : undefined;
   const grossRow = rowNumbers(lines, /^(gross pay|pago bruto)$/i);
   let gross: number | undefined;
   if (grossRow?.length === 3) {
@@ -137,17 +137,17 @@ function gigSummary(lines: string[]): Fields {
 
 function signInSheet(lines: string[], spanish: boolean): Fields[] {
   const organization = firstLine(lines);
-  const contact = lines.join("\n").match(/(?:volunteer coordinator|coordinadora de voluntarios):\s*([^\n]+)/i)?.[1].trim();
+  const contact = lines.join("\n").match(/(?:volunteer coordinator|coordinadora de voluntarios):\s*([^\n]+)/i)?.[1]?.trim();
   return lines
     .map(cells)
-    .filter((row) => row.length >= 5 && datesIn(row[0], spanish).length === 1)
+    .filter((row) => row.length >= 5 && datesIn(row[0] ?? "", spanish).length === 1)
     .map((row) => {
-      const date = datesIn(row[0], spanish)[0];
+      const date = datesIn(row[0] ?? "", spanish)[0];
       return {
         kind: "service" as const,
         start: date,
         end: date,
-        hours: numbersIn(row[4])[0],
+        hours: numbersIn(row[4] ?? "")[0],
         organization,
         ...(contact ? { service: { confirmationContact: contact } } : {}),
       };
