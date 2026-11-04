@@ -211,7 +211,7 @@ test("A run that throws is recorded as failed with its reason, never completed",
   assert.equal(run.status, "failed");
   assert.equal(run.errors, "The reset ran out of time.");
   assert.ok(run.finished_at);
-  // A database step that throws is also a failure.
+  // A database write that throws is also a failure.
   await sql.execute(`CREATE FUNCTION eighty_test_refuse() RETURNS trigger AS $$
     BEGIN RAISE EXCEPTION 'test refusal'; END; $$ LANGUAGE plpgsql`);
   await sql.execute(
@@ -239,7 +239,7 @@ test("A run that throws is recorded as failed with its reason, never completed",
     ),
     0,
   );
-  // With the step working again, the next run removes it.
+  // Once that write works again, the next run removes it.
   const next = await runDemoReset();
   assert.equal(next.accountsRemoved, 1);
   assert.deepEqual(await holdings(old), nothing);
