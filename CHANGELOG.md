@@ -2,6 +2,7 @@
 
 ## 3 November 2026
 
+- Accept large photos and PDFs without the upload check failing.
 - Prove the upload size limit through the real signed-in page request.
 - Read at most two documents at a time to protect server memory.
 - Answer public HEAD requests with the GET status and headers, without a body.
