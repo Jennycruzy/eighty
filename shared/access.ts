@@ -32,6 +32,7 @@ export function isPublicPage(path: string): boolean {
 }
 export function isMemberPage(path: string): boolean {
   return [
+    "/demo",
     "/months",
     "/add",
     "/review",
@@ -52,6 +53,7 @@ export function isStaticFile(path: string): boolean {
   return (
     path.startsWith("/assets/") ||
     [
+      ...DEMO_SAMPLE_FILES,
       "/favicon.svg",
       "/icon-180.svg",
       "/robots.txt",
@@ -77,6 +79,8 @@ export function isAllowedService(path: string): boolean {
         "get_document",
         "remove_document",
       ].map((name) => `/_agent-native/actions/${name}`),
+      ...DEMO_ACTIONS.map((name) => `/_agent-native/actions/${name}`),
+      DEMO_ENTER_PATH,
       "/_agent-native/actions/prepare_member_account",
       "/_agent-native/actions/finish_member_account",
       "/_agent-native/ui-capability",
@@ -97,4 +101,58 @@ export function isAllowedRequest(path: string, method: string): boolean {
   )
     return true;
   return isMemberPage(path) || isAllowedService(path);
+}
+
+// The demo. A demo account may use only what a member uses on their own
+// record. Everything else, including paths open to real members, is refused.
+export const DEMO_ENTER_PATH = "/enter-demo";
+export const DEMO_SAMPLE_FILES = [
+  "/demo/maria-earnings-sample.png",
+  "/demo/maria-earnings-sample.pdf",
+];
+export const DEMO_ACTIONS = [
+  "start_demo",
+  "demo_status",
+  "demo_month",
+  "add_demo_sample",
+];
+const DEMO_MEMBER_ACTIONS = [
+  "add_manual_evidence",
+  "confirm_evidence",
+  "edit_evidence",
+  "reject_evidence",
+  "list_evidence",
+  "inspect_document",
+  "upload_document",
+  "list_documents",
+  "get_document",
+  "remove_document",
+];
+const DEMO_PAGES = ["/demo", "/months", "/add", "/review"];
+export function isDemoAllowedRequest(path: string, method: string): boolean {
+  if (
+    (isPublicPage(path) || isPublicData(path) || isStaticFile(path)) &&
+    (method === "GET" || method === "HEAD")
+  )
+    return true;
+  if (
+    DEMO_PAGES.some(
+      (page) =>
+        path === page ||
+        path === `${page}.data` ||
+        (page !== "/demo" && path.startsWith(`${page}/`)),
+    )
+  )
+    return method === "GET" || method === "HEAD";
+  return (
+    path === DEMO_ENTER_PATH ||
+    path === "/_agent-native/health" ||
+    path === "/_agent-native/ui-capability" ||
+    path === "/_agent-native/auth/session" ||
+    path === "/_agent-native/auth/ba/get-session" ||
+    path === "/_agent-native/auth/ba/sign-out" ||
+    [...DEMO_ACTIONS, ...DEMO_MEMBER_ACTIONS].some(
+      (name) => path === `/_agent-native/actions/${name}`,
+    )
+  );
 }

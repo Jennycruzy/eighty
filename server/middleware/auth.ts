@@ -11,12 +11,15 @@ import {
 } from "h3";
 
 import {
+  DEMO_ENTER_PATH,
   isAllowedRequest,
+  isDemoAllowedRequest,
   isPublicPage,
   isPublicData,
   isStaticFile,
   isMemberPage,
 } from "../../shared/access.ts";
+import { isDemoEmail } from "../lib/demo-identity.ts";
 import { registrationStatus } from "../lib/registration.ts";
 
 export default defineEventHandler(async (event) => {
@@ -33,6 +36,27 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: "Not found" });
   }
   if (isPublicPage(path) || isPublicData(path) || isStaticFile(path)) return;
+  // Signed-out visitors open the demo. The handlers check the origin, the
+  // per-visitor limit and the one-time ticket.
+  if (
+    path === DEMO_ENTER_PATH ||
+    path === "/_agent-native/actions/start_demo"
+  ) {
+    event.res.headers.set("Cache-Control", "private, no-store");
+    if (getMethod(event) !== "POST")
+      throw createError({ statusCode: 405, statusMessage: "Use POST" });
+    return;
+  }
+  const session = await getBrowserCookieSession(event);
+  // Checked on the server for every request, not by hiding links.
+  if (
+    isDemoEmail(session?.email) &&
+    !isDemoAllowedRequest(path, getMethod(event))
+  )
+    throw createError({
+      statusCode: 403,
+      statusMessage: "This is not part of the demo.",
+    });
   if (
     [
       "/_agent-native/actions/prepare_member_account",
@@ -68,10 +92,7 @@ export default defineEventHandler(async (event) => {
   }
   if (isMemberPage(path) || path.startsWith("/_agent-native/actions/"))
     event.res.headers.set("Cache-Control", "private, no-store");
-  if (
-    isMemberPage(path) &&
-    (await getBrowserCookieSession(event))?.emailVerified !== true
-  ) {
+  if (isMemberPage(path) && session?.emailVerified !== true) {
     throw createError({ statusCode: 401, statusMessage: "Sign in required" });
   }
   return runAuthGuard(event);

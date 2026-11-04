@@ -17,6 +17,7 @@ import { z } from "zod";
 import { memberProfile } from "../../shared/member-profile.ts";
 import { getDb } from "../db/index.ts";
 import { members } from "../db/schema.ts";
+import { refuseDemoEmail } from "./demo-identity.ts";
 import { reviewedMemberActor } from "./member-identity.ts";
 
 export async function registrationStatus() {
@@ -50,6 +51,7 @@ export async function prepareMemberAccount(
       statusMessage: "Account creation is closed while email is being set up.",
     });
   const body = registrationInput.parse(input);
+  refuseDemoEmail(body.email);
   let origin: URL;
   try {
     origin = new URL(headers?.get("origin") || "");
@@ -90,6 +92,7 @@ export async function finishMemberAccount(
       statusMessage: "Account creation is closed while email is being set up.",
     });
   const actor = await reviewedMemberActor(context);
+  refuseDemoEmail(actor.email);
   let payload: z.infer<typeof draftPayload>;
   try {
     payload = draftPayload.parse(
