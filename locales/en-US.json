@@ -276,5 +276,41 @@
         "proof": "Keep your Medicaid coverage letter. Bring any papers that support an answer you gave."
       }
     }
+  },
+  "reader": {
+    "intro": "After you save a file, an AI model reads it and suggests lines. Nothing counts until you check and confirm each line. Fixed rules, not the model, work out your month.",
+    "reading": "Reading your document…",
+    "slow": "Still reading. Clear photos of one page are fastest; long PDFs take longer. You can stay on this page.",
+    "done": "We read your document. Check each new line below. A line does not count until you confirm it.",
+    "already": "This file was read before. Its lines are in the list below.",
+    "pagesLimit": "We read the first {read} of {total} pages. Type facts from the other pages by hand.",
+    "nothing": "We did not find work, pay or school facts in this file. You can type the numbers instead.",
+    "unreadable": "We couldn't read this. You can type the numbers instead.",
+    "notUs": "We can't read this as a US pay stub. You can type the numbers instead.",
+    "unavailable": "The document reader is not available right now. You can type the numbers instead.",
+    "failed": "We could not reach the reader. Check your connection, then try again. You can also type the numbers.",
+    "offline": "You are offline. We will read the file when you are back online. You can also type the numbers.",
+    "readAgain": "Try reading again",
+    "readFile": "Read this file",
+    "typeInstead": "Type the numbers",
+    "fromDocument": "Suggested from your document",
+    "checkThis": "Check this",
+    "unsureOf": "We were not sure of these. They are blank:",
+    "unsureHelp": "If your document shows them, add them with Edit.",
+    "lowConfidence": "The reader was not sure about this line. Compare each value with your document.",
+    "questions": {
+      "start": "Start date",
+      "end": "End date",
+      "hours": "Hours",
+      "gross-pay": "Gross pay",
+      "pay-date": "Pay date",
+      "pre-tax-deductions": "Pre-tax deductions",
+      "net-earnings": "Net business pay",
+      "business-costs": "Business costs",
+      "organization": "Employer, group or school",
+      "school-status": "School time",
+      "school-credits": "Credits",
+      "service-contact": "Person who can confirm"
+    }
   }
 }

@@ -276,5 +276,41 @@
         "proof": "Guarda tu carta de cobertura de Medicaid. Lleva los documentos que apoyen tus respuestas."
       }
     }
+  },
+  "reader": {
+    "intro": "Cuando guardas un archivo, un modelo de IA lo lee y sugiere líneas. Nada cuenta hasta que revises y confirmes cada línea. Las reglas fijas, no el modelo, calculan tu mes.",
+    "reading": "Leyendo tu documento…",
+    "slow": "Seguimos leyendo. Las fotos claras de una página son más rápidas; los PDF largos tardan más. Puedes quedarte en esta página.",
+    "done": "Leímos tu documento. Revisa cada línea nueva abajo. Una línea no cuenta hasta que la confirmes.",
+    "already": "Este archivo ya se leyó. Sus líneas están en la lista de abajo.",
+    "pagesLimit": "Leímos las primeras {read} de {total} páginas. Escribe a mano los datos de las otras páginas.",
+    "nothing": "No encontramos datos de trabajo, pago o estudios en este archivo. Puedes escribir los números.",
+    "unreadable": "No pudimos leer esto. Puedes escribir los números.",
+    "notUs": "No podemos leer esto como un recibo de pago de EE. UU. Puedes escribir los números.",
+    "unavailable": "El lector de documentos no está disponible ahora. Puedes escribir los números.",
+    "failed": "No pudimos conectar con el lector. Revisa tu conexión y vuelve a intentarlo. También puedes escribir los números.",
+    "offline": "No tienes conexión. Leeremos el archivo cuando vuelvas a conectarte. También puedes escribir los números.",
+    "readAgain": "Intentar leer de nuevo",
+    "readFile": "Leer este archivo",
+    "typeInstead": "Escribir los números",
+    "fromDocument": "Sugerida a partir de tu documento",
+    "checkThis": "Revisa esto",
+    "unsureOf": "No estábamos seguros de estos datos. Están en blanco:",
+    "unsureHelp": "Si tu documento los muestra, añádelos con Editar.",
+    "lowConfidence": "El lector no estaba seguro de esta línea. Compara cada dato con tu documento.",
+    "questions": {
+      "start": "Fecha de inicio",
+      "end": "Fecha de fin",
+      "hours": "Horas",
+      "gross-pay": "Pago bruto",
+      "pay-date": "Fecha de pago",
+      "pre-tax-deductions": "Deducciones antes de impuestos",
+      "net-earnings": "Pago neto del negocio",
+      "business-costs": "Gastos del negocio",
+      "organization": "Empleador, grupo o escuela",
+      "school-status": "Tiempo de estudios",
+      "school-credits": "Créditos",
+      "service-contact": "Persona que puede confirmar"
+    }
   }
 }

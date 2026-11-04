@@ -124,7 +124,7 @@ export default function PublicPage() {
         </section>
       </>
     );
-  const key = path.slice(1) as Exclude<keyof typeof en, "screener">;
+  const key = path.slice(1) as Exclude<keyof typeof en, "screener" | "reader">;
   const content = (spanish ? es : en)[key];
   return (
     <>
