@@ -345,7 +345,7 @@ export function upperBound(errors: number, n: number, confidence = 0.95): number
   if (errors === 0) return 1 - alpha ** (1 / n);
   let low = 0;
   let high = 1;
-  for (let step = 0; step < 200; step++) {
+  for (let round = 0; round < 200; round++) {
     const middle = (low + high) / 2;
     if (binomialCdf(errors, n, middle) > alpha) low = middle;
     else high = middle;

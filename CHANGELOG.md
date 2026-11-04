@@ -1,5 +1,9 @@
 # Changes
 
+## 4 November 2026
+
+- Test the document reader on 40+ made-up documents, with the answers written first.
+
 ## 3 November 2026
 
 - Accept large photos and PDFs without the upload check failing.
