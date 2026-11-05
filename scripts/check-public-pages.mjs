@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-import { PUBLIC_PAGES } from "../shared/access.ts";
+import { PUBLIC_PAGES, isMemberPage } from "../shared/access.ts";
 import { checkPublicIndex } from "./check-public-index.mjs";
 const states = JSON.parse(
   await readFile(new URL("../data/states.json", import.meta.url), "utf8"),
@@ -67,7 +67,11 @@ export async function checkPublicPages(baseUrl) {
       signal: AbortSignal.timeout(10000),
     });
     assert(
-      [401, 403, 404].includes(response.status),
+      isMemberPage(path)
+        ? response.status === 302 &&
+            new URL(response.headers.get("location"), baseUrl).pathname ===
+              "/check/sign-in"
+        : [401, 403, 404].includes(response.status),
       `Starter path ${path} must be closed, got ${response.status}`,
     );
   }
@@ -89,6 +93,7 @@ export async function checkPublicPages(baseUrl) {
     "/add",
     "/review",
     "/add.data",
+    "/demo.data",
     "/review.data",
     "/_agent-native/actions/list_evidence",
     "/_agent-native/actions/list_documents",
@@ -104,10 +109,54 @@ export async function checkPublicPages(baseUrl) {
       signal: AbortSignal.timeout(10000),
     });
     assert(
-      [401, 403].includes(response.status),
+      path.endsWith(".data") || path.startsWith("/_agent-native/")
+        ? response.status === 401
+        : response.status === 302 &&
+            new URL(response.headers.get("location"), baseUrl).pathname ===
+              "/check/sign-in",
       `${path} must require an account, got ${response.status}`,
     );
+    if (response.status === 302)
+      assert.match(
+        response.headers.get("cache-control"),
+        /private, no-store/,
+        path,
+      );
+    if (path.endsWith(".data") || path.startsWith("/_agent-native/"))
+      assert.match(response.headers.get("content-type"), /application\/json/);
   }
+  const deniedAction = await fetch(
+    `${baseUrl}/_agent-native/actions/confirm_evidence`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        origin: baseUrl,
+        "sec-fetch-site": "same-origin",
+      },
+      body: "{}",
+      redirect: "manual",
+    },
+  );
+  assert.equal(deniedAction.status, 401);
+  assert.match(deniedAction.headers.get("content-type"), /application\/json/);
+  for (const lang of ["en", "es"]) {
+    const response = await fetch(`${baseUrl}/demo?lang=${lang}`, {
+      redirect: "manual",
+      headers: { accept: "text/html" },
+    });
+    assert.equal(response.status, 302);
+    assert.match(response.headers.get("cache-control"), /private, no-store/);
+    const target = new URL(response.headers.get("location"), baseUrl);
+    assert.equal(target.pathname, "/");
+    assert.equal(target.searchParams.get("lang"), lang);
+    assert.equal(target.hash, "#demo-start-title");
+    const home = await fetch(target);
+    assert.match(await home.text(), /id="demo-start-title"/);
+  }
+  console.log(
+    "PASS Signed-out demo links open the home page demo button in English and Spanish.",
+  );
   for (const path of ["/proof/answer-key.md", "/proof/answer-cases.json"]) {
     const response = await fetch(`${baseUrl}${path}`, {
       redirect: "manual",

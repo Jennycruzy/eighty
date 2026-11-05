@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
+import { safeMemberNext } from "../../shared/access";
 import { useLanguage, languageLink } from "../lib/language";
 export function headers() {
   return {
@@ -9,6 +10,7 @@ export function headers() {
   };
 }
 export default function MemberSignIn() {
+  const [params] = useSearchParams();
   const lang = useLanguage(),
     es = lang === "es";
   const [busy, setBusy] = useState(false),
@@ -40,7 +42,14 @@ export default function MemberSignIn() {
               },
             );
             if (!response.ok) throw new Error();
-            window.location.assign(languageLink("/add", lang));
+            const target = new URL(
+              safeMemberNext(params.get("next")) || "/months",
+              window.location.origin,
+            );
+            target.searchParams.set("lang", lang);
+            window.location.assign(
+              `${target.pathname}${target.search}${target.hash}`,
+            );
           } catch {
             setError(true);
             setBusy(false);

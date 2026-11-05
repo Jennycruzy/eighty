@@ -77,6 +77,7 @@ export function servicePaths(): string[] {
       "edit_evidence",
       "reject_evidence",
       "list_evidence",
+      "check_month",
       "inspect_document",
       "upload_document",
       "list_documents",
@@ -160,4 +161,17 @@ export function isDemoAllowedRequest(path: string, method: string): boolean {
       (name) => path === `/_agent-native/actions/${name}`,
     )
   );
+}
+
+export function safeMemberNext(value: string | null): string | null {
+  if (!value || !value.startsWith("/") || /[\\%\s]/.test(value)) return null;
+  if (value.startsWith("//")) return null;
+  const url = new URL(value, "https://member.invalid");
+  if (url.origin !== "https://member.invalid" || url.pathname.endsWith(".data"))
+    return null;
+  return MEMBER_PAGES.some(
+    (page) => url.pathname === page || url.pathname.startsWith(`${page}/`),
+  )
+    ? `${url.pathname}${url.search}${url.hash}`
+    : null;
 }

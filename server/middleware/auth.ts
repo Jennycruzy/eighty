@@ -8,6 +8,7 @@ import {
   getMethod,
   getRequestURL,
   assertBodySize,
+  sendRedirect,
 } from "h3";
 
 import {
@@ -93,7 +94,35 @@ export default defineEventHandler(async (event) => {
   }
   if (isMemberPage(path) || path.startsWith("/_agent-native/actions/"))
     event.res.headers.set("Cache-Control", "private, no-store");
+  const redirectPage = (target: string) => {
+    const response = sendRedirect(event, target, 302);
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
+  };
+  const url = getRequestURL(event);
+  const pageLoad =
+    ["GET", "HEAD"].includes(getMethod(event)) &&
+    isMemberPage(path) &&
+    !path.endsWith(".data");
+  const language = url.searchParams.get("lang");
+  const query = new URLSearchParams();
+  if (language !== null) query.set("lang", language);
+  if (
+    pageLoad &&
+    isDemoEmail(session?.email) &&
+    (path === "/months" || path.startsWith("/months/"))
+  ) {
+    return redirectPage(`/demo${query.size ? `?${query}` : ""}`);
+  }
   if (isMemberPage(path) && session?.emailVerified !== true) {
+    if (pageLoad) {
+      if (path === "/demo")
+        return redirectPage(
+          `/${query.size ? `?${query}` : ""}#demo-start-title`,
+        );
+      query.set("next", `${path}${url.search}`);
+      return redirectPage(`/check/sign-in?${query}`);
+    }
     throw createError({ statusCode: 401, statusMessage: "Sign in required" });
   }
   return runAuthGuard(event);

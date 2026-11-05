@@ -18,6 +18,8 @@ export default [
   route("check/sign-in", "routes/member-sign-in.tsx"),
   route("add", "routes/evidence.tsx", { id: "add-evidence" }),
   route("review", "routes/evidence.tsx", { id: "review-evidence" }),
+  route("months", "routes/months.tsx"),
+  route("months/:m", "routes/months.tsx", { id: "month-detail" }),
   route("demo", "routes/demo.tsx"),
   route("share", "routes/share.tsx"),
   route("states", "routes/states.tsx"),

@@ -216,6 +216,52 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
     await first
       .getByText(es ? "Datos confirmados" : "Facts confirmed", { exact: true })
       .waitFor();
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    for (const path of ["/months", `/months/${currentMonth}`]) {
+      await page.goto(`${baseURL}${path}?lang=${lang}`);
+      await page.locator(".result .status").first().waitFor();
+      await page
+        .locator('.result a[href^="https://www.ecfr.gov/"]')
+        .first()
+        .waitFor();
+      assert.match(
+        await page.locator(".result").first().innerText(),
+        /42 CFR 435\./,
+      );
+      assert.equal(
+        await page.locator(".result .status").first().innerText(),
+        es ? "Aún no sabemos" : "Not sure yet",
+      );
+      assert.match(
+        await page
+          .locator('.result a[href^="https://www.ecfr.gov/"]')
+          .first()
+          .innerText(),
+        /42 CFR 435\.551/,
+      );
+      if (path !== "/months")
+        await page
+          .getByRole("heading", {
+            name: es ? "¿Qué falta?" : "What is still needed?",
+            exact: true,
+          })
+          .waitFor();
+      assert(
+        await page.evaluate(() => document.documentElement.scrollWidth <= 360),
+      );
+      await choose(
+        page,
+        page.getByRole("link", {
+          name: es ? "Añadir pruebas" : "Add proof",
+          exact: true,
+        }),
+        "Enter",
+      );
+      await page.waitForURL(/\/add/);
+    }
+    console.log(
+      `PASS ${lang}: member months show a status and line of law at 360 px.`,
+    );
     docs = await getDbExec().execute({
       sql: "SELECT id,handle FROM eighty_documents WHERE owner_email=?",
       args: [email],
@@ -560,10 +606,29 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
     );
     await page
       .getByRole("heading", {
-        name: es ? "Mis pruebas" : "My proof",
+        name: es ? "Tus meses" : "Your months",
         exact: true,
       })
       .waitFor();
+    assert.equal(new URL(page.url()).pathname, "/months");
+    for (const path of [
+      "/plan",
+      "/notice",
+      "/settings",
+      "/navigator",
+      "/admin",
+      "/proof/packets",
+    ]) {
+      const response = await page.evaluate(async (path) => {
+        const response = await fetch(path);
+        return { status: response.status, text: await response.text() };
+      }, `${path}?lang=${lang}`);
+      assert.equal(response.status, 404, path);
+      assert.match(response.text, /We could not load this page/);
+    }
+    console.log(
+      `PASS ${lang}: sign-in opens member months; the six unbuilt member pages still return 404.`,
+    );
     console.log(
       `PASS ${lang}: private PNG/HEIC/PDF, retake, original bytes, two-page view, owner check, manual entry, confirm, duplicate choice, edit, reject and restore.`,
     );

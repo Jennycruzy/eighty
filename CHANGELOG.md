@@ -1,5 +1,11 @@
 # Changes
 
+## 5 November 2026
+
+- Open sign-in from saved member links and keep the language and return page.
+- Show member months, confirmed proof, missing facts and linked federal rules in English and Spanish.
+- Use the same month inputs for members and the demo.
+
 ## 4 November 2026
 
 - Read photos and PDFs into lines you check before they count.
