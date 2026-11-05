@@ -30,19 +30,20 @@ export function isPublicPage(path: string): boolean {
     /^\/states\/[a-z]{2}$/i.test(path)
   );
 }
+export const MEMBER_PAGES = [
+  "/demo",
+  "/months",
+  "/add",
+  "/review",
+  "/plan",
+  "/notice",
+  "/settings",
+  "/navigator",
+  "/admin",
+  "/proof/packets",
+] as const;
 export function isMemberPage(path: string): boolean {
-  return [
-    "/demo",
-    "/months",
-    "/add",
-    "/review",
-    "/plan",
-    "/notice",
-    "/settings",
-    "/navigator",
-    "/admin",
-    "/proof/packets",
-  ].some(
+  return MEMBER_PAGES.some(
     (prefix) =>
       path === prefix ||
       path === `${prefix}.data` ||
@@ -50,51 +51,53 @@ export function isMemberPage(path: string): boolean {
   );
 }
 export function isStaticFile(path: string): boolean {
-  return (
-    path.startsWith("/assets/") ||
-    [
-      ...DEMO_SAMPLE_FILES,
-      "/favicon.svg",
-      "/icon-180.svg",
-      "/robots.txt",
-      "/sitemap.xml",
-      "/proof/answer-key.md",
-      "/proof/answer-cases.json",
-    ].includes(path)
-  );
+  return path.startsWith("/assets/") || staticFiles().includes(path);
 }
 export function isAllowedService(path: string): boolean {
-  return (
-    path === "/_agent-native/health" ||
-    [
-      ...[
-        "add_manual_evidence",
-        "confirm_evidence",
-        "edit_evidence",
-        "reject_evidence",
-        "list_evidence",
-        "inspect_document",
-        "upload_document",
-        "list_documents",
-        "get_document",
-        "remove_document",
-        "extract_evidence",
-        "try_read_document",
-      ].map((name) => `/_agent-native/actions/${name}`),
-      ...DEMO_ACTIONS.map((name) => `/_agent-native/actions/${name}`),
-      DEMO_ENTER_PATH,
-      "/_agent-native/actions/prepare_member_account",
-      "/_agent-native/actions/finish_member_account",
-      "/_agent-native/ui-capability",
-      "/_agent-native/auth/ba/sign-up/email",
-      "/_agent-native/auth/ba/verify-email",
-      "/_agent-native/auth/email-link/landing",
-      "/_agent-native/auth/session",
-      "/_agent-native/auth/ba/get-session",
-      "/_agent-native/auth/ba/sign-in/email",
-      "/_agent-native/auth/ba/sign-out",
-    ].includes(path)
-  );
+  return path === HEALTH_PATH || servicePaths().includes(path);
+}
+// The health check is for the container only; Caddy keeps it closed from outside.
+export const HEALTH_PATH = "/_agent-native/health";
+export function staticFiles(): string[] {
+  return [
+    ...DEMO_SAMPLE_FILES,
+    "/favicon.svg",
+    "/icon-180.svg",
+    "/robots.txt",
+    "/sitemap.xml",
+    "/proof/answer-key.md",
+    "/proof/answer-cases.json",
+  ];
+}
+export function servicePaths(): string[] {
+  return [
+    ...[
+      "add_manual_evidence",
+      "confirm_evidence",
+      "edit_evidence",
+      "reject_evidence",
+      "list_evidence",
+      "inspect_document",
+      "upload_document",
+      "list_documents",
+      "get_document",
+      "remove_document",
+      "extract_evidence",
+      "try_read_document",
+    ].map((name) => `/_agent-native/actions/${name}`),
+    ...DEMO_ACTIONS.map((name) => `/_agent-native/actions/${name}`),
+    DEMO_ENTER_PATH,
+    "/_agent-native/actions/prepare_member_account",
+    "/_agent-native/actions/finish_member_account",
+    "/_agent-native/ui-capability",
+    "/_agent-native/auth/ba/sign-up/email",
+    "/_agent-native/auth/ba/verify-email",
+    "/_agent-native/auth/email-link/landing",
+    "/_agent-native/auth/session",
+    "/_agent-native/auth/ba/get-session",
+    "/_agent-native/auth/ba/sign-in/email",
+    "/_agent-native/auth/ba/sign-out",
+  ];
 }
 export function isAllowedRequest(path: string, method: string): boolean {
   if (
