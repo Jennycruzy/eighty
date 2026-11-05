@@ -2,6 +2,7 @@ import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 
+import { coverageAnswers, visibleQuestions } from "../../shared/screener";
 import en from "../../locales/en-US.json";
 import esCopy from "../../locales/es-US.json";
 import { useLanguage, languageLink } from "../lib/language";
@@ -123,7 +124,7 @@ export default function Account() {
                   email,
                   consent: true,
                   profile: {
-                    screener: answers,
+                    screener: coverageAnswers(answers),
                     language: es ? "es-US" : "en-US",
                   },
                 },
@@ -230,21 +231,26 @@ export default function Account() {
         <details open>
           <summary>{es ? "Tus respuestas" : "Your answers"}</summary>
           <dl>
-            {copy.questions.map((question) => (
+            {visibleQuestions(copy.questions, answers).map((question) => (
               <div key={question.key}>
                 <dt>{question.text}</dt>
                 <dd>
-                  {!answers[question.key] || answers[question.key] === "unknown"
-                    ? es
-                      ? "No sé"
-                      : "Not sure"
-                    : answers[question.key] === "yes"
+                  {question.key === "group"
+                    ? copy.groupChoices[
+                        (answers.group || "") as keyof typeof copy.groupChoices
+                      ]
+                    : !answers[question.key] ||
+                        answers[question.key] === "unknown"
                       ? es
-                        ? "Sí"
-                        : "Yes"
-                      : answers[question.key] === "no"
-                        ? "No"
-                        : answers[question.key]}
+                        ? "No sé"
+                        : "Not sure"
+                      : answers[question.key] === "yes"
+                        ? es
+                          ? "Sí"
+                          : "Yes"
+                        : answers[question.key] === "no"
+                          ? "No"
+                          : answers[question.key]}
                 </dd>
               </div>
             ))}

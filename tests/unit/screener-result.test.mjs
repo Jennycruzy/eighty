@@ -67,10 +67,17 @@ test("Both languages cover every J1 question, reason and proof checklist", async
       "utf8",
     ),
   ).screener;
-  assert.equal(en.questions.length, 13);
+  assert.equal(en.questions.length, 17);
   assert.deepEqual(
     en.questions.map((q) => q.key),
-    Object.keys(allNo),
+    [
+      "state",
+      "group",
+      "otherGroup",
+      "otherwiseEligible",
+      "fullCoverage",
+      ...Object.keys(allNo).slice(1),
+    ],
   );
   assert.deepEqual(
     en.questions.map((q) => q.key),
@@ -206,4 +213,86 @@ test("An unknown rule citation cannot borrow a Medicare answer", () => {
   assert.equal(view.reason, "unknown");
   assert.equal(view.status, "Not sure yet");
   assert.equal(view.outcome, "unknown");
+});
+
+test("Coverage answers use the stated rule paragraphs", () => {
+  for (const [answers, reason, citation] of [
+    [
+      { group: "expansion", otherGroup: "yes" },
+      "otherGroup",
+      "42 CFR 435.119(b)(4)",
+    ],
+    [
+      { group: "1115", otherwiseEligible: "yes", fullCoverage: "yes" },
+      "otherwiseEligible",
+      "42 CFR 435.551(b)(4)",
+    ],
+    [
+      { group: "1115", otherwiseEligible: "no", fullCoverage: "no" },
+      "fullCoverage",
+      "42 CFR 435.551(b)",
+    ],
+  ]) {
+    const result = screenerResult({ ...allNo, ...answers });
+    assert.equal(result.outcome, "excluded");
+    assert.equal(result.reason, reason);
+    assert.equal(result.rule.citation, citation);
+  }
+  for (const answers of [
+    { group: "expansion", otherGroup: "no" },
+    { group: "1115", otherwiseEligible: "no", fullCoverage: "yes" },
+  ]) {
+    const result = screenerResult({ ...allNo, ...answers });
+    assert.equal(result.outcome, "conditional");
+    assert(
+      !result.rule.missing.some((fact) => fact.startsWith("applicability.")),
+    );
+  }
+  for (const answers of [
+    { group: "expansion", otherGroup: "unknown" },
+    { group: "1115", otherwiseEligible: "unknown", fullCoverage: "unknown" },
+  ])
+    assert(
+      screenerResult({ ...allNo, ...answers }).rule.missing.some((fact) =>
+        fact.startsWith("applicability."),
+      ),
+    );
+});
+
+test("Coverage questions follow the selected group and old profiles load", async () => {
+  const { visibleQuestions, coverageAnswers } =
+    await import("../../shared/screener.ts");
+  const { memberProfile } = await import("../../shared/member-profile.ts");
+  const copy = JSON.parse(
+    await readFile(
+      new URL("../../locales/en-US.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  for (const [group, expected] of [
+    ["", []],
+    ["other", []],
+    ["expansion", ["otherGroup"]],
+    ["1115", ["otherwiseEligible", "fullCoverage"]],
+  ]) {
+    const keys = visibleQuestions(copy.screener.questions, { group }).map(
+      (q) => q.key,
+    );
+    assert.deepEqual(
+      keys.filter((key) =>
+        ["otherGroup", "otherwiseEligible", "fullCoverage"].includes(key),
+      ),
+      expected,
+    );
+    const clean = coverageAnswers({
+      group,
+      otherGroup: "yes",
+      otherwiseEligible: "yes",
+      fullCoverage: "no",
+    });
+    assert.deepEqual(Object.keys(clean), ["group", ...expected]);
+  }
+  const old = memberProfile.parse({ language: "en-US", screener: allNo });
+  assert.equal(old.screener.otherGroup, undefined);
+  assert(screenAnswers(old.screener).missing.includes("applicability.group"));
 });

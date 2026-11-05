@@ -8,6 +8,40 @@ import type {
   RuleResult,
 } from "../server/rules/types.ts";
 export type ScreenerAnswers = Record<string, string>;
+export const coverageFacts = {
+  "applicability.group": "group",
+  "applicability.mandatoryGroupEligibleAndEnrolled": "otherGroup",
+  "applicability.otherwiseEligible": "otherwiseEligible",
+  "applicability.minimumEssentialCoverage": "fullCoverage",
+} as const;
+export function visibleQuestions<T extends { key: string }>(
+  questions: T[],
+  answers: ScreenerAnswers,
+): T[] {
+  return questions.filter((question) =>
+    question.key === "otherGroup"
+      ? answers.group === "expansion"
+      : ["otherwiseEligible", "fullCoverage"].includes(question.key)
+        ? answers.group === "1115"
+        : true,
+  );
+}
+export function coverageAnswers<
+  T extends {
+    group?: string | undefined;
+    otherGroup?: string | undefined;
+    otherwiseEligible?: string | undefined;
+    fullCoverage?: string | undefined;
+  },
+>(answers: T): T {
+  const clean = { ...answers };
+  if (clean.group !== "expansion") delete clean.otherGroup;
+  if (clean.group !== "1115") {
+    delete clean.otherwiseEligible;
+    delete clean.fullCoverage;
+  }
+  return clean;
+}
 const flag = (value: string | undefined): Flag =>
   value === "yes" ? true : value === "no" ? false : null;
 export function screenAnswers(answers: ScreenerAnswers): RuleResult {
@@ -44,6 +78,12 @@ export function screenAnswers(answers: ScreenerAnswers): RuleResult {
             ? "other"
             : null,
     age: answers.age?.trim() ? Number(answers.age) : null,
+    mandatoryGroupEligibleAndEnrolled:
+      answers.group === "expansion" ? flag(answers.otherGroup) : null,
+    otherwiseEligible:
+      answers.group === "1115" ? flag(answers.otherwiseEligible) : null,
+    minimumEssentialCoverage:
+      answers.group === "1115" ? flag(answers.fullCoverage) : null,
     pregnant,
     medicare: flag(answers.medicare),
   });

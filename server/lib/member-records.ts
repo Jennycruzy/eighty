@@ -8,6 +8,7 @@ import {
   memberProfile,
   type MemberProfile,
 } from "../../shared/member-profile.ts";
+import { coverageAnswers } from "../../shared/screener.ts";
 import { getDb } from "../db/index.ts";
 import { members } from "../db/schema.ts";
 import { DEMO_EMAIL_DOMAIN, isDemoEmail } from "./demo-identity.ts";
@@ -74,7 +75,7 @@ export async function saveMemberRecord(
   assertActorContext(actor);
   const profile = memberProfile.parse(input);
   const values = {
-    screener: profile.screener,
+    screener: coverageAnswers(profile.screener),
     language: profile.language,
     stateCode: profile.screener.state || null,
     updatedAt: new Date(),

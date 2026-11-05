@@ -349,3 +349,189 @@ test("One long line shows at most two years of months", async () => {
     false,
   );
 });
+
+const coveredAnswers = {
+  state: "NE",
+  age: "30",
+  pregnant: "no",
+  medicare: "no",
+  group: "expansion",
+  otherGroup: "no",
+};
+const pastWork = {
+  ...line,
+  fields: { ...line.fields, start: "2026-10-01", end: "2026-10-31" },
+};
+for (const [answers, status, citation, missing] of [
+  [{}, "Meets", "42 CFR 435.552(a)(1)–(5), (b), (d)–(e)"],
+  [
+    { otherGroup: "unknown" },
+    "Not sure yet",
+    "42 CFR 435.551; 435.119(b)",
+    "applicability.mandatoryGroupEligibleAndEnrolled",
+  ],
+  [{ otherGroup: "yes" }, "Exempt", "42 CFR 435.119(b)(4)"],
+  [
+    { group: "1115", otherwiseEligible: "no", fullCoverage: "yes" },
+    "Meets",
+    "42 CFR 435.552(a)(1)–(5), (b), (d)–(e)",
+  ],
+  [
+    { group: "1115", otherwiseEligible: "no", fullCoverage: "no" },
+    "Exempt",
+    "42 CFR 435.551(b)",
+  ],
+  [
+    { group: "1115", otherwiseEligible: "yes", fullCoverage: "yes" },
+    "Exempt",
+    "42 CFR 435.551(b)(4)",
+  ],
+])
+  test(`Saved coverage ${JSON.stringify(answers)} gives ${status} with 80 hours`, async () => {
+    const facts = memberMonthFacts({ ...coveredAnswers, ...answers });
+    const result = memberMonthResult(facts, [pastWork], "2026-10", asOf);
+    assert.equal(result.status, status);
+    assert.equal(result.citation, citation);
+    if (missing) {
+      assert(result.missing.includes(missing));
+      const { readFile } = await import("node:fs/promises");
+      const copy = JSON.parse(
+        await readFile(
+          new URL("../../locales/en-US.json", import.meta.url),
+          "utf8",
+        ),
+      );
+      assert.equal(
+        copy.months.questionsByFact[missing],
+        copy.screener.questions.find((q) => q.key === "otherGroup").text,
+      );
+    }
+  });
+
+test("Signed-in coverage answers preserve the profile and refuse other callers", async () => {
+  const { getMemberRecord, saveMemberRecord } =
+    await import("../../server/lib/member-records.ts");
+  const action = (await import("../../actions/save_coverage_answer.ts"))
+    .default;
+  await as(member, () =>
+    saveMemberRecord(member, { language: "es-US", screener: coveredAnswers }),
+  );
+  await as(member, () =>
+    action.run({ answers: { otherGroup: "unknown" } }, member.context),
+  );
+  let saved = await as(member, () => getMemberRecord(member));
+  assert.equal(saved.screener.otherGroup, "unknown");
+  assert.equal(
+    memberMonthFacts(saved.screener).applicability
+      .mandatoryGroupEligibleAndEnrolled,
+    null,
+  );
+  await as(member, () =>
+    action.run({ answers: { otherGroup: "no" } }, member.context),
+  );
+  saved = await as(member, () => getMemberRecord(member));
+  assert.equal(saved.language, "es-US");
+  assert.equal(saved.screener.age, "30");
+  assert.equal(
+    memberMonthResult(
+      memberMonthFacts(saved.screener),
+      [pastWork],
+      "2026-10",
+      asOf,
+    ).status,
+    "Meets",
+  );
+  await as(member, () =>
+    action.run({ answers: { group: "1115" } }, member.context),
+  );
+  saved = await as(member, () => getMemberRecord(member));
+  assert.equal(saved.screener.otherGroup, undefined);
+  for (const answers of [{ otherwiseEligible: "no" }, { fullCoverage: "yes" }])
+    await as(member, () => action.run({ answers }, member.context));
+  saved = await as(member, () => getMemberRecord(member));
+  assert.equal(
+    memberMonthResult(
+      memberMonthFacts(saved.screener),
+      [pastWork],
+      "2026-10",
+      asOf,
+    ).status,
+    "Meets",
+  );
+  await as(member, () =>
+    action.run({ answers: { group: "expansion" } }, member.context),
+  );
+  saved = await as(member, () => getMemberRecord(member));
+  assert.equal(saved.screener.otherwiseEligible, undefined);
+  assert.equal(saved.screener.fullCoverage, undefined);
+  assert.equal(saved.screener.otherGroup, undefined);
+  await assert.rejects(
+    as(member, () =>
+      action.run({ answers: { otherGroup: "no" } }, other.context),
+    ),
+    { statusCode: 403 },
+  );
+  await assert.rejects(
+    as(member, () =>
+      action.run(
+        { answers: { otherGroup: "no" } },
+        { ...member.context, caller: "mcp" },
+      ),
+    ),
+    { statusCode: 403 },
+  );
+  await assert.rejects(
+    as(visitor, () =>
+      action.run({ answers: { group: "expansion" } }, visitor.context),
+    ),
+    { statusCode: 403 },
+  );
+  assert.equal(
+    action.schema.safeParse({
+      answers: { otherGroup: "no", memberId: other.member.id },
+    }).success,
+    false,
+  );
+});
+
+test("Coverage facts ignore answers for another Medicaid group", () => {
+  const expansion = memberMonthFacts({
+    ...coveredAnswers,
+    otherwiseEligible: "yes",
+    fullCoverage: "no",
+  });
+  assert.equal(expansion.applicability.otherwiseEligible, null);
+  assert.equal(expansion.applicability.minimumEssentialCoverage, null);
+  const waiver = memberMonthFacts({
+    ...coveredAnswers,
+    group: "1115",
+    otherGroup: "yes",
+    otherwiseEligible: "unknown",
+    fullCoverage: "unknown",
+  });
+  assert.equal(waiver.applicability.mandatoryGroupEligibleAndEnrolled, null);
+  assert.equal(waiver.applicability.otherwiseEligible, null);
+  assert.equal(waiver.applicability.minimumEssentialCoverage, null);
+});
+
+test("A member can save a coverage answer while account creation is closed", async () => {
+  const { registrationStatus } =
+    await import("../../server/lib/registration.ts");
+  assert.equal((await registrationStatus()).open, false);
+  const status = async (path) => {
+    try {
+      await request(path, "POST", member.cookie).run();
+      return "passed";
+    } catch (error) {
+      return error.statusCode;
+    }
+  };
+  assert.equal(
+    await status("/_agent-native/actions/finish_member_account"),
+    503,
+  );
+  assert.equal(
+    await status("/_agent-native/actions/save_coverage_answer"),
+    "passed",
+  );
+});

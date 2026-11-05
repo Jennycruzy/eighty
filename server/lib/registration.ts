@@ -14,6 +14,7 @@ import { and, eq } from "drizzle-orm";
 import { createError } from "h3";
 import { z } from "zod";
 
+import { coverageAnswers } from "../../shared/screener.ts";
 import { memberProfile } from "../../shared/member-profile.ts";
 import { getDb } from "../db/index.ts";
 import { members } from "../db/schema.ts";
@@ -86,6 +87,7 @@ export async function finishMemberAccount(
   input: z.infer<typeof finishRegistrationInput>,
   context: ActionRunContext | undefined,
 ) {
+  const body = finishRegistrationInput.parse(input);
   if (!(await registrationStatus()).open)
     throw createError({
       statusCode: 503,
@@ -95,11 +97,7 @@ export async function finishMemberAccount(
   refuseDemoEmail(actor.email);
   let payload: z.infer<typeof draftPayload>;
   try {
-    payload = draftPayload.parse(
-      JSON.parse(
-        decryptSecretValue(finishRegistrationInput.parse(input).draft),
-      ),
-    );
+    payload = draftPayload.parse(JSON.parse(decryptSecretValue(body.draft)));
   } catch {
     throw createError({
       statusCode: 400,
@@ -126,7 +124,7 @@ export async function finishMemberAccount(
       userId: actor.userId,
       stateCode: payload.profile.screener.state || null,
       language: payload.profile.language,
-      screener: payload.profile.screener,
+      screener: coverageAnswers(payload.profile.screener),
     })
     .onConflictDoNothing()
     .returning({ id: members.id });

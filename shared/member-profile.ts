@@ -19,6 +19,9 @@ export const screenerAnswers = z.strictObject({
       "Check your age.",
     )
     .optional(),
+  otherGroup: answer,
+  otherwiseEligible: answer,
+  fullCoverage: answer,
   pregnant: answer,
   medicare: answer,
   child: answer,

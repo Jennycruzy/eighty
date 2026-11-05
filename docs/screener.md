@@ -1,6 +1,6 @@
 # The initial Medicaid check
 
-The check has 13 screens, with one question on each screen. Every answer is optional. Every screen has an “I'm not sure” choice. It asks about state, age, pregnancy or postpartum care, Medicare, a child in the person's care, care for someone with a disability, the federal Indian definition, a VA rating, treatment, SNAP, former foster youth coverage, health needs and TANF compliance.
+The check shows one question on each screen. It asks which Medicaid group the person has. The adult group has one coverage question. A section 1115 program has two coverage questions. Every answer is optional. Every screen has an “I'm not sure” choice. It asks about state, age, pregnancy or postpartum care, Medicare, a child in the person's care, care for someone with a disability, the federal Indian definition, a VA rating, treatment, SNAP, former foster youth coverage, health needs and TANF compliance.
 
 The public landing page has separate doors for Medicaid members and people trying their own month.
 
@@ -8,7 +8,7 @@ The public landing page has separate doors for Medicaid members and people tryin
 
 The check uses the same pure rules as the rules answer key. An established exclusion shows its reason, the citation and a specific proof checklist. Caregiving, treatment, health needs and SNAP are not treated as established exclusions without the facts those rules require.
 
-The initial questions do not establish the Medicaid coverage group or every possible exclusion. When the listed answers show no exclusion, the page says **“The rule may apply. Here's what counts.”** It names the coverage review still needed and explains counting activities. This remains “Not sure yet” in the rules result. It is not a definitive applicability decision or a green month. Missing answers show “Not sure yet,” with next steps and proof to keep.
+The initial questions collect the Medicaid coverage group and its coverage facts. They do not establish every possible exclusion. When the listed answers show no exclusion, the page says **“The rule may apply. Here's what counts.”** It explains which activities count. The screener result remains “Not sure yet” until month proof is reviewed. The state makes coverage decisions. Missing answers show “Not sure yet,” with questions and proof to keep.
 
 English and Spanish include the questions, reasons, proof checklists and account step. The displayed legal link follows the applied rule.
 

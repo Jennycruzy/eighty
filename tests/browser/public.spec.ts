@@ -123,7 +123,7 @@ for (const lang of ["en", "es"]) {
     page,
   }) => {
     await page.goto(`/check?lang=${lang}`);
-    for (let step = 0; step < 13; step++)
+    for (let index = 0; index < 14; index++)
       await keyOn(
         page,
         page.getByRole("button", {
@@ -138,11 +138,11 @@ for (const lang of ["en", "es"]) {
 }
 
 for (const lang of ["en", "es"]) {
-  test(`Screener gives a reason, proof and a working closed-account handoff (${lang})`, async ({
+  test(`Screener gives a reason, proof and a working closed account link (${lang})`, async ({
     page,
   }) => {
     await page.goto(`/check?lang=${lang}`);
-    for (let step = 0; step < 13; step++) {
+    for (let index = 0; index < 14; index++) {
       await expect(page.locator("fieldset")).toHaveCount(1);
       await expect(
         page.getByRole("button", {
@@ -150,9 +150,9 @@ for (const lang of ["en", "es"]) {
           exact: true,
         }),
       ).toBeVisible();
-      if (step === 0) await page.locator("#state").selectOption("NE");
-      if (step === 1) await page.locator("#age").fill("34");
-      if (step === 4) await page.locator("input[type=radio]").first().check();
+      if (index === 0) await page.locator("#state").selectOption("NE");
+      if (index === 2) await page.locator("#age").fill("34");
+      if (index === 5) await page.locator("input[type=radio]").first().check();
       await page
         .getByRole("button", {
           name: lang === "es" ? "Seguir" : "Next",
@@ -242,6 +242,13 @@ for (const lang of ["en", "es"]) {
         exact: true,
       }),
     );
+    await keyOn(
+      page,
+      page.getByRole("button", {
+        name: lang === "es" ? "Seguir" : "Next",
+        exact: true,
+      }),
+    );
     await keyOn(page, page.locator("#age"), "3");
     await page.keyboard.type("4");
     await keyOn(
@@ -274,5 +281,67 @@ for (const lang of ["en", "es"]) {
         ? "La regla puede aplicarte. Esto es lo que cuenta."
         : "The rule may apply. Here’s what counts.",
     );
+  });
+}
+
+for (const lang of ["en", "es"]) {
+  test(`Coverage questions change with the Medicaid group (${lang})`, async ({
+    page,
+  }) => {
+    const next = () =>
+      page
+        .getByRole("button", {
+          name: lang === "es" ? "Seguir" : "Next",
+          exact: true,
+        })
+        .click();
+    const back = () =>
+      page
+        .getByRole("button", {
+          name: lang === "es" ? "Atrás" : "Back",
+          exact: true,
+        })
+        .click();
+    await page.goto(`/check?lang=${lang}`);
+    await next();
+    await expect(page.locator('input[name="group"]')).toHaveCount(4);
+    await page.locator('input[name="group"][value="expansion"]').check();
+    await next();
+    await expect(page.locator('input[name="otherGroup"]')).toHaveCount(3);
+    await expect(page.locator('input[name="otherwiseEligible"]')).toHaveCount(
+      0,
+    );
+    await page.locator('input[name="otherGroup"]').first().check();
+    await back();
+    await page.locator('input[name="group"][value="1115"]').check();
+    await next();
+    await expect(page.locator('input[name="otherwiseEligible"]')).toHaveCount(
+      3,
+    );
+    await expect(page.locator('input[name="otherGroup"]')).toHaveCount(0);
+    await page.locator('input[name="otherwiseEligible"]').first().check();
+    await next();
+    await expect(page.locator('input[name="fullCoverage"]')).toHaveCount(3);
+    await page.locator('input[name="fullCoverage"]').first().check();
+    await back();
+    await back();
+    await page.locator('input[name="group"][value="expansion"]').check();
+    await next();
+    await expect(page.locator('input[name="otherGroup"]').nth(2)).toBeChecked();
+    await back();
+    await page.locator('input[name="group"][value="1115"]').check();
+    await next();
+    await expect(
+      page.locator('input[name="otherwiseEligible"]').nth(2),
+    ).toBeChecked();
+    await next();
+    await expect(
+      page.locator('input[name="fullCoverage"]').nth(2),
+    ).toBeChecked();
+    await back();
+    await back();
+    await page.locator('input[name="group"][value="other"]').check();
+    await next();
+    await expect(page.locator("#age")).toBeVisible();
   });
 }

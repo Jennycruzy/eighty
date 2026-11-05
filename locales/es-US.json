@@ -166,6 +166,22 @@
         "text": "¿En qué estado vives?"
       },
       {
+        "key": "group",
+        "text": "¿Qué tipo de Medicaid tienes? Tu carta de Medicaid puede decirlo."
+      },
+      {
+        "key": "otherGroup",
+        "text": "¿También calificas y tienes Medicaid por otro grupo, como por discapacidad de SSI o como padre, madre o cuidador?"
+      },
+      {
+        "key": "otherwiseEligible",
+        "text": "¿Podrías recibir Medicaid regular en tu estado sin este programa?"
+      },
+      {
+        "key": "fullCoverage",
+        "text": "¿Este programa te da cobertura de salud completa, como visitas al médico, atención en el hospital y medicamentos recetados, y no solo servicios limitados como planificación familiar?"
+      },
+      {
         "key": "age",
         "text": "¿Cuántos años tienes?"
       },
@@ -274,7 +290,25 @@
       "unknown": {
         "reason": "Aún no sabemos qué razón te aplica. Pregunta al estado qué grupo de Medicaid tienes y qué exclusiones necesita revisar.",
         "proof": "Guarda tu carta de cobertura de Medicaid. Lleva los documentos que apoyen tus respuestas."
+      },
+      "otherGroup": {
+        "reason": "Calificas y tienes Medicaid por otro grupo. Esta regla del grupo de adultos no te aplica.",
+        "proof": "Guarda tu carta de Medicaid que nombra el otro grupo."
+      },
+      "otherwiseEligible": {
+        "reason": "Puedes recibir Medicaid regular sin este programa. Esta regla del programa no te aplica.",
+        "proof": "Guarda tu carta de Medicaid que muestra el grupo de Medicaid regular para el que calificas."
+      },
+      "fullCoverage": {
+        "reason": "Tu programa solo da servicios limitados. Esta regla federal no aplica a esa cobertura.",
+        "proof": "Guarda la carta de tu programa que enumera los servicios que cubre."
       }
+    },
+    "groupChoices": {
+      "expansion": "Grupo de adultos (expansión de Medicaid)",
+      "1115": "Un programa del estado con sus propias reglas, a veces llamado programa de exención o de la sección 1115",
+      "other": "Otro tipo, como por discapacidad, embarazo, niños o padres",
+      "": "No sé"
     }
   },
   "reader": {
@@ -452,13 +486,13 @@
     "none": "Aún no se contaron datos confirmados.",
     "unknownQuestion": "¿Qué comprobantes necesita tu estado para este mes?",
     "questionsByFact": {
-      "applicability.group": "¿Qué grupo de Medicaid tienes?",
+      "applicability.group": "¿Qué tipo de Medicaid tienes? Tu carta de Medicaid puede decirlo.",
       "applicability.age": "¿Qué edad tienes?",
       "applicability.pregnant": "¿Estás embarazada?",
       "applicability.medicare": "¿Tienes Medicare?",
-      "applicability.otherwiseEligible": "¿Puedes recibir Medicaid por otro grupo? Pregunta a tu estado.",
-      "applicability.mandatoryGroupEligibleAndEnrolled": "¿Tienes derecho a otro grupo obligatorio de Medicaid y estás inscrito en él? Pregunta a tu estado.",
-      "applicability.minimumEssentialCoverage": "¿Tu plan da la cobertura que exige esta regla? Pregunta a tu estado.",
+      "applicability.otherwiseEligible": "¿Podrías recibir Medicaid regular en tu estado sin este programa?",
+      "applicability.mandatoryGroupEligibleAndEnrolled": "¿También calificas y tienes Medicaid por otro grupo, como por discapacidad de SSI o como padre, madre o cuidador?",
+      "applicability.minimumEssentialCoverage": "¿Este programa te da cobertura de salud completa, como visitas al médico, atención en el hospital y medicamentos recetados, y no solo servicios limitados como planificación familiar?",
       "evidenceComplete": "¿Has añadido todos los comprobantes de este mes?",
       "month": "¿Qué mes quieres revisar?",
       "month.future": "¿Tienes comprobantes de un mes que ya empezó?",
@@ -498,6 +532,7 @@
     },
     "schoolMath": "{credits} créditos × 3 × 4.33 = {hours} horas",
     "schoolHours": "Horas de estudios: {hours}",
-    "wageMath": "Pago bruto {gross} − deducciones antes de impuestos {deductions} = {net}"
+    "wageMath": "Pago bruto {gross} − deducciones antes de impuestos {deductions} = {net}",
+    "saveAnswer": "Guardar respuesta"
   }
 }

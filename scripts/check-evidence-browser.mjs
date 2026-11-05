@@ -170,7 +170,7 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
           ? "Horas (deja en blanco si no sabes)"
           : "Hours (leave blank if not known)",
       )
-      .fill("45");
+      .fill("80");
     await page
       .getByLabel(es ? "Fecha de pago" : "Pay date", { exact: true })
       .fill("2026-10-31");
@@ -220,25 +220,16 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
     for (const path of ["/months", `/months/${currentMonth}`]) {
       await page.goto(`${baseURL}${path}?lang=${lang}`);
       await page.locator(".result .status").first().waitFor();
-      await page
-        .locator('.result a[href^="https://www.ecfr.gov/"]')
-        .first()
-        .waitFor();
       assert.match(
         await page.locator(".result").first().innerText(),
         /42 CFR 435\./,
       );
-      assert.equal(
-        await page.locator(".result .status").first().innerText(),
+      await expect(page.locator(".result .status").first()).toHaveText(
         es ? "Aún no sabemos" : "Not sure yet",
       );
-      assert.match(
-        await page
-          .locator('.result a[href^="https://www.ecfr.gov/"]')
-          .first()
-          .innerText(),
-        /42 CFR 435\.551/,
-      );
+      await expect(
+        page.locator('.result a[href^="https://www.ecfr.gov/"]').first(),
+      ).toHaveText(es ? /42 CFR 435\.551/ : /42 CFR 435\.552/);
       if (path !== "/months")
         await page
           .getByRole("heading", {
@@ -262,6 +253,74 @@ export async function checkEvidenceBrowser(sessions, baseURL, choose, mark) {
     console.log(
       `PASS ${lang}: member months show a status and line of law at 360 px.`,
     );
+    await page.goto(`${baseURL}/months/2026-10?lang=${lang}`);
+    const status = page.locator(".result .status").first();
+    if (es) {
+      await expect(status).toHaveText("Aún no sabemos");
+      await page
+        .getByRole("group", {
+          name: "¿También calificas y tienes Medicaid por otro grupo, como por discapacidad de SSI o como padre, madre o cuidador?",
+          exact: true,
+        })
+        .waitFor();
+      await choose(
+        page,
+        page.locator('input[name="otherGroup"][value="unknown"]'),
+        "Space",
+      );
+      const reloadedUnknown = page.waitForResponse((response) =>
+        response.url().includes("/actions/check_month"),
+      );
+      const savedUnknown = page.waitForResponse(
+        (response) =>
+          response.url().includes("/actions/save_coverage_answer") &&
+          response.request().method() === "POST",
+      );
+      await choose(
+        page,
+        page.getByRole("button", { name: "Guardar respuesta", exact: true }),
+        "Enter",
+      );
+      assert.equal((await savedUnknown).status(), 200);
+      assert.equal((await reloadedUnknown).status(), 200);
+      await expect(
+        page.locator('input[name="otherGroup"][value="unknown"]'),
+      ).toBeChecked();
+      await expect(
+        page.locator('input[name="otherGroup"][value="no"]'),
+      ).toBeEnabled();
+      await choose(
+        page,
+        page.locator('input[name="otherGroup"]:checked'),
+        "ArrowUp",
+      );
+      await choose(
+        page,
+        page.getByRole("button", { name: "Guardar respuesta", exact: true }),
+        "Enter",
+      );
+    }
+    await expect(status).toHaveText(es ? "Cumple la regla" : "Meets the rule");
+    await expect(
+      page.locator('.result a[href^="https://www.ecfr.gov/"]').first(),
+    ).toHaveText("42 CFR 435.552(a)(1)–(5), (b), (d)–(e)");
+    assert(
+      await page.evaluate(() => document.documentElement.scrollWidth <= 360),
+    );
+    await page.reload();
+    await expect(status).toHaveText(es ? "Cumple la regla" : "Meets the rule");
+    console.log(
+      `PASS ${lang}: 80 confirmed hours show Meets and 42 CFR 435.552 at 360 px${es ? " after answering the coverage question on the month" : ""}.`,
+    );
+    await choose(
+      page,
+      page.getByRole("link", {
+        name: es ? "Añadir pruebas" : "Add proof",
+        exact: true,
+      }),
+      "Enter",
+    );
+    await page.waitForURL(/\/add/);
     docs = await getDbExec().execute({
       sql: "SELECT id,handle FROM eighty_documents WHERE owner_email=?",
       args: [email],

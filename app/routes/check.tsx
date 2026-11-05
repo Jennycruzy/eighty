@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import states from "../../data/states.json";
 import en from "../../locales/en-US.json";
 import esCopy from "../../locales/es-US.json";
+import { coverageAnswers, visibleQuestions } from "../../shared/screener";
 import { screenerResult } from "../../shared/screener-result";
 import { useLanguage, languageLink } from "../lib/language";
 import { useScreenerDraft } from "../lib/screener-draft";
@@ -18,13 +19,14 @@ export default function Check() {
   useEffect(() => {
     (field.current || heading.current)?.focus();
   }, [step]);
-  const question = copy.questions[step];
+  const questions = visibleQuestions(copy.questions, answers);
+  const question = questions[step];
   const result = question ? null : screenerResult(answers);
   const explanation = result
     ? copy.reasons[result.reason as keyof typeof copy.reasons]
     : null;
   const set = (value: string) =>
-    setAnswers({ ...answers, [question!.key]: value });
+    setAnswers(coverageAnswers({ ...answers, [question!.key]: value }));
   const citation =
     result?.reason === "care"
       ? "42 CFR 435.554(c)(3)"
@@ -47,11 +49,17 @@ export default function Check() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            set(
+              answers[question.key] ??
+                (["state", "age", "group"].includes(question.key)
+                  ? ""
+                  : "unknown"),
+            );
             setStep(step + 1);
           }}
         >
           <p className="muted">
-            {step + 1} / {copy.questions.length}
+            {step + 1} / {questions.length}
           </p>
           <fieldset key={question.key} ref={field} tabIndex={-1}>
             <legend>{question.text}</legend>
@@ -75,6 +83,29 @@ export default function Check() {
                   ))}
                 </select>
               </>
+            ) : question.key === "group" ? (
+              ["expansion", "1115", "other", ""]
+                .map(
+                  (value) =>
+                    [
+                      value,
+                      copy.groupChoices[
+                        value as keyof typeof copy.groupChoices
+                      ],
+                    ] as const,
+                )
+                .map(([value, label]) => (
+                  <label className="choice" key={value}>
+                    <input
+                      type="radio"
+                      name="group"
+                      value={value}
+                      checked={(answers.group || "") === value}
+                      onChange={() => set(value)}
+                    />
+                    {label}
+                  </label>
+                ))
             ) : question.key === "age" ? (
               <>
                 <label htmlFor="age">
@@ -127,7 +158,7 @@ export default function Check() {
               className="secondary"
               onClick={() => {
                 set(
-                  question.key === "state" || question.key === "age"
+                  ["state", "age", "group"].includes(question.key)
                     ? ""
                     : "unknown",
                 );
@@ -185,7 +216,7 @@ export default function Check() {
             <summary>{es ? "Cómo decidimos" : "How we decided"}</summary>
             <p>{citation}</p>
             <a
-              href={`https://www.ecfr.gov/current/title-42/section-${citation?.includes("435.554") ? "435.554" : "435.551"}`}
+              href={`https://www.ecfr.gov/current/title-42/section-${citation?.includes("435.554") ? "435.554" : citation?.includes("435.119(b)(4)") ? "435.119" : "435.551"}`}
             >
               {es ? "Leer la regla" : "Read the rule"}
             </a>

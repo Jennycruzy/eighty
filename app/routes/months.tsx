@@ -2,6 +2,8 @@ import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
+import type { saveCoverageAnswer } from "../../server/lib/coverage-answer";
+import { coverageFacts } from "../../shared/screener";
 import en from "../../locales/en-US.json";
 import es from "../../locales/es-US.json";
 import type { checkMemberMonth } from "../../server/lib/member-month";
@@ -110,7 +112,7 @@ export default function MonthsPage() {
                     key.includes("Enrolled")
                   ? "/help"
                   : "/check";
-              return [text, { text, path }];
+              return [text, { text, path, fact: key }];
             }),
           ).values(),
         ];
@@ -225,9 +227,23 @@ export default function MonthsPage() {
                   <>
                     <h3>{copy.questions}</h3>
                     <ul>
-                      {questions.map(({ text, path }) => (
+                      {questions.map(({ text, path, fact }) => (
                         <li key={text}>
-                          <Link to={link(path)}>{text}</Link>
+                          {fact in coverageFacts ? (
+                            <CoverageAnswer
+                              key={`${month.month}-${fact}`}
+                              answerKey={
+                                coverageFacts[
+                                  fact as keyof typeof coverageFacts
+                                ]
+                              }
+                              text={text}
+                              lang={lang}
+                              reload={load}
+                            />
+                          ) : (
+                            <Link to={link(path)}>{text}</Link>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -248,5 +264,80 @@ export default function MonthsPage() {
       )}
       <p className="note">{common.stateDecides}</p>
     </>
+  );
+}
+
+function CoverageAnswer({
+  answerKey,
+  text,
+  lang,
+  reload,
+}: {
+  answerKey: (typeof coverageFacts)[keyof typeof coverageFacts];
+  text: string;
+  lang: string;
+  reload: () => Promise<void>;
+}) {
+  const copy = lang === "es" ? es : en;
+  const [value, setValue] = useState(answerKey === "group" ? "" : "unknown");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(false);
+  const choices: [string, string][] =
+    answerKey === "group"
+      ? ["expansion", "1115", "other", ""].map((value): [string, string] => [
+          value,
+          copy.screener.groupChoices[
+            value as keyof typeof copy.screener.groupChoices
+          ],
+        ])
+      : [
+          ["yes", lang === "es" ? "Sí" : "Yes"],
+          ["no", "No"],
+          ["unknown", lang === "es" ? "No sé" : "Not sure"],
+        ];
+  return (
+    <form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        setBusy(true);
+        setError(false);
+        try {
+          await callAction(
+            "save_coverage_answer",
+            {
+              answers: { [answerKey]: value } as NonNullable<
+                Parameters<typeof saveCoverageAnswer>[0]["answers"]
+              >,
+            },
+            { method: "POST", uiOnly: true },
+          );
+          await reload();
+        } catch {
+          setError(true);
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      <fieldset disabled={busy}>
+        <legend>{text}</legend>
+        {choices.map(([choice, label]) => (
+          <label className="choice" key={choice}>
+            <input
+              type="radio"
+              name={answerKey}
+              value={choice}
+              checked={value === choice}
+              onChange={() => setValue(choice)}
+            />
+            {label}
+          </label>
+        ))}
+      </fieldset>
+      {error && (
+        <p role="alert">{demoCopy(lang === "es" ? "es" : "en").month.error}</p>
+      )}
+      <button disabled={busy}>{copy.months.saveAnswer}</button>
+    </form>
   );
 }

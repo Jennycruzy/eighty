@@ -10,27 +10,34 @@ export function presentScreenerResult(
   let reason = "unknown";
   if (rule.status === "Exempt") {
     const match = rule.citation.match(/435\.554\(c\)\((\d+)\)/);
-    reason = match
-      ? ({
-          "1": "foster",
-          "2": "indian",
-          "3": "child",
-          "4": "veteran",
-          "5": "health",
-          "6": "tanf",
-          "7": "snap",
-          "8": "treatment",
-          "10": "pregnant",
-        }[match[1]!] ?? "unknown")
-      : rule.math === null || !rule.citation.includes("435.551")
-        ? "unknown"
-        : answers.group === "other"
-          ? "group"
-          : "age" in rule.math
-            ? "age"
-            : answers.medicare === "yes"
-              ? "medicare"
-              : "unknown";
+    reason =
+      rule.citation === "42 CFR 435.119(b)(4)"
+        ? "otherGroup"
+        : rule.citation === "42 CFR 435.551(b)(4)"
+          ? "otherwiseEligible"
+          : rule.citation === "42 CFR 435.551(b)"
+            ? "fullCoverage"
+            : match
+              ? ({
+                  "1": "foster",
+                  "2": "indian",
+                  "3": "child",
+                  "4": "veteran",
+                  "5": "health",
+                  "6": "tanf",
+                  "7": "snap",
+                  "8": "treatment",
+                  "10": "pregnant",
+                }[match[1]!] ?? "unknown")
+              : rule.math === null || !rule.citation.includes("435.551")
+                ? "unknown"
+                : answers.group === "other"
+                  ? "group"
+                  : "age" in rule.math
+                    ? "age"
+                    : answers.medicare === "yes"
+                      ? "medicare"
+                      : "unknown";
     if (reason === "child" && answers.child !== "yes") reason = "unknown";
   } else {
     const keys = [

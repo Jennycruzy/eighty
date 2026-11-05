@@ -123,18 +123,35 @@ try {
     await page.keyboard.press("n");
     assert.equal(await page.locator("#state").inputValue(), "NE");
     await next(page, es);
+    await tabTo(page, page.locator('input[name="group"]:checked'));
+    await page.keyboard.press("ArrowDown");
+    assert.equal(
+      await page.locator('input[name="group"]:checked').inputValue(),
+      "expansion",
+    );
+    await next(page, es);
+    if (es) {
+      await choose(
+        page,
+        page.locator('input[name="otherGroup"]:checked'),
+        "Space",
+      );
+    } else {
+      await tabTo(page, page.locator('input[name="otherGroup"]:checked'));
+      await page.keyboard.press("ArrowUp");
+    }
+    await next(page, es);
     await tabTo(page, page.locator("#age"));
     await page.keyboard.type("34");
     await next(page, es);
     for (let step = 2; step < 13; step++) {
       await tabTo(page, page.locator("input[type=radio]:checked"));
       await page.keyboard.press("ArrowUp"); // unknown -> no
-      if (step === 4) await page.keyboard.press("ArrowUp"); // no -> yes, the child care case
       await next(page, es);
     }
     assert.equal(
       await page.locator(".result").getAttribute("data-outcome"),
-      "excluded",
+      "conditional",
     );
     await choose(
       page,
@@ -236,7 +253,9 @@ try {
     assert.equal(rows.rows.length, 1);
     assert.equal(rows.rows[0].state_code, "NE");
     assert.equal(rows.rows[0].language, `${lang}-US`);
-    assert.equal(rows.rows[0].screener.child, "yes");
+    assert.equal(rows.rows[0].screener.child, "no");
+    assert.equal(rows.rows[0].screener.group, "expansion");
+    assert.equal(rows.rows[0].screener.otherGroup, es ? "unknown" : "no");
     assert.equal(rows.rows[0].email_verified, true);
     const credentials = await getDbExec().execute({
       sql: 'SELECT password FROM "account" WHERE user_id=? AND provider_id=?',

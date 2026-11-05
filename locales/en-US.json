@@ -166,6 +166,22 @@
         "text": "Which state do you live in?"
       },
       {
+        "key": "group",
+        "text": "What kind of Medicaid do you have? Your Medicaid letter may say."
+      },
+      {
+        "key": "otherGroup",
+        "text": "Do you also qualify for and have Medicaid through another group, such as SSI disability or as a parent or caretaker?"
+      },
+      {
+        "key": "otherwiseEligible",
+        "text": "Could you get regular Medicaid in your state without this program?"
+      },
+      {
+        "key": "fullCoverage",
+        "text": "Does this program give you full health coverage, such as doctor visits, hospital care and prescriptions, and not only limited services such as family planning?"
+      },
+      {
         "key": "age",
         "text": "How old are you?"
       },
@@ -274,7 +290,25 @@
       "unknown": {
         "reason": "We can’t tell which reason applies yet. Ask your state which Medicaid group you have and which exclusions it needs to check.",
         "proof": "Keep your Medicaid coverage letter. Bring any papers that support an answer you gave."
+      },
+      "otherGroup": {
+        "reason": "You qualify for and have Medicaid through another group. This adult group rule does not apply.",
+        "proof": "Keep your Medicaid letter that names the other group."
+      },
+      "otherwiseEligible": {
+        "reason": "You can get regular Medicaid without this program. This program rule does not apply.",
+        "proof": "Keep your Medicaid letter that shows the regular Medicaid group you qualify for."
+      },
+      "fullCoverage": {
+        "reason": "Your program gives only limited services. This federal rule does not apply to that coverage.",
+        "proof": "Keep your program letter that lists the services it covers."
       }
+    },
+    "groupChoices": {
+      "expansion": "Adult group (Medicaid expansion)",
+      "1115": "A state program with its own rules, sometimes called a waiver or section 1115 program",
+      "other": "Another kind, such as for disability, pregnancy, children, or parents",
+      "": "Not sure"
     }
   },
   "reader": {
@@ -452,13 +486,13 @@
     "none": "No confirmed lines counted yet.",
     "unknownQuestion": "What proof does your state need for this month?",
     "questionsByFact": {
-      "applicability.group": "Which Medicaid group are you in?",
+      "applicability.group": "What kind of Medicaid do you have? Your Medicaid letter may say.",
       "applicability.age": "How old are you?",
       "applicability.pregnant": "Are you pregnant?",
       "applicability.medicare": "Do you have Medicare?",
-      "applicability.otherwiseEligible": "Are you eligible through another Medicaid group? Ask your state.",
-      "applicability.mandatoryGroupEligibleAndEnrolled": "Are you eligible for and enrolled in another mandatory Medicaid group? Ask your state.",
-      "applicability.minimumEssentialCoverage": "Does your plan provide the coverage this rule requires? Ask your state.",
+      "applicability.otherwiseEligible": "Could you get regular Medicaid in your state without this program?",
+      "applicability.mandatoryGroupEligibleAndEnrolled": "Do you also qualify for and have Medicaid through another group, such as SSI disability or as a parent or caretaker?",
+      "applicability.minimumEssentialCoverage": "Does this program give you full health coverage, such as doctor visits, hospital care and prescriptions, and not only limited services such as family planning?",
       "evidenceComplete": "Have you added all your proof for this month?",
       "month": "Which month do you want to review?",
       "month.future": "Do you have proof for a month that has already started?",
@@ -498,6 +532,7 @@
     },
     "schoolMath": "{credits} credits × 3 × 4.33 = {hours} hours",
     "schoolHours": "School hours: {hours}",
-    "wageMath": "Gross pay {gross} − pre-tax deductions {deductions} = {net}"
+    "wageMath": "Gross pay {gross} − pre-tax deductions {deductions} = {net}",
+    "saveAnswer": "Save answer"
   }
 }

@@ -78,6 +78,7 @@ export function servicePaths(): string[] {
       "reject_evidence",
       "list_evidence",
       "check_month",
+      "save_coverage_answer",
       "inspect_document",
       "upload_document",
       "list_documents",

@@ -24,9 +24,12 @@ export function memberMonthFacts(
       age: answers.age ? Number(answers.age) : null,
       pregnant: flag(answers.pregnant),
       medicare: flag(answers.medicare),
-      otherwiseEligible: null,
-      mandatoryGroupEligibleAndEnrolled: null,
-      minimumEssentialCoverage: null,
+      otherwiseEligible:
+        answers.group === "1115" ? flag(answers.otherwiseEligible) : null,
+      mandatoryGroupEligibleAndEnrolled:
+        answers.group === "expansion" ? flag(answers.otherGroup) : null,
+      minimumEssentialCoverage:
+        answers.group === "1115" ? flag(answers.fullCoverage) : null,
     },
     exclusions: {
       formerFosterYouthGroup: flag(answers.foster),

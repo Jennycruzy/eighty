@@ -2,6 +2,9 @@
 
 ## 5 November 2026
 
+- Ask which Medicaid group a member has and the coverage questions for that group.
+- Let members answer missing coverage questions on their month and show the result from confirmed hours.
+
 - Open sign-in from saved member links and keep the language and return page.
 - Show member months, confirmed proof, missing facts and linked federal rules in English and Spanish.
 - Use the same month inputs for members and the demo.
