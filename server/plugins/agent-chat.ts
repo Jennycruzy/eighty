@@ -19,6 +19,9 @@ export default createAgentChatPlugin({
   resolveOrgId: async (event) => (await getOrgContext(event)).orgId,
   systemPrompt: MONTH_AGENT_PROMPT,
   leanPrompt: true,
+  // With the follow-up tool offered beside the answer, the model often wrote
+  // its reply only in its reasoning and then pointed back to it.
+  followUpSuggestions: false,
   skipFilesContext: true,
   resolveActionSurface: ({ ownerEmail }) => ({
     allowedActionNames: MONTH_AGENT_TOOLS.filter(

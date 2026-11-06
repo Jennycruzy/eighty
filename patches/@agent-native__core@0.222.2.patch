@@ -1,3 +1,29 @@
+diff --git a/dist/agent/production-agent.d.ts b/dist/agent/production-agent.d.ts
+index c822634de186273ee332ed70411a84e998b7c917..cfd550bbce27f6456e81a259cacc71391c8a2ff3 100644
+--- a/dist/agent/production-agent.d.ts
++++ b/dist/agent/production-agent.d.ts
+@@ -316,6 +316,8 @@ export interface PreparedAgentRequest {
+     status?: ContextStatus;
+ }
+ export interface ProductionAgentOptions {
++    /** Set to false to stop the follow-up suggestion step after each interactive reply. */
++    followUpSuggestions?: boolean;
+     /** Gate a newly admitted user turn after trusted continuation checks. */
+     assertAiSetupReady: () => Promise<void>;
+     actions?: Record<string, ActionEntry>;
+diff --git a/dist/agent/production-agent.js b/dist/agent/production-agent.js
+index 13fb7ebea6126e8ea35e6853c49da789dc9ab961..c6821aabeed4fe1c0dfd8a574dff8eb90030218e 100644
+--- a/dist/agent/production-agent.js
++++ b/dist/agent/production-agent.js
+@@ -12667,7 +12667,7 @@ export function createProductionAgentHandler(options) {
+                 // copies, so only this loop sets the run's model and effort.
+                 onModelSettings: (model, effort) => options.onEngineResolved?.(engine, model, effort),
+                 runId,
+-                followUpSuggestions: true,
++                followUpSuggestions: options.followUpSuggestions !== false,
+                 systemPrompt: requestSystemPrompt,
+                 tools: requestTools,
+                 availableTools: availableRequestTools,
 diff --git a/dist/private-blob/s3-private.js b/dist/private-blob/s3-private.js
 index f270d02abba62d0bcbf699bc6d2da1ac16975b04..b4568267a0a9c0ef6cf73fa3fe90863acafafc52 100644
 --- a/dist/private-blob/s3-private.js
@@ -16,6 +42,50 @@ index f270d02abba62d0bcbf699bc6d2da1ac16975b04..b4568267a0a9c0ef6cf73fa3fe90863a
      const key = `${OBJECT_KEY_PREFIX}/${randomUUID()}`;
      const response = await signedS3Request(bucket.config, key, {
          method: "PUT",
+diff --git a/dist/server/agent-chat/plugin-options.d.ts b/dist/server/agent-chat/plugin-options.d.ts
+index 87c3ce89a09bcf3df3aed00cee43f7378c62bd44..099bfa50f34c5ce2e1a37ed3af07cb3278e528cb 100644
+--- a/dist/server/agent-chat/plugin-options.d.ts
++++ b/dist/server/agent-chat/plugin-options.d.ts
+@@ -11,6 +11,11 @@ import type { AgentChatAdditionalActionsExternalSurface, ResolveAgentChatAdditio
+ import type { AgentChatMcpIcon, AgentChatMcpOptions } from "./mcp-options.js";
+ export type NitroPluginDef = (nitroApp: any) => void | Promise<void>;
+ export interface AgentChatPluginOptions {
++    /**
++     * Set to false to stop the follow-up suggestion step after each reply.
++     * Defaults to on.
++     */
++    followUpSuggestions?: boolean;
+     onAgentTurnStart?: (scope: AgentChatScope, run: Pick<ActiveRun, "threadId" | "runId">) => void | Promise<void>;
+     onAgentTurnComplete?: (scope: AgentChatScope, run: ActiveRun) => void | Promise<void>;
+     /**
+diff --git a/dist/server/agent-chat-plugin.js b/dist/server/agent-chat-plugin.js
+index 09af4c86252055f62b9ff4085e8da0e6bbd80e82..7a1e3ce7bfb5ea871acc961652aa156dbd2c9f68 100644
+--- a/dist/server/agent-chat-plugin.js
++++ b/dist/server/agent-chat-plugin.js
+@@ -4093,6 +4093,7 @@ Non-code requests are still fine on this surface: read data, navigate the UI, su
+                 apiKey: options?.apiKey,
+                 ...resolveInteractiveAgentRunOptions(options),
+                 finalResponseGuard: options?.finalResponseGuard,
++                followUpSuggestions: options?.followUpSuggestions,
+                 prepareRequest: async (details) => {
+                     // Drain any parent-completion injections queued by finished sub-agents
+                     // and prepend them to the user message so the orchestrator sees results
+@@ -4184,6 +4185,7 @@ Non-code requests are still fine on this surface: read data, navigate the UI, su
+                     ...resolveInteractiveAgentRunOptions(options),
+                     jevContextCompact: true,
+                     finalResponseGuard: options?.finalResponseGuard,
++                    followUpSuggestions: options?.followUpSuggestions,
+                     prepareRequest: options?.prepareRequest,
+                     resolveActionSurface: (details) => resolveObservabilityReviewSummaryActionSurface(details, options?.resolveActionSurface),
+                     skipFilesContext: true,
+@@ -4367,6 +4369,7 @@ Non-code requests are still fine on this surface: read data, navigate the UI, su
+                     ...resolveInteractiveAgentRunOptions(options),
+                     jevContextCompact: leanPrompt || lazyContext,
+                     finalResponseGuard: options?.finalResponseGuard,
++                    followUpSuggestions: options?.followUpSuggestions,
+                     prepareRequest: async (details) => {
+                         const prepared = await options?.prepareRequest?.(details);
+                         return deferPriorThreadImageContext(prepared, details);
 diff --git a/dist/server/index.d.ts b/dist/server/index.d.ts
 index 9aa3de907c2c1a82ecfc90e76e6a0589175f631e..92537bf185b0402147a540ade303b23be2a87f30 100644
 --- a/dist/server/index.d.ts

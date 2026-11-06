@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { createAgentNativeAgentKitTransport } from "@agent-native/core/client/agentkit-chat/transport";
 import { AgentNativeI18nProvider } from "@agent-native/core/client/i18n";
 import {
@@ -113,14 +115,32 @@ function Conversation() {
           : "Ask about your saved proof and answers. You review each proposed line."}
       </p>
       <div aria-live="polite" role="log">
-        {thread.messages.map((message) => (
-          <p key={message.id}>
-            {message.parts
-              .filter((part) => part.type === "text")
-              .map((part) => part.text)
-              .join("\n")}
-          </p>
-        ))}
+        {thread.messages.map((message) => {
+          const text = message.parts
+            .filter((part) => part.type === "text")
+            .map((part) => part.text)
+            .join("\n");
+          return message.role === "user" ? (
+            <p key={message.id} className="helper-question">
+              {text}
+            </p>
+          ) : (
+            <div key={message.id} className="helper-answer">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  a: ({ href, children }) => (
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      {children}
+                    </a>
+                  ),
+                }}
+              >
+                {text}
+              </ReactMarkdown>
+            </div>
+          );
+        })}
       </div>
       {questions.questions && (
         <GuidedQuestionFlow

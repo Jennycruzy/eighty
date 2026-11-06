@@ -397,3 +397,13 @@ dd {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+.month-helper .helper-question {
+  font-weight: 600;
+}
+.month-helper .helper-answer ol,
+.month-helper .helper-answer ul {
+  padding-left: 1.25rem;
+}
+.month-helper .helper-answer a {
+  overflow-wrap: anywhere;
+}
