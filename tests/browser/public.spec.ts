@@ -258,7 +258,7 @@ for (const lang of ["en", "es"]) {
         exact: true,
       }),
     );
-    for (let step = 2; step < 13; step++) {
+    for (let question = 2; question < 13; question++) {
       await keyOn(page, page.locator("input[type=radio]:checked"), "ArrowUp");
       await keyOn(
         page,

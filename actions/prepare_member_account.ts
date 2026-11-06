@@ -1,6 +1,6 @@
 import { defineAction } from "@agent-native/core/action";
 
-import { refuseDemoContext } from "../server/lib/demo-accounts.ts";
+import { refuseExampleContext } from "../server/lib/example-accounts.ts";
 import {
   registrationInput,
   prepareMemberAccount,
@@ -16,7 +16,7 @@ export default defineAction({
   maxBodyBytes: 16384,
   http: { method: "POST" },
   run: async (input, context) => {
-    await refuseDemoContext(context);
+    await refuseExampleContext(context);
     return prepareMemberAccount(input, context?.requestHeaders);
   },
 });

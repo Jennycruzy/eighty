@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 
 import type { ActionRunContext } from "@agent-native/core/action";
@@ -10,6 +10,7 @@ import {
   getEmailReadiness,
   readDeployCredentialEnv,
 } from "@agent-native/core/server";
+import { getDbExec } from "@agent-native/core/db";
 import { and, eq } from "drizzle-orm";
 import { createError } from "h3";
 import { z } from "zod";
@@ -18,7 +19,7 @@ import { coverageAnswers } from "../../shared/screener.ts";
 import { memberProfile } from "../../shared/member-profile.ts";
 import { getDb } from "../db/index.ts";
 import { members } from "../db/schema.ts";
-import { refuseDemoEmail } from "./demo-identity.ts";
+import { refuseExampleEmail } from "./example-identity.ts";
 import { reviewedMemberActor } from "./member-identity.ts";
 
 export async function registrationStatus() {
@@ -52,7 +53,7 @@ export async function prepareMemberAccount(
       statusMessage: "Account creation is closed while email is being set up.",
     });
   const body = registrationInput.parse(input);
-  refuseDemoEmail(body.email);
+  refuseExampleEmail(body.email);
   let origin: URL;
   try {
     origin = new URL(headers?.get("origin") || "");
@@ -76,9 +77,13 @@ export async function prepareMemberAccount(
     JSON.stringify({
       ...body,
       purpose: "screener-account",
-      expires: Date.now() + 60 * 60 * 1000,
+      expires: Date.now() + 24 * 60 * 60 * 1000,
     }),
   );
+  await getDbExec().execute({
+    sql: "INSERT INTO eighty_registration_mail (address_hash, draft) VALUES (?, ?) ON CONFLICT (address_hash) DO UPDATE SET draft = excluded.draft, updated_at = now()",
+    args: [registrationAddressHash(body.email), draft],
+  });
   const callback = new URL("/check/account", origin.origin);
   callback.searchParams.set("draft", draft);
   return { callbackURL: callback.pathname + callback.search };
@@ -94,7 +99,7 @@ export async function finishMemberAccount(
       statusMessage: "Account creation is closed while email is being set up.",
     });
   const actor = await reviewedMemberActor(context);
-  refuseDemoEmail(actor.email);
+  refuseExampleEmail(actor.email);
   let payload: z.infer<typeof draftPayload>;
   try {
     payload = draftPayload.parse(JSON.parse(decryptSecretValue(body.draft)));
@@ -153,4 +158,47 @@ export async function finishMemberAccount(
       isDeepStrictEqual(existing.screener, payload.profile.screener) &&
       existing.language === payload.profile.language,
   };
+}
+
+export const registrationAddressHash = (email: string) =>
+  createHash("sha256").update(email.trim().toLowerCase()).digest("hex");
+export const RESEND_MESSAGE =
+  "If that address has an account waiting, a new link is on its way.";
+export async function takeVerificationMail(email: string) {
+  const result = await getDbExec().execute({
+    sql: `INSERT INTO eighty_registration_mail (address_hash, sent) VALUES (?, 1)
+      ON CONFLICT (address_hash) DO UPDATE SET
+      sent = CASE WHEN eighty_registration_mail.window_start <= now() - interval '1 hour' THEN 1 ELSE eighty_registration_mail.sent + 1 END,
+      window_start = CASE WHEN eighty_registration_mail.window_start <= now() - interval '1 hour' THEN now() ELSE eighty_registration_mail.window_start END
+      WHERE eighty_registration_mail.sent < 3 OR eighty_registration_mail.window_start <= now() - interval '1 hour'
+      RETURNING draft`,
+    args: [registrationAddressHash(email)],
+  });
+  return result.rows[0] as { draft: string | null } | undefined;
+}
+export function renewRegistrationDraft(
+  draft: string | null | undefined,
+  email: string,
+) {
+  if (!draft) return null;
+  try {
+    const payload = draftPayload.parse(JSON.parse(decryptSecretValue(draft)));
+    if (payload.email !== email) return null;
+    return encryptSecretValue(
+      JSON.stringify({ ...payload, expires: Date.now() + 24 * 60 * 60 * 1000 }),
+    );
+  } catch {
+    return null;
+  }
+}
+
+export function registrationEmailFromDraft(
+  draft: string | undefined,
+): string | null {
+  if (!draft) return null;
+  try {
+    return draftPayload.parse(JSON.parse(decryptSecretValue(draft))).email;
+  } catch {
+    return null;
+  }
 }

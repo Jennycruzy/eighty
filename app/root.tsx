@@ -12,7 +12,7 @@ import {
 import type { LoaderFunctionArgs } from "react-router";
 
 import type { ScreenerAnswers } from "../shared/screener";
-import { DemoBand } from "./components/demo/DemoBand";
+import { ExampleNotice } from "./components/ExampleNotice";
 import { ConnectionNotice } from "./components/public/ConnectionNotice";
 import { LanguageContext, languageLink } from "./lib/language";
 import { ScreenerDraftContext } from "./lib/screener-draft";
@@ -53,7 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function Root() {
   const { lang } = useLoaderData<typeof loader>();
   const [answers, setAnswers] = useState<ScreenerAnswers>({});
-  const [step, setStep] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const link = (path: string) => languageLink(path, lang);
   return (
     <LanguageContext value={lang}>
@@ -74,10 +74,12 @@ export default function Root() {
           </Link>
         </nav>
       </header>
-      <ScreenerDraftContext value={{ answers, setAnswers, step, setStep }}>
+      <ScreenerDraftContext
+        value={{ answers, setAnswers, questionIndex, setQuestionIndex }}
+      >
         <main id="main">
           <ConnectionNotice />
-          <DemoBand />
+          <ExampleNotice />
           <Outlet />
         </main>
       </ScreenerDraftContext>

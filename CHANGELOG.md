@@ -7,7 +7,7 @@
 
 - Open sign-in from saved member links and keep the language and return page.
 - Show member months, confirmed proof, missing facts and linked federal rules in English and Spanish.
-- Use the same month inputs for members and the demo.
+- Use the same month inputs for members and the example.
 
 ## 4 November 2026
 

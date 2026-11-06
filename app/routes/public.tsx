@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import proof from "../../data/proof.json";
 import en from "../../locales/en-US.json";
 import es from "../../locales/es-US.json";
-import { DemoStart } from "../components/demo/DemoStart";
+import { ExampleStart } from "../components/example/ExampleStart";
 import { useLanguage, languageLink } from "../lib/language";
 export default function PublicPage() {
   const lang = useLanguage(),
@@ -56,7 +56,7 @@ export default function PublicPage() {
             </a>
           </section>
         </div>
-        <DemoStart />
+        <ExampleStart />
         <p>
           {spanish
             ? "Conoce la regla. Revisa tus datos. Guarda tus pruebas."
@@ -118,17 +118,48 @@ export default function PublicPage() {
                 : "Download the inputs and expected answers"}
             </a>
           </p>
+          <h2>
+            {spanish
+              ? "Lectura de documentos de práctica"
+              : "Practice document reading"}
+          </h2>
           <p>
             {spanish
-              ? "Aún falta una revisión legal por otra persona. No se han publicado pruebas de lectura de documentos ni de uso con miembros."
-              : "Independent legal review is still needed. Document-reading and member usability results have not been published."}
+              ? "El conjunto sintético tiene 51 documentos: 25 de práctica y 26 reservados para las pruebas finales. Las dos lecturas usaron los mismos 25 documentos de práctica."
+              : "The synthetic set has 51 documents: 25 practice and 26 kept apart for the final runs. Both reads used the same 25 practice documents."}
+          </p>
+          <p>
+            {spanish
+              ? "Segunda lectura: 267 de 269 campos correctos (99.3%), 25 de 25 meses correctos, 0 meses marcados Meets por error y 0 documentos ilegibles. Primera lectura: 228 de 269 campos correctos (84.8%)."
+              : "Second read: 267 of 269 fields right (99.3%), 25 of 25 months right, 0 months wrongly marked Meets and 0 unreadable documents. First read: 228 of 269 fields right (84.8%)."}
+          </p>
+          <p>
+            {spanish
+              ? "Entre lecturas, cambiaron las instrucciones para los datos escolares, el contacto del voluntariado y el pago de trabajo por cuenta propia."
+              : "Between reads, the instructions changed for school facts, volunteer contacts and gig pay."}
+          </p>
+          <p>
+            <a href="https://github.com/Jennycruzy/eighty/blob/main/docs/tests/results/reading.md">
+              {spanish
+                ? "Resultados y archivos de las lecturas"
+                : "Reading results and files"}
+            </a>
+          </p>
+          <p>
+            <a href="https://github.com/Jennycruzy/eighty/tree/main/tests/reading/documents">
+              {spanish ? "Documentos" : "Documents"}
+            </a>
+            {" · "}
+            <a href="https://github.com/Jennycruzy/eighty/tree/main/tests/reading/answers">
+              {spanish ? "Respuestas" : "Answer files"}
+            </a>
           </p>
         </section>
       </>
     );
   const key = path.slice(1) as Exclude<
     keyof typeof en,
-    "screener" | "reader" | "demo" | "months"
+    "screener" | "reader" | "example" | "months"
   >;
   const content = (spanish ? es : en)[key];
   return (

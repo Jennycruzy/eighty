@@ -1,5 +1,5 @@
 {
-  "about": "Practice documents may be read while building the reader. Locked documents are read only by the release runs; nobody looks at reader output for them while building. The demo's sample earnings summary in public/demo/ belongs to no set.",
+  "about": "Practice documents may be read while building the reader. Locked documents are read only by the release runs; nobody looks at reader output for them while building. The example's sample earnings summary in public/example/ belongs to no set.",
   "asOf": "2026-11-04",
   "practice": [
     {
@@ -76,9 +76,7 @@
       "document": "volunteer-shelter-handwritten-en.png",
       "type": "volunteer-sheet",
       "language": "en",
-      "conditions": [
-        "handwriting"
-      ],
+      "conditions": ["handwriting"],
       "sha256": "859ef4c96cbb2143e875b82ca717ef3b087ca0b44916f73639eba9006437e22d"
     },
     {
@@ -120,81 +118,63 @@
       "document": "hard-blurred-paystub-en.png",
       "type": "pay-stub",
       "language": "en",
-      "conditions": [
-        "blurred"
-      ],
+      "conditions": ["blurred"],
       "sha256": "2e4e5ecf98dccac2af3af87c2d530c391ce4ffd2aa0b76d0b9410984657367ce"
     },
     {
       "document": "hard-rotated-paystub-en.png",
       "type": "pay-stub",
       "language": "en",
-      "conditions": [
-        "rotated"
-      ],
+      "conditions": ["rotated"],
       "sha256": "28d908fc72f6d0632f78a138b8a739edabf3e74410bb2684f617df6553cee5c3"
     },
     {
       "document": "hard-dark-gig-en.jpg",
       "type": "gig-summary",
       "language": "en",
-      "conditions": [
-        "dark"
-      ],
+      "conditions": ["dark"],
       "sha256": "1a964fe2fa9ad9e803021ce93ff462a920c347aa6d92a1294c803694de8eaf29"
     },
     {
       "document": "hard-cropped-paystub-en.png",
       "type": "pay-stub",
       "language": "en",
-      "conditions": [
-        "cropped"
-      ],
+      "conditions": ["cropped"],
       "sha256": "fcfc0d941e3a4809558deaf1bfcdfd427af90f12e6b4f96f75e72337f5555d9d"
     },
     {
       "document": "hard-screen-gig-en.jpg",
       "type": "gig-summary",
       "language": "en",
-      "conditions": [
-        "photo-of-screen"
-      ],
+      "conditions": ["photo-of-screen"],
       "sha256": "64f908fb778f404f81e1a65ed2f7da975f519c2f33568f88b90b91419138f38d"
     },
     {
       "document": "hard-two-page-paystub-en.pdf",
       "type": "pay-stub",
       "language": "en",
-      "conditions": [
-        "two-pages"
-      ],
+      "conditions": ["two-pages"],
       "sha256": "1948bdfc6ca4b7b42c362a797e17ce29a176ac24af74d391a9396113aedb33b8"
     },
     {
       "document": "refusal-uk-payslip-en.png",
       "type": "refusal",
       "language": "en",
-      "conditions": [
-        "outside-us"
-      ],
+      "conditions": ["outside-us"],
       "sha256": "52a195d6f47aac39e1979ef296f88ea59afb8fa3843e2929a165538248a51a80"
     },
     {
       "document": "refusal-grocery-receipt-en.png",
       "type": "refusal",
       "language": "en",
-      "conditions": [
-        "nothing-relevant"
-      ],
+      "conditions": ["nothing-relevant"],
       "sha256": "1294a302d92d3ceb0b278aae5aa69effd724c7c70d16b869a216bc5c7737090d"
     },
     {
       "document": "refusal-injection-en.pdf",
       "type": "refusal",
       "language": "en",
-      "conditions": [
-        "instructions-in-text"
-      ],
+      "conditions": ["instructions-in-text"],
       "sha256": "6560500f90dcd2d17243dbe3f55735d0e38733cc0b0adeff523e4d882091ca9b"
     }
   ],
@@ -224,9 +204,7 @@
       "document": "paystub-b-weekly-injection-en.png",
       "type": "pay-stub",
       "language": "en",
-      "conditions": [
-        "instructions-in-text"
-      ],
+      "conditions": ["instructions-in-text"],
       "sha256": "3723fc4043284025938cd6353b294636098a96e709606d99fd11c47e43c8b470"
     },
     {
@@ -275,9 +253,7 @@
       "document": "volunteer-garden-handwritten-en.png",
       "type": "volunteer-sheet",
       "language": "en",
-      "conditions": [
-        "handwriting"
-      ],
+      "conditions": ["handwriting"],
       "sha256": "e8fae74d506156ab935e53419278d5071f00f3eb7f1e77d6fa87f091df02595a"
     },
     {
@@ -319,94 +295,72 @@
       "document": "hard-blurred-volunteer-en.png",
       "type": "volunteer-sheet",
       "language": "en",
-      "conditions": [
-        "blurred"
-      ],
+      "conditions": ["blurred"],
       "sha256": "3bf83e42149e86262eeed53a8f7742bfb99fbc9728279ff7325316e0923e2241"
     },
     {
       "document": "hard-rotated-talon-es.png",
       "type": "pay-stub",
       "language": "es",
-      "conditions": [
-        "rotated"
-      ],
+      "conditions": ["rotated"],
       "sha256": "42a1eb97dca3f3bb364644464c29d9fcb76644aaf6a306662d969443ac3c0fd8"
     },
     {
       "document": "hard-dark-enrollment-en.jpg",
       "type": "enrollment-letter",
       "language": "en",
-      "conditions": [
-        "dark"
-      ],
+      "conditions": ["dark"],
       "sha256": "c552ec82781ae36c29e8ed8cf2097defee676bbb0cf7a985fab5ef1248190bdb"
     },
     {
       "document": "hard-cropped-gig-en.png",
       "type": "gig-summary",
       "language": "en",
-      "conditions": [
-        "cropped"
-      ],
+      "conditions": ["cropped"],
       "sha256": "9aa8ac414af6241099be17dfe74533d0f7c1ce8427d244f23a6a602efd05fe32"
     },
     {
       "document": "hard-screen-gig-es.jpg",
       "type": "gig-summary",
       "language": "es",
-      "conditions": [
-        "photo-of-screen"
-      ],
+      "conditions": ["photo-of-screen"],
       "sha256": "799846f624aed9e4e6b6df3abfbbb1be4f89950b4c3939ebe8dac6128c2e6898"
     },
     {
       "document": "hard-two-page-gig-en.pdf",
       "type": "gig-summary",
       "language": "en",
-      "conditions": [
-        "two-pages"
-      ],
+      "conditions": ["two-pages"],
       "sha256": "5bd9d9f60e449c1eb020e4a5aa9e98e7ab4cc735d173651d8b3fc2f4526ebc40"
     },
     {
       "document": "hard-photo-notice-en.jpg",
       "type": "state-notice",
       "language": "en",
-      "conditions": [
-        "photo"
-      ],
+      "conditions": ["photo"],
       "sha256": "c200374c54e0db4402b21cef2dfe3c859959e53da1ba0230ce21fab29500dbdd"
     },
     {
       "document": "refusal-mexico-recibo-es.png",
       "type": "refusal",
       "language": "es",
-      "conditions": [
-        "outside-us"
-      ],
+      "conditions": ["outside-us"],
       "sha256": "0853434ce090285034025840c683b3faeaf2e74348b718ef493a8ab2c46fe6aa"
     },
     {
       "document": "refusal-pharmacy-receipt-en.png",
       "type": "refusal",
       "language": "en",
-      "conditions": [
-        "nothing-relevant"
-      ],
+      "conditions": ["nothing-relevant"],
       "sha256": "a81a5cd045ba808ebe9addc3c1907ee8ead9cf1326461c87ac029d6f51356784"
     },
     {
       "document": "refusal-injection-es.png",
       "type": "refusal",
       "language": "es",
-      "conditions": [
-        "instructions-in-text"
-      ],
+      "conditions": ["instructions-in-text"],
       "sha256": "01b8b49189e14473af99728aebbd04ca23f4b56264e1768dfd46ad8e0c00d72e"
     }
   ],
-  "notInAnySet": [
-    "public/demo/"
-  ]
+  "notInAnySet": ["public/example/"]
 }

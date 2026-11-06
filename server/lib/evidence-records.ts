@@ -31,6 +31,7 @@ import {
 import {
   memberActor,
   reviewedMemberActor,
+  ownMemberActor,
   type MemberActor,
 } from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
@@ -148,16 +149,20 @@ async function lockMemberAndDocument(
 export async function createEvidenceDraft(
   input: z.infer<typeof draftInput>,
   context: ActionRunContext | undefined,
+  createdBy: "member" | "agent" = "member",
 ) {
   const parsed = draftInput.parse(input);
-  const actor = await reviewedMemberActor(context);
+  const actor =
+    createdBy === "agent"
+      ? await ownMemberActor(context)
+      : await reviewedMemberActor(context);
   const member = await getMemberRecord(actor);
   return getDb().transaction(async (tx) => {
     await lockMemberAndDocument(tx, actor, member, parsed.documentId);
     return insertProposedLine(tx, actor, member, {
       fields: parsed.fields,
       documentId: parsed.documentId ?? null,
-      createdBy: "member",
+      createdBy,
     });
   });
 }

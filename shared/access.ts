@@ -31,7 +31,7 @@ export function isPublicPage(path: string): boolean {
   );
 }
 export const MEMBER_PAGES = [
-  "/demo",
+  "/example",
   "/months",
   "/add",
   "/review",
@@ -54,13 +54,18 @@ export function isStaticFile(path: string): boolean {
   return path.startsWith("/assets/") || staticFiles().includes(path);
 }
 export function isAllowedService(path: string): boolean {
-  return path === HEALTH_PATH || servicePaths().includes(path);
+  return (
+    path === HEALTH_PATH ||
+    servicePaths().includes(path) ||
+    isHelperPath(path) ||
+    isMonthStatePath(path)
+  );
 }
 // The health check is for the container only; Caddy keeps it closed from outside.
 export const HEALTH_PATH = "/_agent-native/health";
 export function staticFiles(): string[] {
   return [
-    ...DEMO_SAMPLE_FILES,
+    ...EXAMPLE_SAMPLE_FILES,
     "/favicon.svg",
     "/icon-180.svg",
     "/robots.txt",
@@ -87,8 +92,12 @@ export function servicePaths(): string[] {
       "extract_evidence",
       "try_read_document",
     ].map((name) => `/_agent-native/actions/${name}`),
-    ...DEMO_ACTIONS.map((name) => `/_agent-native/actions/${name}`),
-    DEMO_ENTER_PATH,
+    "/send-verification-link",
+    "/_agent-native/agent-engine/status",
+    ...HELPER_PATHS,
+    "/_agent-native/actions/propose_evidence",
+    ...EXAMPLE_ACTIONS.map((name) => `/_agent-native/actions/${name}`),
+    EXAMPLE_ENTER_PATH,
     "/_agent-native/actions/prepare_member_account",
     "/_agent-native/actions/finish_member_account",
     "/_agent-native/ui-capability",
@@ -110,20 +119,22 @@ export function isAllowedRequest(path: string, method: string): boolean {
   return isMemberPage(path) || isAllowedService(path);
 }
 
-// The demo. A demo account may use only what a member uses on their own
+// The example. A example account may use only what a member uses on their own
 // record. Everything else, including paths open to real members, is refused.
-export const DEMO_ENTER_PATH = "/enter-demo";
-export const DEMO_SAMPLE_FILES = [
-  "/demo/maria-earnings-sample.png",
-  "/demo/maria-earnings-sample.pdf",
+export const EXAMPLE_ENTER_PATH = "/enter-example";
+export const EXAMPLE_SAMPLE_FILES = [
+  "/example/maria-earnings-sample.png",
+  "/example/maria-earnings-sample.pdf",
 ];
-export const DEMO_ACTIONS = [
-  "start_demo",
-  "demo_status",
-  "demo_month",
-  "add_demo_sample",
+export const EXAMPLE_ACTIONS = [
+  "start_example",
+  "example_status",
+  "example_month",
+  "add_example_sample",
 ];
-const DEMO_MEMBER_ACTIONS = [
+const EXAMPLE_MEMBER_ACTIONS = [
+  "extract_evidence",
+  "propose_evidence",
   "add_manual_evidence",
   "confirm_evidence",
   "edit_evidence",
@@ -135,30 +146,33 @@ const DEMO_MEMBER_ACTIONS = [
   "get_document",
   "remove_document",
 ];
-const DEMO_PAGES = ["/demo", "/months", "/add", "/review"];
-export function isDemoAllowedRequest(path: string, method: string): boolean {
+const EXAMPLE_PAGES = ["/example", "/months", "/add", "/review"];
+export function isExampleAllowedRequest(path: string, method: string): boolean {
   if (
     (isPublicPage(path) || isPublicData(path) || isStaticFile(path)) &&
     (method === "GET" || method === "HEAD")
   )
     return true;
   if (
-    DEMO_PAGES.some(
+    EXAMPLE_PAGES.some(
       (page) =>
         path === page ||
         path === `${page}.data` ||
-        (page !== "/demo" && path.startsWith(`${page}/`)),
+        (page !== "/example" && path.startsWith(`${page}/`)),
     )
   )
     return method === "GET" || method === "HEAD";
   return (
-    path === DEMO_ENTER_PATH ||
+    path === "/_agent-native/agent-engine/status" ||
+    isMonthStatePath(path) ||
+    isHelperPath(path) ||
+    path === EXAMPLE_ENTER_PATH ||
     path === "/_agent-native/health" ||
     path === "/_agent-native/ui-capability" ||
     path === "/_agent-native/auth/session" ||
     path === "/_agent-native/auth/ba/get-session" ||
     path === "/_agent-native/auth/ba/sign-out" ||
-    [...DEMO_ACTIONS, ...DEMO_MEMBER_ACTIONS].some(
+    [...EXAMPLE_ACTIONS, ...EXAMPLE_MEMBER_ACTIONS].some(
       (name) => path === `/_agent-native/actions/${name}`,
     )
   );
@@ -175,4 +189,20 @@ export function safeMemberNext(value: string | null): string | null {
   )
     ? `${url.pathname}${url.search}${url.hash}`
     : null;
+}
+
+export const HELPER_PATHS = ["/_agent-native/month-helper"];
+export function isHelperPath(path: string): boolean {
+  return (
+    path === HELPER_PATHS[0] ||
+    /^\/_agent-native\/month-helper\/(threads(?:\/[a-zA-Z0-9_-]+)?|runs\/(?:active|latest|[a-zA-Z0-9_-]+\/(?:events|abort)))$/.test(
+      path,
+    )
+  );
+}
+
+export function isMonthStatePath(path: string): boolean {
+  return /^\/_agent-native\/application-state\/(?:(?:navigation|navigate):[A-Za-z0-9_-]{1,96}|guided-questions(?::[A-Za-z0-9_-]{1,96})?)$/.test(
+    path,
+  );
 }

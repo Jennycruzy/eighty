@@ -49,7 +49,7 @@ const receipt = {
 };
 let handle,
   descriptor,
-  step = "storage readiness";
+  currentCheck = "storage readiness";
 try {
   ensureS3PrivateBlobProviders();
   const ready = await getPrivateBlobStorageReadinessForRequest();
@@ -58,7 +58,7 @@ try {
   const original = Buffer.from(
     `Eighty synthetic storage check ${randomUUID()}`,
   );
-  step = "upload a synthetic file";
+  currentCheck = "upload a synthetic file";
   handle = await putPrivateBlob({
     data: original,
     filename: "storage-check.txt",
@@ -72,7 +72,7 @@ try {
   assert.equal(descriptor.bucket, config.bucket);
   assert.equal(descriptor.endpoint, config.endpoint);
   receipt.applicationEncrypted = handle.encrypted === true;
-  step = "read stored bytes";
+  currentCheck = "read stored bytes";
   const raw = await signedS3Request(config, descriptor.key, {
     method: "GET",
     timeoutMs: 15000,
@@ -80,10 +80,10 @@ try {
   assert.equal(raw.status, 200);
   const stored = Buffer.from(await raw.arrayBuffer());
   receipt.storedBytesDiffer = !stored.equals(original);
-  step = "read through private storage";
+  currentCheck = "read through private storage";
   const restored = await readPrivateBlob(handle);
   receipt.privateReadMatches = Buffer.from(restored.data).equals(original);
-  step = "reject public access";
+  currentCheck = "reject public access";
   const { url: address } = await signS3Request(config, descriptor.key, {
     method: "GET",
   });
@@ -96,7 +96,7 @@ try {
   await anonymous.body?.cancel();
   receipt.directLinkRefused =
     (await getPrivateBlobReadUrl(handle, { expiresInSeconds: 60 })) === null;
-  step = "reject a changed handle";
+  currentCheck = "reject a changed handle";
   const parts = handle.id.split(":");
   const ciphertext = parts[parts.length - 2];
   parts[parts.length - 2] =
@@ -108,7 +108,7 @@ try {
   }
 } catch {
   console.error(
-    `FAIL Private storage check: ${step}. No credentials or document contents were printed.`,
+    `FAIL Private storage check: ${currentCheck}. No credentials or document contents were printed.`,
   );
   process.exitCode = 1;
 } finally {

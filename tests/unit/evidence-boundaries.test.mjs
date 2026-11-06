@@ -99,7 +99,7 @@ test("Extraction facts carry neither a diagnosis nor a Social Security number", 
     );
 });
 
-test("Reader follow-ups cannot smuggle instructions or a passing decision", () => {
+test("Reader questions cannot smuggle instructions or a passing decision", () => {
   assert.equal(
     readerResult.safeParse({
       usDocument: true,

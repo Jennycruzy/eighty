@@ -47,7 +47,7 @@ How the answers are written:
 - An enrollment letter states the status, the term and credits, and that the program carries credit.
 - Notices, receipts, foreign pay slips and notes that give orders have no proposals. Foreign pay slips have `usDocument: false`.
 
-A reviewer outside this branch reads every rendered document again, before any reader run, and fills in `answers/SECOND-READING.md`. Any difference is settled before the locked runs. The second reading was done on 4 November 2026: all 51 answer files match their documents.
+A reviewer outside this branch reads every rendered document again, before any reader run, and fills in an ignored local record at `internal-notes/SECOND-READING.md`. Any difference is settled before the locked runs. The second reading was done on 4 November 2026: all 51 answer files match their documents.
 
 ## Practice and locked sets
 
@@ -56,7 +56,7 @@ A reviewer outside this branch reads every rendered document again, before any r
 - Practice documents can be read as often as needed while building the reader.
 - Locked documents are read only by the release runs. Nobody looks at reader output for them while building, and nothing is tuned to them.
 
-The demo's sample earnings summary in `public/demo/` belongs to neither set.
+The example's sample earnings summary in `public/example/` belongs to neither set.
 
 ## How a read is scored
 
@@ -94,10 +94,10 @@ With 0 false Meets this is `1 - 0.05^(1/n)`, about `3/n`. For 26 locked months i
 
 Results from 4 November 2026 (`data/reading-results/baseline-*.json`):
 
-| Set | Fields right | Month outcomes matching | False Meets | 95% bound |
-| --- | --- | --- | --- | --- |
-| Practice (25) | 61 of 269 (22.7%) | 21 of 25 | 0 | 11.3% |
-| Locked (26) | 123 of 274 (44.9%) | 18 of 26 | 0 | 10.9% |
+| Set           | Fields right       | Month outcomes matching | False Meets | 95% bound |
+| ------------- | ------------------ | ----------------------- | ----------- | --------- |
+| Practice (25) | 61 of 269 (22.7%)  | 21 of 25                | 0           | 11.3%     |
+| Locked (26)   | 123 of 274 (44.9%) | 18 of 26                | 0           | 10.9%     |
 
 The reader should read far more fields than this, with the same 0 false Meets.
 

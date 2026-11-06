@@ -1,3 +1,4 @@
+import { requireExampleAccount } from "./example-accounts.ts";
 import type { ActionRunContext } from "@agent-native/core/action";
 import { readPrivateBlob } from "@agent-native/core/private-blob";
 import { z } from "zod";
@@ -6,6 +7,13 @@ import { MAX_READ_PAGES } from "../../shared/reader.ts";
 import { recordReaderCall } from "./ai-ledger.ts";
 import { ownDocumentRow } from "./document-records.ts";
 import { readerLinesFor, saveReaderProposals } from "./evidence-records.ts";
+import { isExampleEmail } from "./example-identity.ts";
+import {
+  reservePublicModelUse,
+  recordUsage,
+  PUBLIC_HELPER_REST,
+  PUBLIC_HELPER_REST_ES,
+} from "./try-reading.ts";
 import { memberActor } from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
 import { readDocument, ReaderFailure } from "./reader.ts";
@@ -16,7 +24,8 @@ export type ExtractOutcome =
   | "nothing-found"
   | "not-us-document"
   | "unreadable"
-  | "unavailable";
+  | "unavailable"
+  | "budget-used";
 
 const ACTION = "extract_evidence";
 
@@ -36,16 +45,19 @@ export async function extractEvidence(
     pages: document.pages ?? 1,
     pagesRead: Math.min(document.pages ?? 1, MAX_READ_PAGES),
   };
+  let publicId: string | null = null;
   const ledger = (usage: {
     inputTokens: number | null;
     outputTokens: number | null;
   }) =>
-    recordReaderCall({
-      memberId: member.id,
-      action: ACTION,
-      purpose: "extraction",
-      usage,
-    });
+    publicId
+      ? recordUsage(publicId, usage)
+      : recordReaderCall({
+          memberId: member.id,
+          action: ACTION,
+          purpose: "extraction",
+          usage,
+        });
   const already = await readerLinesFor(actor, member, document.id);
   if (already.length) {
     // Read before: no model call, no new lines.
@@ -56,6 +68,25 @@ export async function extractEvidence(
       created: false,
       ...pages,
     };
+  }
+  if (isExampleEmail(actor.email)) {
+    const { account } = await requireExampleAccount(context);
+    publicId = await reservePublicModelUse(
+      context?.requestHeaders,
+      ACTION,
+      account.visitor,
+    );
+    if (!publicId)
+      return {
+        outcome: "budget-used" as ExtractOutcome,
+        message:
+          member.language === "es-US"
+            ? PUBLIC_HELPER_REST_ES
+            : PUBLIC_HELPER_REST,
+        lines: [],
+        created: false,
+        ...pages,
+      };
   }
   const bytes = new Uint8Array((await readPrivateBlob(document.handle)).data);
   let reading;

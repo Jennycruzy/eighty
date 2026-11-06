@@ -10,7 +10,7 @@ const revision = execFileSync("git", ["-C", source, "rev-parse", "HEAD"], {
 }).trim();
 if (revision !== "808ef4ebb0edfe323cf7aadcc66e7a39d77cedf0") {
   throw new Error(
-    `Wrong framework revision: ${revision}. See docs/framework-log.md.`,
+    `Wrong framework revision: ${revision}. Use the pinned core version.`,
   );
 }
 

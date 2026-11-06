@@ -93,7 +93,7 @@ export async function checkPublicPages(baseUrl) {
     "/add",
     "/review",
     "/add.data",
-    "/demo.data",
+    "/example.data",
     "/review.data",
     "/_agent-native/actions/list_evidence",
     "/_agent-native/actions/list_documents",
@@ -141,7 +141,7 @@ export async function checkPublicPages(baseUrl) {
   assert.equal(deniedAction.status, 401);
   assert.match(deniedAction.headers.get("content-type"), /application\/json/);
   for (const lang of ["en", "es"]) {
-    const response = await fetch(`${baseUrl}/demo?lang=${lang}`, {
+    const response = await fetch(`${baseUrl}/example?lang=${lang}`, {
       redirect: "manual",
       headers: { accept: "text/html" },
     });
@@ -150,12 +150,12 @@ export async function checkPublicPages(baseUrl) {
     const target = new URL(response.headers.get("location"), baseUrl);
     assert.equal(target.pathname, "/");
     assert.equal(target.searchParams.get("lang"), lang);
-    assert.equal(target.hash, "#demo-start-title");
+    assert.equal(target.hash, "#example-start-title");
     const home = await fetch(target);
-    assert.match(await home.text(), /id="demo-start-title"/);
+    assert.match(await home.text(), /id="example-start-title"/);
   }
   console.log(
-    "PASS Signed-out demo links open the home page demo button in English and Spanish.",
+    "PASS Signed-out example links open the home page example button in English and Spanish.",
   );
   for (const path of ["/proof/answer-key.md", "/proof/answer-cases.json"]) {
     const response = await fetch(`${baseUrl}${path}`, {

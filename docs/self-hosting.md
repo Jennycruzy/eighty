@@ -30,7 +30,7 @@ It checks database readiness after release migrations, all public pages and all 
 
 The web server runs in production mode throughout. The scheduler subcheck uses the framework's local deployment setting: the framework intentionally blocks reserved test email addresses from running jobs in production. This subcheck proves the runner's work and stored result in the test database; it does not prove a real account's production reminder delivery. Only the explicit public page list bypasses login. Member pages require a verified cookie session. Unknown services, including starter actions, are denied. Caddy adds a separate published-path allowlist.
 
-This checks the public application and container. It checks synthetic account verification and evidence review with disposable email and storage transports. It does not prove real email delivery, independent backups or restore, or a public deployment. PostgreSQL runs locally for this check; production should use the planned managed database.
+This checks the public application and container. It checks synthetic account verification and evidence review with disposable email and storage transports. It does not prove real email delivery, independent backups or restore, or a public deployment. PostgreSQL runs locally for this check; production should use a managed database.
 
 The [framework's Docker guide](https://www.agent-native.com/docs/docker/) describes the underlying server. The image uses two stages: the first installs and builds; the second holds the server output and runs as a regular user. Credentials are supplied when the container starts. They are not build arguments. `.dockerignore` excludes environment files, private notes, development data and local build output.
 
@@ -38,15 +38,15 @@ The [framework's Docker guide](https://www.agent-native.com/docs/docker/) descri
 
 Copy `.env.example` to `.env.production` and give it file permissions `600`. Fill in the real PostgreSQL URL. Generate separate random signing and encryption keys, save them securely, and keep them stable across deployments. Do not commit this file.
 
-| Setting | Purpose |
-| --- | --- |
-| `DATABASE_URL` | Persistent PostgreSQL outside the application container |
-| `BETTER_AUTH_SECRET` | Signs sessions |
-| `SECRETS_ENCRYPTION_KEY` | Protects stored credentials and private document keys |
-| `BETTER_AUTH_URL` | The actual public origin, when one is configured |
-| `S3_*` | Private bucket credentials used by the operator storage check |
+| Setting                         | Purpose                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| `DATABASE_URL`                  | Persistent PostgreSQL outside the application container                        |
+| `BETTER_AUTH_SECRET`            | Signs sessions                                                                 |
+| `SECRETS_ENCRYPTION_KEY`        | Protects stored credentials and private document keys                          |
+| `BETTER_AUTH_URL`               | The actual public origin, when one is configured                               |
+| `S3_*`                          | Private bucket credentials used by the operator storage check                  |
 | `AGENT_NATIVE_HOSTED_STORAGE_*` | The same private bucket, configured as app-owned storage for signed-in members |
-| `RESEND_API_KEY`, `EMAIL_FROM` | Email verification, password resets and reminders |
+| `RESEND_API_KEY`, `EMAIL_FROM`  | Email verification, password resets and reminders                              |
 
 The application disables public upload fallback in its source configuration. Compose also sets `AGENT_NATIVE_PRIVATE_BLOB_PUBLIC_UPLOAD_FALLBACK=0`. Missing private storage must remain a visible failure. Do not turn on a public fallback to make uploads work.
 
@@ -75,7 +75,7 @@ Compose reads `.env.production` by default. `EIGHTY_ENV_FILE` can select a diffe
 
 The preview is served over HTTPS at `tryeighty.space`. The HTTP IP address redirects there. Caddy forwards to the production container on localhost and manages the certificate. The app runs as a regular user with login enabled and public upload fallback disabled.
 
-For this preview, `deploy/compose.ip.yaml` adds PostgreSQL with the persistent `eighty_postgres_data` volume. The database port is bound to localhost. This is a local database on the VPS, not the planned managed database. Do not remove its volume when updating the application.
+For this preview, `deploy/compose.ip.yaml` adds PostgreSQL with the persistent `eighty_postgres_data` volume. The database port is bound to localhost. This is a local database on the VPS, not a managed database. Do not remove its volume when updating the application.
 
 ```sh
 docker compose --env-file .env.production -f deploy/compose.yaml -f deploy/compose.ip.yaml up -d
@@ -92,7 +92,6 @@ The canonical site is `https://tryeighty.space`. Its `www` name and the temporar
 ## Before serving members
 
 The database runs on this server with no independent backup. The file encryption key is only on this server. A local database dump does not protect against server loss. Set up an independent backup, test restoration, and keep a secure recovery copy of the key before opening sign-up.
-
 
 Independent rules review, member workflows, private storage access checks, working email, deletion, navigator consent, backups, restore, monitoring and accessibility checks remain to be completed. A successful container check alone does not make this a member service.
 

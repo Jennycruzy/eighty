@@ -18,17 +18,22 @@ const entry = async (document) => ({
     .update(await readFile(path.join(root, "documents", fileName(document))))
     .digest("hex"),
 });
-const pick = (set) => Promise.all(documents.filter((document) => document.set === set).map(entry));
+const pick = (set) =>
+  Promise.all(documents.filter((document) => document.set === set).map(entry));
 const sets = {
   about:
-    "Practice documents may be read while building the reader. Locked documents are read only by the release runs; nobody looks at reader output for them while building. The demo's sample earnings summary in public/demo/ belongs to no set.",
+    "Practice documents may be read while building the reader. Locked documents are read only by the release runs; nobody looks at reader output for them while building. The example's sample earnings summary in public/example/ belongs to no set.",
   asOf: "2026-11-04",
   practice: await pick("practice"),
   locked: await pick("locked"),
-  notInAnySet: ["public/demo/"],
+  notInAnySet: ["public/example/"],
 };
 for (const type of new Set(documents.map((document) => document.type)))
   for (const name of ["practice", "locked"])
-    if (!sets[name].some((item) => item.type === type)) throw new Error(`${name} has no ${type}`);
-await writeFile(path.join(root, "sets.json"), `${JSON.stringify(sets, null, 2)}\n`);
+    if (!sets[name].some((item) => item.type === type))
+      throw new Error(`${name} has no ${type}`);
+await writeFile(
+  path.join(root, "sets.json"),
+  `${JSON.stringify(sets, null, 2)}\n`,
+);
 console.log(`practice ${sets.practice.length}, locked ${sets.locked.length}`);

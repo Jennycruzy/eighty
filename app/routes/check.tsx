@@ -13,14 +13,15 @@ export default function Check() {
   const lang = useLanguage(),
     es = lang === "es";
   const copy = (es ? esCopy : en).screener;
-  const { answers, setAnswers, step, setStep } = useScreenerDraft();
+  const { answers, setAnswers, questionIndex, setQuestionIndex } =
+    useScreenerDraft();
   const field = useRef<HTMLFieldSetElement>(null),
     heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     (field.current || heading.current)?.focus();
-  }, [step]);
+  }, [questionIndex]);
   const questions = visibleQuestions(copy.questions, answers);
-  const question = questions[step];
+  const question = questions[questionIndex];
   const result = question ? null : screenerResult(answers);
   const explanation = result
     ? copy.reasons[result.reason as keyof typeof copy.reasons]
@@ -55,11 +56,11 @@ export default function Check() {
                   ? ""
                   : "unknown"),
             );
-            setStep(step + 1);
+            setQuestionIndex(questionIndex + 1);
           }}
         >
           <p className="muted">
-            {step + 1} / {questions.length}
+            {questionIndex + 1} / {questions.length}
           </p>
           <fieldset key={question.key} ref={field} tabIndex={-1}>
             <legend>{question.text}</legend>
@@ -144,11 +145,11 @@ export default function Check() {
             )}
           </fieldset>
           <div className="actions">
-            {step > 0 && (
+            {questionIndex > 0 && (
               <button
                 type="button"
                 className="secondary"
-                onClick={() => setStep(step - 1)}
+                onClick={() => setQuestionIndex(questionIndex - 1)}
               >
                 {es ? "Atrás" : "Back"}
               </button>
@@ -162,7 +163,7 @@ export default function Check() {
                     ? ""
                     : "unknown",
                 );
-                setStep(step + 1);
+                setQuestionIndex(questionIndex + 1);
               }}
             >
               {es ? "No sé" : "I’m not sure"}
@@ -243,7 +244,7 @@ export default function Check() {
             >
               {es ? "Buscar ayuda del estado" : "Find state help"}
             </Link>
-            <button className="secondary" onClick={() => setStep(0)}>
+            <button className="secondary" onClick={() => setQuestionIndex(0)}>
               {es ? "Revisar respuestas" : "Review answers"}
             </button>
           </div>

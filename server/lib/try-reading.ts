@@ -1,3 +1,5 @@
+import { browserMemberActor } from "./member-identity.ts";
+import { isExampleEmail } from "./example-identity.ts";
 import { createHmac, randomBytes, randomUUID } from "node:crypto";
 
 import type { ActionRunContext } from "@agent-native/core/action";
@@ -36,7 +38,11 @@ export function tryLimits() {
       readDeployCredentialEnv("EIGHTY_TRY_READS_PER_VISITOR"),
       3,
     ),
-    perDay: setting(readDeployCredentialEnv("EIGHTY_TRY_READS_PER_DAY"), 50),
+    perDay: setting(
+      readDeployCredentialEnv("EIGHTY_PUBLIC_MODEL_USES_PER_DAY") ??
+        readDeployCredentialEnv("EIGHTY_TRY_READS_PER_DAY"),
+      50,
+    ),
   };
 }
 
@@ -66,7 +72,10 @@ function returnVisitorTry(key: string) {
 }
 
 /** Records that a try happened, if today's budget allows one more. */
-async function reserveDailyTry(limit: number): Promise<string | null> {
+export async function reserveDailyTry(
+  limit: number,
+  action: string = ACTION,
+): Promise<string | null> {
   const start = new Date(`${today()}T00:00:00.000Z`);
   return getDb().transaction(async (tx) => {
     await tx.execute(
@@ -81,13 +90,13 @@ async function reserveDailyTry(limit: number): Promise<string | null> {
     await tx.insert(aiLedger).values({
       id,
       memberId: null,
-      action: ACTION,
+      action,
       purpose: "try",
     });
     return id;
   });
 }
-async function recordUsage(id: string, usage: ReaderUsage) {
+export async function recordUsage(id: string, usage: ReaderUsage) {
   await getDb()
     .update(aiLedger)
     .set({ inputTokens: usage.inputTokens, outputTokens: usage.outputTokens })
@@ -122,10 +131,18 @@ export async function tryReadDocument(
       statusCode: 403,
       statusMessage: "Use the Eighty page to read a document",
     });
+  const hasOwnAccount =
+    !!context.userEmail && !isExampleEmail(context.userEmail);
+  if (hasOwnAccount) await browserMemberActor(context);
   const parsed = tryReadInput.parse(input);
   const bytes = Buffer.from(parsed.data, "base64");
   try {
-    const answer = await readForVisitor(bytes, parsed, context.requestHeaders);
+    const answer = await readForVisitor(
+      bytes,
+      parsed,
+      context.requestHeaders,
+      hasOwnAccount,
+    );
     bytes.fill(0);
     return { ...answer, deletedAt: new Date().toISOString() };
   } finally {
@@ -137,20 +154,33 @@ async function readForVisitor(
   bytes: Buffer,
   parsed: z.output<typeof tryReadInput>,
   headers: Headers | undefined,
+  hasOwnAccount = false,
 ) {
   const inspected = await inspectDocument(bytes, parsed.rotation);
   const pages = {
     pages: inspected.pages,
     pagesRead: Math.min(inspected.pages, MAX_READ_PAGES),
   };
-  const limits = tryLimits();
-  const visitor = visitorKey(headers);
-  if (!takeVisitorTry(visitor, limits.perVisitor))
-    return { outcome: "visitor-limit" as TryOutcome, ...pages };
-  const ledgerId = await reserveDailyTry(limits.perDay);
-  if (!ledgerId) {
-    returnVisitorTry(visitor);
-    return { outcome: "budget-used" as TryOutcome, ...pages };
+  let ledgerId: string;
+  if (hasOwnAccount) {
+    ledgerId = randomUUID();
+    await getDb().insert(aiLedger).values({
+      id: ledgerId,
+      memberId: null,
+      action: ACTION,
+      purpose: "extraction",
+    });
+  } else {
+    const limits = tryLimits();
+    const visitor = visitorKey(headers);
+    if (!takeVisitorTry(visitor, limits.perVisitor))
+      return { outcome: "visitor-limit" as TryOutcome, ...pages };
+    const publicId = await reserveDailyTry(limits.perDay);
+    if (!publicId) {
+      returnVisitorTry(visitor);
+      return { outcome: "budget-used" as TryOutcome, ...pages };
+    }
+    ledgerId = publicId;
   }
   let reading;
   try {
@@ -181,4 +211,22 @@ async function readForVisitor(
     fill: tryFieldsFromReading(result),
     ...pages,
   };
+}
+
+export const PUBLIC_HELPER_REST =
+  "The example helper is resting until tomorrow. You can still look around and type lines yourself.";
+export const PUBLIC_HELPER_REST_ES =
+  "La ayuda del ejemplo descansa hasta mañana. Aún puedes mirar y escribir líneas por tu cuenta.";
+
+export async function reservePublicModelUse(
+  headers: Headers | undefined,
+  action: string,
+  exampleVisitor?: string,
+) {
+  const limits = tryLimits();
+  const visitor = exampleVisitor ?? visitorKey(headers);
+  if (!takeVisitorTry(visitor, limits.perVisitor)) return null;
+  const id = await reserveDailyTry(limits.perDay, action);
+  if (!id) returnVisitorTry(visitor);
+  return id;
 }

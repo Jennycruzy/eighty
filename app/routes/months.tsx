@@ -1,3 +1,4 @@
+import { MonthHelper } from "../components/MonthHelper";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -7,16 +8,16 @@ import { coverageFacts } from "../../shared/screener";
 import en from "../../locales/en-US.json";
 import es from "../../locales/es-US.json";
 import type { checkMemberMonth } from "../../server/lib/member-month";
-import { demoCopy, fill } from "../lib/demo";
+import { exampleCopy, fill } from "../lib/example";
 import { useLanguage, languageLink } from "../lib/language";
 
-export { headers } from "./demo";
+export { headers } from "./example";
 type Months = Awaited<ReturnType<typeof checkMemberMonth>>;
 
 export default function MonthsPage() {
   const lang = useLanguage();
   const copy = (lang === "es" ? es : en).months;
-  const common = demoCopy(lang).month;
+  const common = exampleCopy(lang).month;
   const { m } = useParams();
   const [data, setData] = useState<Months | null>(null);
   const [error, setError] = useState(false);
@@ -262,6 +263,7 @@ export default function MonthsPage() {
           <Link to={link("/months")}>{copy.back}</Link>
         </p>
       )}
+      <MonthHelper />
       <p className="note">{common.stateDecides}</p>
     </>
   );
@@ -335,7 +337,9 @@ function CoverageAnswer({
         ))}
       </fieldset>
       {error && (
-        <p role="alert">{demoCopy(lang === "es" ? "es" : "en").month.error}</p>
+        <p role="alert">
+          {exampleCopy(lang === "es" ? "es" : "en").month.error}
+        </p>
       )}
       <button disabled={busy}>{copy.months.saveAnswer}</button>
     </form>

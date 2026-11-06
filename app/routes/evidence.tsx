@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router";
 import { type EvidenceFields } from "../../shared/evidence";
 import { type DuplicateChoice } from "../../shared/evidence-review";
 import { needsCheck, type ReaderQuestion } from "../../shared/reader";
-import { DemoSample } from "../components/demo/DemoSample";
+import { ExampleSample } from "../components/example/ExampleSample";
 import {
   DocumentView,
   type DocumentData,
@@ -33,7 +33,12 @@ interface Line {
   questions: ReaderQuestion[];
 }
 type ReadOutcome =
-  "read" | "nothing-found" | "not-us-document" | "unreadable" | "unavailable";
+  | "read"
+  | "nothing-found"
+  | "not-us-document"
+  | "unreadable"
+  | "unavailable"
+  | "budget-used";
 interface Reading {
   documentId: string;
   phase: "reading" | "slow" | "done" | "failed" | "offline";
@@ -320,7 +325,7 @@ export default function Evidence() {
       {!loading && error !== "load" && (
         <>
           {!reviewMode && (
-            <DemoSample
+            <ExampleSample
               busy={busy}
               work={work}
               onSaved={async (id) => {
@@ -373,9 +378,11 @@ export default function Evidence() {
                             ? copy.nothing
                             : reading.outcome === "not-us-document"
                               ? copy.notUs
-                              : reading.outcome === "unavailable"
-                                ? copy.unavailable
-                                : copy.unreadable}
+                              : reading.outcome === "budget-used"
+                                ? copy.publicLimit
+                                : reading.outcome === "unavailable"
+                                  ? copy.unavailable
+                                  : copy.unreadable}
               </p>
               {reading.phase === "done" &&
                 (reading.pages ?? 1) > (reading.pagesRead ?? 1) && (

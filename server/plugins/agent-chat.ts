@@ -3,26 +3,33 @@ import {
   createAgentChatPlugin,
   loadActionsFromStaticRegistry,
 } from "@agent-native/core/server";
-
 import actionsRegistry from "../../.generated/actions-registry.js";
-
-const INITIAL_TOOL_NAMES = [
-  "view-screen",
-  "navigate",
-  "hello",
-  "provider-api-request",
-  "ask-question",
-];
+import { MONTH_AGENT_PROMPT, MONTH_AGENT_TOOLS } from "../lib/month-agent.ts";
+import { isExampleEmail } from "../lib/example-identity.ts";
+import { memberActor } from "../lib/member-identity.ts";
+import { getMemberRecord } from "../lib/member-records.ts";
 
 export default createAgentChatPlugin({
   appId: "eighty",
+  path: "/_agent-native/month-helper",
   actions: loadActionsFromStaticRegistry(actionsRegistry),
-  mcp: { connectorCatalog: [], appApprovalPage: true },
-  initialToolNames: INITIAL_TOOL_NAMES,
+  mcp: { connectorCatalog: [], appApprovalPage: false },
+  frameworkTools: "minimal",
+  initialToolNames: MONTH_AGENT_TOOLS,
   resolveOrgId: async (event) => (await getOrgContext(event)).orgId,
-  systemPrompt: `You are the Chat app agent.
-
-This is a minimal chat-first Agent-Native app. The chat is the product surface, and actions are the contract shared by chat, UI, HTTP, MCP, A2A, and CLI.
-
-Use actions as the source of truth. Start by inspecting the current screen when context matters. When the user asks to extend this app, keep the change small and agent-native: add or update actions, expose useful UI, and keep application state/navigation visible to the agent.`,
+  systemPrompt: MONTH_AGENT_PROMPT,
+  leanPrompt: true,
+  skipFilesContext: true,
+  resolveActionSurface: ({ ownerEmail }) => ({
+    allowedActionNames: MONTH_AGENT_TOOLS.filter(
+      (name) =>
+        name !== (isExampleEmail(ownerEmail) ? "check_month" : "example_month"),
+    ),
+  }),
+  extraContext: async (_event, owner) => {
+    const member = await getMemberRecord(
+      await memberActor({ caller: "tool", userEmail: owner }),
+    );
+    return `Member language: ${member.language}. ${isExampleEmail(owner) ? "This is an example person. Call example_month." : "Call check_month."}`;
+  },
 });

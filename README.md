@@ -1,47 +1,53 @@
 # Eighty
 
-Eighty is intended to help Medicaid members collect evidence of work, school and service, check it against cited rules, and prepare proof for their state.
+Eighty helps people on Medicaid collect proof of work, pay, school and volunteer service. It compares their saved answers and confirmed proof with the federal work rule and shows the cited result; the state decides.
 
-The public tools run at [https://tryeighty.space](https://tryeighty.space). The manual month check, screener and public help pages need no account. Sign-up stays closed. Uploads and evidence review require a verified account. Do not send real personal documents while sign-up is closed. The site uses its registered domain.
+## Try it
 
-## Setup
+1. [See Maria's month](https://tryeighty.space/example). Ask the helper about her month, add her sample pay summary, confirm a line and watch the month change. Maria, Daniel and Rosa are example people. Anything you add is deleted within a day.
+2. [Try your own pay stub without saving](https://tryeighty.space/try). You can also type the numbers.
+3. [Make an account](https://tryeighty.space/check). Answer the questions, choose to save them and confirm your email.
 
-The [Agent-Native setup guide](https://github.com/BuilderIO/agent-native/blob/main/packages/core/docs/content/getting-started.mdx) requires Node.js 22.22 or later and pnpm. The intended server also needs Git, Docker and Caddy.
+## What was built
 
-Check these tools without changing the machine:
+Work for Eighty from 27 October 2026 onward includes the Medicaid rules, cited answer cases, English and Spanish public pages, screener, member months, private proof uploads, evidence review, duplicate comparisons, document reader, practice set, example people and month helper. The repository history begins on 2 November 2026. It records the rules in `1761d71`, the reader in `fe5c515`, the example people in `471048b`, member months in `7ec9fd3` and coverage answers in `08169e0`.
 
-```sh
-node scripts/check-setup.mjs
-node --test tests/check-setup.test.mjs
-```
+The Agent-Native chat starter and core 0.222.2 supply authentication, actions, the chat service, model connections, email delivery, database support and private storage connections. The starter file list is bundled at `node_modules/@agent-native/core/src/templates/chat/`. Eighty's public layout and month panel replace its starter screens. React and the routing library render the pages; the database library stores member records; image and PDF libraries prepare documents. A small pinned patch to core (`patches/@agent-native__core@0.222.2.patch`) encrypts private files before they leave the app and exports the sign-in instance so a member can ask for a new verification link.
 
-Install and check the application with Node.js 22.22 or later:
+## Run it
+
+Use Node.js 22.22 or later and pnpm 10.29.1.
 
 ```sh
 pnpm install --frozen-lockfile
+pnpm dev
+```
+
+```sh
 pnpm typecheck
 pnpm test
 pnpm agent-native:doctor
 pnpm build
 ```
 
-`pnpm dev` runs the application locally. The scaffold uses Agent-Native core 0.222.2. Production needs a stable authentication secret, PostgreSQL, private document storage and email before accounts can be offered to members. The example environment file contains no credentials.
+For a container, use `docker build -t eighty:local .` and `pnpm check:production eighty:local`. See [the server guide](docs/self-hosting.md) for the database and container settings.
 
-The [server guide](docs/self-hosting.md) explains the container setup and its separate PostgreSQL check. It also lists what remains before members can use the service.
+## Switch on services
 
-The setup check exits with a failure when a required tool is absent. It does not check service credentials, network access or deployment readiness.
+Set `DATABASE_URL` for PostgreSQL and `BETTER_AUTH_SECRET` for the stable sign-in secret. Set `BETTER_AUTH_URL` to the site's HTTPS address.
 
-The federal rules engine has [365 cited answer cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). `pnpm test` enforces those coverage thresholds. See [the rules, source text and limits](docs/rules.md). These checks do not establish legal approval, document-reading accuracy, privacy, accessibility or readiness for members.
+Email uses `RESEND_API_KEY` and `EMAIL_FROM`. After setting the sender for your domain, set `EIGHTY_REGISTRATION_ENABLED=1` to offer accounts. Verification links work for 24 hours. Members can request a new link three times an hour per address.
 
-The [public-page checks](docs/tests/results/public-pages.md) cover signed-out English and Spanish pages, closed starter routes and phone-browser flows. The [real private storage check](docs/tests/results/private-storage.md) passes. Document reading and real email delivery have not been verified. Sign-up stays closed. Private uploads and typed evidence work through a verified account.
+Private storage uses `AGENT_NATIVE_HOSTED_STORAGE_ENABLED=true`, `AGENT_NATIVE_HOSTED_STORAGE_ENDPOINT`, `AGENT_NATIVE_HOSTED_STORAGE_REGION`, `AGENT_NATIVE_HOSTED_STORAGE_ACCESS_KEY_ID`, `AGENT_NATIVE_HOSTED_STORAGE_SECRET_ACCESS_KEY`, `AGENT_NATIVE_HOSTED_STORAGE_BUCKET` and `SECRETS_ENCRYPTION_KEY`. See [the storage settings](docs/self-hosting.md). Keep a secure recovery copy of the encryption key and database backups.
 
-The [initial check and account handoff](docs/screener.md) use 13 optional questions, cited reasons and proof checklists. Account creation stays closed on the preview. Public HEAD requests are checked against GET in the production checks.
+The reader and helper use the deployment's `AGENT_ENGINE` and `AGENT_MODEL` settings and that provider's key. The [reader guide](docs/reading-test.md) lists the model run commands. `EIGHTY_PUBLIC_MODEL_USES_PER_DAY` shares a daily model limit across try reads, example reads and example chat turns (50 by default). The older `EIGHTY_TRY_READS_PER_DAY` setting also works. `EIGHTY_TRY_READS_PER_VISITOR` limits each visitor (3 by default). Typing and looking around work after the model limit is used.
 
-The [evidence guide](docs/evidence.md) explains private photo and PDF uploads, manual entry, review cards, duplicate comparisons and saved versions. A model can read a saved file into proposed lines; the member checks and confirms each one, and the fixed rules decide the month. See [the production evidence checks](docs/tests/results/evidence.md).
+`EIGHTY_EXAMPLE_ENABLED=0` turns off new example months. `EIGHTY_EXAMPLE_STARTS_PER_VISITOR_HOUR` and `EIGHTY_EXAMPLE_STARTS_PER_HOUR` set their opening limits (5 and 120 by default).
 
-## Limits before sign-up opens
+## Measured results
 
-- The database runs on this server with no independent backup. A local dump does not protect against losing the server.
-- The file encryption key is only on this server. It needs a separate secure recovery copy.
+The [federal rules](docs/rules.md) have [365 cited cases](docs/tests/results/answer-key.md) and [100% line, branch and function coverage](docs/tests/results/rules-coverage.txt). The test command requires those coverage levels.
 
-Both must be fixed before sign-up opens.
+The synthetic document set has 51 documents: 25 practice and 26 locked. The second practice run read **267 of 269 fields right (99.3%)**, got **25 of 25 months right**, wrongly marked **0 months Meets**, and had **0 unreadable documents**. The first practice run read **228 of 269 fields right (84.8%)**. Both runs used the same 25 practice documents. The reader instructions changed for school facts, volunteer contacts and gig pay. The locked set is kept apart for the final model runs.
+
+Read the [measured results](docs/tests/results/reading.md), [documents](https://github.com/Jennycruzy/eighty/blob/main/tests/reading/documents), [answer files](https://github.com/Jennycruzy/eighty/blob/main/tests/reading/answers), [first result file](data/reading-results/practice-2026-11-04-run1.json) and [second result file](data/reading-results/practice-2026-11-05-run1.json).

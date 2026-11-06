@@ -2,15 +2,16 @@ import type { ActionRunContext } from "@agent-native/core/action";
 import { createError } from "h3";
 
 import type { MemberProfile } from "../../shared/member-profile.ts";
+import { monthExplanation } from "./month-explanation.ts";
 import { assessMonth } from "../rules/assess-month.ts";
 import { combineHours } from "../rules/activities.ts";
 import { educationHours } from "../rules/education.ts";
 import { incomeTest } from "../rules/income.ts";
 import { shiftMonth, validMonth, monthsBetween } from "../rules/dates.ts";
 import { listEvidenceRecords } from "./evidence-records.ts";
-import { memberActor, reviewedMemberActor } from "./member-identity.ts";
+import { memberActor, ownMemberActor } from "./member-identity.ts";
 import { getMemberRecord } from "./member-records.ts";
-import { isDemoEmail } from "./demo-identity.ts";
+import { isExampleEmail } from "./example-identity.ts";
 import { monthInput, type MonthFacts, type SavedLine } from "./month-input.ts";
 
 export function memberMonthFacts(
@@ -135,6 +136,7 @@ export function memberMonthResult(
   return {
     month,
     ...result,
+    ...monthExplanation(facts, result),
     hours: activities.hours ?? null,
     targetHours: 80,
     amountCents: payUsed ? (income.math!.amountCents as number) : null,
@@ -156,12 +158,12 @@ export async function checkMemberMonth(
   month: string | undefined,
   context: ActionRunContext | undefined,
 ) {
-  await reviewedMemberActor(context);
+  await ownMemberActor(context);
   const actor = await memberActor(context);
-  if (isDemoEmail(actor.email))
+  if (isExampleEmail(actor.email))
     throw createError({
       statusCode: 403,
-      statusMessage: "Open the demo month",
+      statusMessage: "Open the example month",
     });
   const member = await getMemberRecord(actor);
   const lines = await listEvidenceRecords(context);

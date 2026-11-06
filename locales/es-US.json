@@ -75,7 +75,7 @@
       ],
       [
         "Qué puedes usar aquí",
-        "Puedes leer la regla, revisar un mes a mano, responder las preguntas y buscar ayuda oficial. Las cuentas y la carga de documentos están cerradas mientras se revisan la privacidad y el correo."
+        "Puedes ver un mes de ejemplo, preguntar sobre tu mes, revisar un mes a mano, responder las preguntas y buscar ayuda oficial. Una cuenta verificada puede guardar pruebas privadas y revisar líneas propuestas."
       ],
       [
         "¿Quién decide?",
@@ -93,7 +93,7 @@
       ],
       [
         "Documentos y cuentas",
-        "El registro y la carga de documentos están cerrados. Estas páginas no envían documentos a un modelo. Explicaremos cualquier lector antes de que lo uses."
+        "Una cuenta verificada puede guardar documentos privados. El lector envía un documento guardado al modelo para proponer líneas que tú revisas. El modo de prueba lee en memoria y borra el archivo sin guardarlo. Los datos del ejemplo se borran en un día."
       ],
       [
         "Visitas a la web",
@@ -320,7 +320,7 @@
     "pagesLimit": "Leímos las primeras {read} de {total} páginas. Escribe a mano los datos de las otras páginas.",
     "nothing": "No encontramos datos de trabajo, pago o estudios en este archivo. Puedes escribir los números.",
     "unreadable": "No pudimos leer esto. Puedes escribir los números.",
-    "notUs": "No podemos leer esto como un recibo de pago de EE. UU. Puedes escribir los números.",
+    "notUs": "No poexamples leer esto como un recibo de pago de EE. UU. Puedes escribir los números.",
     "unavailable": "El lector de documentos no está disponible ahora. Puedes escribir los números.",
     "failed": "No pudimos conectar con el lector. Revisa tu conexión y vuelve a intentarlo. También puedes escribir los números.",
     "offline": "No tienes conexión. Leeremos el archivo cuando vuelvas a conectarte. También puedes escribir los números.",
@@ -383,33 +383,26 @@
       },
       "deleted": "Tu documento se borró a las {time}.",
       "visitorLimit": "Ya usaste las lecturas de documentos de hoy. Todavía puedes escribir los números abajo.",
-      "budgetUsed": "Las lecturas de documentos se acabaron por hoy. Todavía puedes escribir los números abajo.",
+      "budgetUsed": "La ayuda del ejemplo descansa hasta mañana. Aún puedes mirar y escribir líneas por tu cuenta.",
       "offline": "No tienes conexión. Para leer hace falta conexión. Todavía puedes escribir los números abajo.",
       "fileProblem": "Tu teléfono no pudo abrir este archivo. Elige otro archivo o escribe los números abajo.",
       "typeBelow": "Escribir los números abajo"
-    }
-  },
-  "demo": {
-    "landing": {
-      "title": "Míralo funcionar con un mes inventado",
-      "intro": "Abre el mes de una persona con un toque, sin cuenta. Las personas son inventadas. Lo que añadas se borra en un día.",
-      "maria": "Abrir el mes de María",
-      "others": "O abre otro mes inventado:",
-      "daniel": "Daniel, estudiante",
-      "rosa": "Rosa, cuidadora",
-      "opening": "Abriendo la demostración…",
-      "limit": "Se abrieron demasiadas demostraciones desde aquí. Inténtalo en una hora.",
-      "closed": "La demostración está cerrada ahora. Inténtalo más tarde.",
-      "offline": "No tienes conexión. Conéctate e inténtalo de nuevo.",
-      "error": "La demostración no se abrió. Inténtalo de nuevo."
     },
-    "band": {
-      "label": "Demostración",
-      "text": "Demostración. {name} es una persona inventada. Lo que añadas se borra en un día.",
-      "again": "Empezar de nuevo",
-      "leave": "Salir de la demostración",
-      "working": "Un momento…",
-      "error": "No funcionó. Revisa tu conexión e inténtalo de nuevo."
+    "publicLimit": "La ayuda del ejemplo descansa hasta mañana. Aún puedes mirar y escribir líneas por tu cuenta."
+  },
+  "example": {
+    "landing": {
+      "title": "Mira el mes de María",
+      "intro": "Recorre el mes de una persona, sin cuenta.",
+      "maria": "Mira el mes de María",
+      "others": "O mira el mes de",
+      "daniel": "Daniel",
+      "rosa": "Rosa.",
+      "opening": "Abriendo el ejemplo…",
+      "limit": "Se abrieron demasiados meses de ejemplo desde aquí. Inténtalo en una hora.",
+      "closed": "El ejemplo está cerrado ahora. Inténtalo más tarde.",
+      "offline": "No tienes conexión. Conéctate e inténtalo de nuevo.",
+      "error": "El ejemplo no se abrió. Inténtalo de nuevo."
     },
     "people": {
       "maria": {
@@ -426,12 +419,12 @@
       }
     },
     "month": {
-      "eyebrow": "Demostración · persona inventada",
+      "eyebrow": "Persona de ejemplo",
       "title": "El mes de {name}",
       "loading": "Cargando el mes…",
       "error": "No pudimos cargar el mes. Revisa tu conexión e inténtalo de nuevo.",
-      "notDemo": "Esta página es solo para la demostración. Abre un mes inventado desde la página principal.",
-      "home": "Ir a la página principal",
+      "notExample": "Esta página es solo para la examplestración. Abre un mes inventado desde la página principal.",
+      "home": "Volver a la página de inicio",
       "retry": "Volver a cargar",
       "thisMonth": "Este mes",
       "lastMonth": "El mes pasado",
@@ -455,7 +448,8 @@
         "maria": "A María le faltan 19 horas este mes. Su pago de entregas puede contar en su lugar. Añade su resumen de ganancias, escribe los datos y confírmalos.",
         "daniel": "Los 6 créditos de Daniel cuentan como 77.94 horas (6 × 3 × 4.33). Sus horas de trabajo pasan el mes de 80.",
         "rosa": "Rosa no lo sabía: como cuidadora familiar de alguien que vive con ella, la regla no le aplica."
-      }
+      },
+      "exampleNote": "{name} es una persona de ejemplo. Todo lo que añadas se borra en un día."
     },
     "sample": {
       "title": "Pruébalo con el resumen de ganancias de muestra de María",

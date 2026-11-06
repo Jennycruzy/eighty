@@ -25,4 +25,4 @@ The runner uses a separate database, binds its ports to localhost and deletes on
 
 These checks do not establish document-reading accuracy, complete member journeys, real email delivery, working private document storage, a full screen-reader pass or legal approval. Sign-up and uploads remain closed. The public month tool checks work and pay; it does not check every exclusion or state choice.
 
-The signed-in evidence update was checked on 3 November with `pnpm check:production eighty:member-proof`. Adding the public sign-in page brings the count to 134 signed-out page loads and 136 HEAD comparisons, including the two search files. The new `/add`, `/review` and evidence services remain protected. Registration stays closed.
+The signed-in evidence update was checked on 3 November with `pnpm check:production eighty:member-proof`. Adding the public sign-in page brings the count to 134 signed-out page loads and 136 HEAD comparisons, including the two search files. The new `/add`, `/review` and evidence services remain protected. Set `EIGHTY_REGISTRATION_ENABLED=1` with email configured to offer accounts.

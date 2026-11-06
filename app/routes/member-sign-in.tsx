@@ -1,5 +1,6 @@
+import { VerificationLink } from "../components/VerificationLink";
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useLoaderData, useSearchParams } from "react-router";
 
 import { safeMemberNext } from "../../shared/access";
 import { useLanguage, languageLink } from "../lib/language";
@@ -9,7 +10,12 @@ export function headers() {
     "Cache-Control": "private, no-store",
   };
 }
+export async function loader() {
+  const { registrationStatus } = await import("../../server/lib/registration");
+  return registrationStatus();
+}
 export default function MemberSignIn() {
+  const { open } = useLoaderData<typeof loader>();
   const [params] = useSearchParams();
   const lang = useLanguage(),
     es = lang === "es";
@@ -20,8 +26,8 @@ export default function MemberSignIn() {
       <h1>{es ? "Entrar a mi cuenta" : "Sign in to my account"}</h1>
       <p>
         {es
-          ? "Solo para cuentas con correo verificado. Aún no puedes crear una cuenta."
-          : "For accounts with a verified email. Account creation is still closed."}
+          ? "Entra con tu correo y contraseña. Confirma tu correo primero."
+          : "Sign in with your email and password. Confirm your email first."}
       </p>
       <form
         onSubmit={async (event) => {
@@ -86,6 +92,16 @@ export default function MemberSignIn() {
               : "Sign in"}
         </button>
       </form>
+      {open && (
+        <details>
+          <summary>
+            {es
+              ? "¿Tu enlace venció o no llegó?"
+              : "Link expired or never came?"}
+          </summary>
+          <VerificationLink />
+        </details>
+      )}
       <p>
         <Link to={languageLink("/check", lang)}>
           {es ? "Volver a las preguntas" : "Back to the questions"}

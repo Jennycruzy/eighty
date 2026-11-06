@@ -82,6 +82,14 @@ export default runMigrations(
       sql: `ALTER TABLE eighty_evidence ADD COLUMN IF NOT EXISTS questions jsonb NOT NULL DEFAULT '[]'::jsonb CHECK (jsonb_typeof(questions) = 'array');
       CREATE INDEX IF NOT EXISTS eighty_evidence_document ON eighty_evidence(document_id);`,
     },
+    {
+      version: 6,
+      name: "eighty-registration-mail",
+      sql: `CREATE TABLE IF NOT EXISTS eighty_registration_mail (
+        address_hash text PRIMARY KEY, draft text, window_start timestamptz NOT NULL DEFAULT now(),
+        sent integer NOT NULL DEFAULT 0 CHECK (sent >= 0), updated_at timestamptz NOT NULL DEFAULT now()
+      );`,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

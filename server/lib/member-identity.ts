@@ -82,3 +82,18 @@ export async function browserMemberActor(
     throw createError({ statusCode: 401, statusMessage: "Sign in required" });
   return { email, userId };
 }
+
+export async function ownMemberActor(
+  context: ActionRunContext | undefined,
+): Promise<MemberActor> {
+  const ambient = getRequestContext();
+  if (
+    context?.caller === "tool" &&
+    ambient?.userEmail === context.userEmail &&
+    ambient?.authUserId &&
+    !ambient.agentRunAnonymous
+  ) {
+    return memberActor(context);
+  }
+  return browserMemberActor(context);
+}

@@ -2,7 +2,7 @@ import type { ActionRunContext } from "@agent-native/core/action";
 import { z } from "zod";
 
 import { coverageAnswers } from "../../shared/screener.ts";
-import { refuseDemoContext } from "./demo-accounts.ts";
+import { refuseExampleContext } from "./example-accounts.ts";
 import { reviewedMemberActor } from "./member-identity.ts";
 import { getMemberRecord, saveMemberRecord } from "./member-records.ts";
 
@@ -22,7 +22,7 @@ export async function saveCoverageAnswer(
   context: ActionRunContext | undefined,
 ) {
   const { answers } = coverageAnswerInput.parse(input);
-  await refuseDemoContext(context);
+  await refuseExampleContext(context);
   const actor = await reviewedMemberActor(context);
   const member = await getMemberRecord(actor);
   await saveMemberRecord(actor, {

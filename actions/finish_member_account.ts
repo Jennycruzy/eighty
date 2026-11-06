@@ -1,6 +1,6 @@
 import { defineAction } from "@agent-native/core/action";
 
-import { refuseDemoContext } from "../server/lib/demo-accounts.ts";
+import { refuseExampleContext } from "../server/lib/example-accounts.ts";
 import {
   finishRegistrationInput,
   finishMemberAccount,
@@ -17,7 +17,7 @@ export default defineAction({
   maxBodyBytes: 8192,
   http: { method: "POST" },
   run: async (input, context) => {
-    await refuseDemoContext(context);
+    await refuseExampleContext(context);
     return finishMemberAccount(input, context);
   },
 });

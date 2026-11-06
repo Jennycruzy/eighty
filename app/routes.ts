@@ -20,7 +20,7 @@ export default [
   route("review", "routes/evidence.tsx", { id: "review-evidence" }),
   route("months", "routes/months.tsx"),
   route("months/:m", "routes/months.tsx", { id: "month-detail" }),
-  route("demo", "routes/demo.tsx"),
+  route("example", "routes/example.tsx"),
   route("share", "routes/share.tsx"),
   route("states", "routes/states.tsx"),
   route("states/:code", "routes/state.tsx"),

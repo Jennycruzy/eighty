@@ -13,7 +13,7 @@ const input = {
     screener: { state: "NE", age: "34", child: "yes" },
   },
 };
-test("The handoff requires consent, known screener fields and no password or ownership claims", () => {
+test("The carried answers requires consent, known screener fields and no password or ownership claims", () => {
   assert.equal(registrationInput.parse(input).email, "member@example.test");
   for (const extra of [
     { password: "NeverCarryPasswords" },

@@ -1,6 +1,7 @@
+import { VerificationLink } from "../components/VerificationLink";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useSearchParams } from "react-router";
 
 import { coverageAnswers, visibleQuestions } from "../../shared/screener";
 import en from "../../locales/en-US.json";
@@ -16,6 +17,8 @@ export async function loader() {
 }
 export default function Account() {
   const { open } = useLoaderData<typeof loader>();
+  const [params] = useSearchParams();
+  const linkDraft = params.get("draft");
   const lang = useLanguage(),
     es = lang === "es";
   const { answers, setAnswers } = useScreenerDraft();
@@ -27,7 +30,8 @@ export default function Account() {
     [error, setError] = useState(false),
     [sent, setSent] = useState(false),
     [verified, setVerified] = useState(false),
-    [saved, setSaved] = useState(false);
+    [saved, setSaved] = useState(false),
+    [checked, setChecked] = useState(false);
   useEffect(() => {
     if (!open) return;
     let active = true;
@@ -61,6 +65,9 @@ export default function Account() {
       })
       .catch(() => {
         if (active) setError(true);
+      })
+      .finally(() => {
+        if (active) setChecked(true);
       });
     return () => {
       active = false;
@@ -74,6 +81,19 @@ export default function Account() {
           {es ? "Ya tengo una cuenta: entrar" : "I have an account: sign in"}
         </Link>
       </p>
+      {open && linkDraft && checked && !verified && (
+        <section className="card">
+          <h2>
+            {es ? "Este enlace ya no funciona" : "This link no longer works"}
+          </h2>
+          <p>
+            {es
+              ? "Puede que haya vencido o que ya se haya usado. Te enviamos uno nuevo al correo de tu cuenta."
+              : "It may have expired or been used already. We can send a new one to your account email."}
+          </p>
+          <VerificationLink />
+        </section>
+      )}
       <h1>{es ? "Seguir mis meses" : "Track my months"}</h1>
       {!open ? (
         <section className="card">

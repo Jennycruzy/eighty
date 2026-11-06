@@ -118,7 +118,7 @@ try {
     });
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(baseURL + `/check?lang=${lang}`);
-    // Every interaction below uses the keyboard, including both account steps.
+    // Every interaction below uses the keyboard, including both account pages.
     await tabTo(page, page.locator("#state"));
     await page.keyboard.press("n");
     assert.equal(await page.locator("#state").inputValue(), "NE");
@@ -144,7 +144,7 @@ try {
     await tabTo(page, page.locator("#age"));
     await page.keyboard.type("34");
     await next(page, es);
-    for (let step = 2; step < 13; step++) {
+    for (let currentCheck = 2; currentCheck < 13; currentCheck++) {
       await tabTo(page, page.locator("input[type=radio]:checked"));
       await page.keyboard.press("ArrowUp"); // unknown -> no
       await next(page, es);
@@ -200,7 +200,18 @@ try {
       "Unverified accounts must not save the carried answers.",
     );
     const mail = await mailFor(email);
-    const verification = verifyURL(mail);
+    let verification = verifyURL(mail);
+    const token = new URL(verification).searchParams.get("token");
+    const tokenData = JSON.parse(
+      Buffer.from(token.split(".")[1], "base64url").toString(),
+    );
+    assert.equal(
+      tokenData.exp - tokenData.iat,
+      24 * 60 * 60,
+      "Verification lasts 24 hours",
+    );
+    assert.match(mail.text || mail.html, /This link works for 24 hours\./);
+    assert.doesNotMatch(mail.html, /alt="Eighty"/);
     const callback = new URL(verification).searchParams.get("callbackURL");
     assert(callback, "Verification must carry the account callback.");
     const draft = new URL(callback).searchParams.get("draft");
@@ -223,6 +234,67 @@ try {
     assert(
       [401, 403].includes(denied),
       "Unverified accounts cannot claim a draft.",
+    );
+    const expiredAnswers = JSON.parse(decryptSecretValue(draft));
+    expiredAnswers.expires = 1;
+    const expiredDraft = encryptSecretValue(JSON.stringify(expiredAnswers));
+    await getDbExec().execute({
+      sql: "UPDATE eighty_registration_mail SET draft = ? WHERE address_hash = ?",
+      args: [
+        expiredDraft,
+        (await import("../server/lib/registration.ts")).registrationAddressHash(
+          email,
+        ),
+      ],
+    });
+    await page.goto(
+      `${baseURL}/check/account?lang=${lang}&draft=${encodeURIComponent(expiredDraft)}&error=TOKEN_EXPIRED`,
+    );
+    const resend = page.locator("form").filter({
+      has: page.getByRole("button", {
+        name: es ? "Envíame un enlace nuevo" : "Send me a new link",
+        exact: true,
+      }),
+    });
+    if (await resend.locator("input").count())
+      await resend.locator("input").fill(email);
+    await resend
+      .getByRole("button", {
+        name: es ? "Envíame un enlace nuevo" : "Send me a new link",
+      })
+      .click();
+    await page
+      .getByRole("status")
+      .filter({ hasText: es ? "cuenta pendiente" : "account waiting" })
+      .waitFor();
+    let freshMail;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      const all = await execute("docker", [
+        "exec",
+        container,
+        "node",
+        "--input-type=module",
+        "-e",
+        `import fs from 'node:fs'; const files=fs.readdirSync('/tmp').filter(name=>name.startsWith('eighty-account-mail-')); console.log(JSON.stringify(files.map(name=>JSON.parse(fs.readFileSync('/tmp/'+name)))));`,
+      ]);
+      freshMail = JSON.parse(all.stdout).find(
+        (item) =>
+          (Array.isArray(item.to) ? item.to : [item.to]).includes(email) &&
+          verifyURL(item) !== verification,
+      );
+      if (freshMail) break;
+      await delay(200);
+    }
+    assert(freshMail, "A fresh verification link was sent");
+    verification = verifyURL(freshMail);
+    // A new link carries a same-site return path rather than a full address.
+    const renewedDraft = new URL(
+      new URL(verification).searchParams.get("callbackURL"),
+      baseURL,
+    ).searchParams.get("draft");
+    assert.deepEqual(
+      JSON.parse(decryptSecretValue(renewedDraft)).profile,
+      expiredAnswers.profile,
     );
     await page.goto(verification);
     await page.locator("button").waitFor();

@@ -26,3 +26,8 @@ data/uploads/
 data/settings.json
 data/.sessions.json
 data/*.lock
+
+/docs/before-launch.md
+/docs/framework-log.md
+/tests/reading/answers/SECOND-READING.md
+/internal-notes/

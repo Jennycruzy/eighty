@@ -2,25 +2,26 @@ import { defineAction } from "@agent-native/core/action";
 import { writeAppStateForCurrentTab } from "@agent-native/core/application-state";
 import { z } from "zod";
 
+export const monthPagePath = z
+  .string()
+  .max(200)
+  .refine((value) =>
+    /^\/(?:example|add|review|check|months(?:\/\d{4}-\d{2})?)(?:\?lang=(?:en|es))?$/.test(
+      value,
+    ),
+  );
 export default defineAction({
-  description:
-    "Navigate the UI to a specific view or path. Writes a navigate command to application state which the UI reads and auto-deletes.",
-  schema: z.object({
-    view: z.string().optional().describe("View name to navigate to"),
-    path: z.string().optional().describe("URL path to navigate to"),
-    threadId: z.string().optional().describe("Chat thread ID to open"),
-  }),
+  description: "Open the member's month, proof, review or answers page.",
+  schema: z.strictObject({ path: monthPagePath }),
+  requiresAuth: true,
+  agentTool: true,
+  mcpTool: false,
   http: false,
-  run: async (args) => {
-    if (!args.view && !args.path) {
-      throw new Error("At least --view or --path is required.");
-    }
-    const nav: Record<string, string> = {};
-    if (args.view) nav.view = args.view;
-    if (args.path) nav.path = args.path;
-    if (args.threadId) nav.threadId = args.threadId;
-    nav._writeId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    await writeAppStateForCurrentTab("navigate", nav);
-    return `Navigating to ${args.view || args.path}`;
+  run: async ({ path }) => {
+    await writeAppStateForCurrentTab("navigate", {
+      path,
+      _writeId: crypto.randomUUID(),
+    });
+    return { path };
   },
 });

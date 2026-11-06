@@ -1,4 +1,7 @@
-import { defineAppConfig } from "@agent-native/core/server";
+import {
+  defineAppConfig,
+  overrideTransactionalEmail,
+} from "@agent-native/core/server";
 
 export default defineAppConfig({
   auth: { requireEmailVerification: true },
@@ -16,3 +19,14 @@ export default defineAppConfig({
     // logoUrl: "https://example.com/logo.png",
   },
 });
+
+overrideTransactionalEmail("core.verify-signup", (_props, message) => ({
+  subject: message.subject,
+  html: message.html
+    .replace(/alt="Eighty"/g, 'alt=""')
+    .replace("This link expires in 1 hour.", "This link works for 24 hours."),
+  text: message.text.replace(
+    "This link expires in 1 hour.",
+    "This link works for 24 hours.",
+  ),
+}));

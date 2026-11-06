@@ -11,13 +11,13 @@ import {
 import { coverageAnswers } from "../../shared/screener.ts";
 import { getDb } from "../db/index.ts";
 import { members } from "../db/schema.ts";
-import { DEMO_EMAIL_DOMAIN, isDemoEmail } from "./demo-identity.ts";
-import { demoAccounts } from "./demo-schema.ts";
+import { EXAMPLE_EMAIL_DOMAIN, isExampleEmail } from "./example-identity.ts";
+import { exampleAccounts } from "./example-schema.ts";
 import type { MemberActor } from "./member-identity.ts";
 
-// Use in every list, count or lookup of real members. Demo records never match.
+// Use in every list, count or lookup of real members. Example records never match.
 export const realMembersOnly = () =>
-  notLike(members.ownerEmail, `%@${DEMO_EMAIL_DOMAIN}`);
+  notLike(members.ownerEmail, `%@${EXAMPLE_EMAIL_DOMAIN}`);
 
 function assertActorContext(actor: MemberActor) {
   const context = getRequestContext();
@@ -32,7 +32,7 @@ function assertActorContext(actor: MemberActor) {
 }
 export async function getMemberRecord(actor: MemberActor) {
   assertActorContext(actor);
-  const demo = isDemoEmail(actor.email);
+  const example = isExampleEmail(actor.email);
   const [member] = await getDb()
     .select()
     .from(members)
@@ -40,7 +40,7 @@ export async function getMemberRecord(actor: MemberActor) {
       and(
         eq(members.ownerEmail, actor.email),
         eq(members.userId, actor.userId),
-        ...(demo ? [] : [realMembersOnly()]),
+        ...(example ? [] : [realMembersOnly()]),
       ),
     )
     .limit(1);
@@ -49,15 +49,15 @@ export async function getMemberRecord(actor: MemberActor) {
       statusCode: 404,
       statusMessage: "Finish your account setup",
     });
-  if (demo) {
-    // A demo account reaches only the one made-up record the server made for it.
+  if (example) {
+    // A example account reaches only the one made-up record the server made for it.
     const [account] = await getDb()
-      .select({ memberId: demoAccounts.memberId })
-      .from(demoAccounts)
+      .select({ memberId: exampleAccounts.memberId })
+      .from(exampleAccounts)
       .where(
         and(
-          eq(demoAccounts.userId, actor.userId),
-          eq(demoAccounts.email, actor.email),
+          eq(exampleAccounts.userId, actor.userId),
+          eq(exampleAccounts.email, actor.email),
         ),
       );
     if (!account || account.memberId !== member.id)

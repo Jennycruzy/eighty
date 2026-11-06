@@ -75,7 +75,7 @@
       ],
       [
         "What you can use here",
-        "You can read the rule, check a month by hand, use the screener and find official state help. Account tools and document uploads are closed while their privacy and email checks are finished."
+        "You can see an example month, ask about your month, check a month by hand, use the screener and find official state help. A verified account can save private proof and review proposed lines."
       ],
       [
         "Who decides?",
@@ -93,7 +93,7 @@
       ],
       [
         "Documents and accounts",
-        "Public sign-up and document upload are closed. These pages do not send documents to a model. We will explain any document reader before you use it."
+        "A verified account can save private documents. The reader sends a saved document to the model to propose lines for you to review. Try mode reads in memory and clears the file without saving it. Example records are deleted within a day."
       ],
       [
         "Basic web requests",
@@ -383,33 +383,26 @@
       },
       "deleted": "Your document was deleted at {time}.",
       "visitorLimit": "You have used today's document reads. You can still type the numbers below.",
-      "budgetUsed": "Document reading is used up for today. You can still type the numbers below.",
+      "budgetUsed": "The example helper is resting until tomorrow. You can still look around and type lines yourself.",
       "offline": "You are offline. Reading needs a connection. You can still type the numbers below.",
       "fileProblem": "We could not open this file on your phone. Choose another file or type the numbers below.",
       "typeBelow": "Type the numbers below"
-    }
-  },
-  "demo": {
-    "landing": {
-      "title": "See it work on a made-up month",
-      "intro": "Open a member's month in one tap, with no account. The people are made up. Anything you add is deleted within a day.",
-      "maria": "Open Maria's month",
-      "others": "Or open another made-up month:",
-      "daniel": "Daniel, a student",
-      "rosa": "Rosa, a caregiver",
-      "opening": "Opening the demo…",
-      "limit": "Too many demos were opened from here. Try again in an hour.",
-      "closed": "The demo is closed right now. Try again later.",
-      "offline": "You are offline. Connect and try again.",
-      "error": "The demo did not open. Try again."
     },
-    "band": {
-      "label": "Demo",
-      "text": "Demo. {name} is made up. Anything you add is deleted within a day.",
-      "again": "Start again",
-      "leave": "Leave demo",
-      "working": "One moment…",
-      "error": "That did not work. Check your connection and try again."
+    "publicLimit": "The example helper is resting until tomorrow. You can still look around and type lines yourself."
+  },
+  "example": {
+    "landing": {
+      "title": "See Maria's month",
+      "intro": "Walk through one member's month, with no account.",
+      "maria": "See Maria's month",
+      "others": "Or see",
+      "daniel": "Daniel's",
+      "rosa": "Rosa's month.",
+      "opening": "Opening the example…",
+      "limit": "Too many example months were opened from here. Try again in an hour.",
+      "closed": "The example is closed right now. Try again later.",
+      "offline": "You are offline. Connect and try again.",
+      "error": "The example did not open. Try again."
     },
     "people": {
       "maria": {
@@ -426,12 +419,12 @@
       }
     },
     "month": {
-      "eyebrow": "Demo · made-up member",
+      "eyebrow": "Example member",
       "title": "{name}'s month",
       "loading": "Loading the month…",
       "error": "We could not load the month. Check your connection and try again.",
-      "notDemo": "This page is only for the demo. Open a made-up month from the home page.",
-      "home": "Go to the home page",
+      "notExample": "This page is only for the example. Open a made-up month from the home page.",
+      "home": "Back to the home page",
       "retry": "Load again",
       "thisMonth": "This month",
       "lastMonth": "Last month",
@@ -455,7 +448,8 @@
         "maria": "Maria is 19 hours short this month. Her delivery pay may count instead. Add her earnings summary, type its facts and confirm them.",
         "daniel": "Daniel's 6 credits count as 77.94 hours (6 × 3 × 4.33). His job hours bring the month past 80.",
         "rosa": "Rosa did not know this: as a family caregiver for someone who lives with her, the rule does not apply to her."
-      }
+      },
+      "exampleNote": "{name} is an example person. Anything you add is deleted within a day."
     },
     "sample": {
       "title": "Try it with Maria's sample earnings summary",

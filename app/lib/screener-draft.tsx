@@ -4,8 +4,8 @@ import type { ScreenerAnswers } from "../../shared/screener";
 interface Draft {
   answers: ScreenerAnswers;
   setAnswers: (answers: ScreenerAnswers) => void;
-  step: number;
-  setStep: (step: number) => void;
+  questionIndex: number;
+  setQuestionIndex: (questionIndex: number) => void;
 }
 export const ScreenerDraftContext = createContext<Draft | null>(null);
 export function useScreenerDraft() {

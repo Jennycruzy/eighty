@@ -30,7 +30,7 @@ Each call adds one row to `eighty_ai_ledger` with the purpose and token counts o
 
 Before a photo leaves the phone, the member can black out parts of it, such as a name, case number or account numbers, by dragging boxes or by keyboard. The boxes are painted into a new copy on the phone; only that copy is sent, without camera metadata.
 
-Try mode reads one document for a visitor with no account. It is checked with the same size limits, read in memory, never written to the database or storage, and cleared as soon as the answer is ready. The page says when it was deleted. The numbers fill the try form for the visitor to check and confirm. The ledger keeps only that a try happened. Each visitor can read 3 documents a day and the site 50 a day, set with `EIGHTY_TRY_READS_PER_VISITOR` and `EIGHTY_TRY_READS_PER_DAY`; 0 turns reading off. Per-visitor counts are kept in memory under a keyed hash of the address and reset on restart. When a limit is reached, try mode still works by typing and says so.
+Try mode reads one document for a visitor with no account. It is checked with the same size limits, read in memory, never written to the database or storage, and cleared as soon as the answer is ready. The page says when it was deleted. The numbers fill the try form for the visitor to check and confirm. The ledger keeps only that a try happened. Each visitor can read 3 documents a day and the site 50 a day, set with `EIGHTY_TRY_READS_PER_VISITOR` and `EIGHTY_PUBLIC_MODEL_USES_PER_DAY` (the older daily setting also works); 0 turns reading off. Per-visitor counts are kept in memory under a keyed hash of the address and reset on restart. When a limit is reached, try mode still works by typing and says so.
 
 Tests replace only the model engine. Parsing, refusals, fencing, page limits, saving, owner checks, the ledger and try mode run as real code against a disposable database. These tests do not measure reading accuracy.
 
@@ -40,7 +40,7 @@ Tests replace only the model engine. Parsing, refusals, fencing, page limits, sa
 
 `pnpm check:production IMAGE` creates a separate database and two verified browser accounts. It checks English and Spanish at 360 px, file inspection and retake, encrypted storage, exact original bytes, ownership, multiple PDF pages, manual evidence, confirmation, duplicate comparisons, editing, rejection and restoration. Its private-storage transport runs only in that disposable container; encryption and decryption use the real provider. `pnpm check:storage` separately checks the configured private bucket.
 
-Remaining launch limits: there is no independent database backup, and the file encryption key exists only on this server. Registration stays closed. Reading quality with a live model has not been measured here.
+Remaining launch limits: there is no independent database backup, and the file encryption key exists only on this server. Set `EIGHTY_REGISTRATION_ENABLED=1` with email configured to offer accounts. See [the practice reading results](tests/results/reading.md).
 
 ## File size and removal safeguards
 
@@ -58,7 +58,7 @@ A large photo can need about 160 MB of memory to decode, so the server reads at 
 
 After sign-in, `/months` shows this month and last month, then older months with confirmed proof, newest first. Each month shows the status, hours toward 80 or income toward $580, and a link to the federal rule. The state makes the decision. `/months/YYYY-MM` shows the reason, counted lines, dates, hours, pay and source, plus questions about missing facts. The add and review links show how many lines need review. Both screens use English or Spanish.
 
-`check_month` reads only the signed-in member's profile and evidence, using the same ownership restrictions as `list_evidence`. It also requires the verified browser review identity used by `confirm_evidence`; the agent cannot call it. Proposed and rejected lines never enter the member calculation. The demo and member calculations share `server/lib/month-input.ts` and the existing month rules.
+`check_month` reads only the signed-in member's profile and evidence, using the same ownership restrictions as `list_evidence`. It also requires the verified browser review identity used by `confirm_evidence`; the agent cannot call it. Proposed and rejected lines never enter the member calculation. The example and member calculations share `server/lib/month-input.ts` and the existing month rules.
 
 | Month input                                                                                                                                                                                                         | Source                                                                                                                                                                                                                                                                                                                                  |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,4 +84,4 @@ After sign-in, `/months` shows this month and last month, then older months with
 
 Members can answer missing coverage questions on the month page. Answers use the signed-in account action and saved member profile. A member with 80 confirmed work hours sees “Meets” when the coverage facts place them within the rule. An unknown coverage answer stays “Not sure yet”. The rules remain unchanged. Bad or future months use the rule's own reason. No coverage decision is promised.
 
-Signed-out GET and HEAD member pages redirect to sign-in with a same-site return path and the language. `/demo` opens the home page's demo title. Data requests and actions still require sign-in. A demo visitor opening a month page returns to `/demo`.
+Signed-out GET and HEAD member pages redirect to sign-in with a same-site return path and the language. `/example` opens the home page's example title. Data requests and actions still require sign-in. A example visitor opening a month page returns to `/example`.

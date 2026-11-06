@@ -3,27 +3,27 @@ import test from "node:test";
 
 import {
   as,
-  openDemo,
+  openExample,
   prepareDatabase,
   realMember,
-} from "../helpers/demo-database.mjs";
+} from "../helpers/example-database.mjs";
 
 await prepareDatabase();
 const { H3Event } = await import("h3");
 const middleware = (await import("../../server/middleware/auth.ts")).default;
-const { safeMemberNext, isDemoAllowedRequest } =
+const { safeMemberNext, isExampleAllowedRequest } =
   await import("../../shared/access.ts");
 const { memberMonthFacts, memberMonthResult, checkMemberMonth } =
   await import("../../server/lib/member-month.ts");
 const { monthInput } = await import("../../server/lib/month-input.ts");
-const { demoMonthInput, assessDemoMonths } =
-  await import("../../server/lib/demo-month.ts");
-const { DEMO_PROFILES } = await import("../../server/lib/demo-people.ts");
+const { exampleMonthInput, assessExampleMonths } =
+  await import("../../server/lib/example-month.ts");
+const { EXAMPLE_PROFILES } = await import("../../server/lib/example-people.ts");
 const { createEvidenceDraft, changeEvidenceRecord } =
   await import("../../server/lib/evidence-records.ts");
 const member = await realMember("months@example.test");
 const other = await realMember("other-months@example.test");
-const visitor = await openDemo("maria", "198.51.100.254");
+const visitor = await openExample("maria", "198.51.100.254");
 
 function request(path, method = "GET", cookie) {
   const event = new H3Event(
@@ -35,7 +35,7 @@ function request(path, method = "GET", cookie) {
   return { event, run: () => middleware(event) };
 }
 for (const method of ["GET", "HEAD"]) {
-  for (const path of ["/demo", "/add", "/months", "/months/2026-10"]) {
+  for (const path of ["/example", "/add", "/months", "/months/2026-10"]) {
     test(`${method} ${path} opens a page when signed out`, async () => {
       const { event, run } = request(`${path}?lang=es`, method);
       const response = await run();
@@ -43,8 +43,8 @@ for (const method of ["GET", "HEAD"]) {
       assert.equal(response.headers.get("cache-control"), "private, no-store");
       const url = new URL(response.headers.get("location"), "http://localhost");
       assert.equal(url.searchParams.get("lang"), "es");
-      assert.equal(url.pathname, path === "/demo" ? "/" : "/check/sign-in");
-      if (path === "/demo") assert.equal(url.hash, "#demo-start-title");
+      assert.equal(url.pathname, path === "/example" ? "/" : "/check/sign-in");
+      if (path === "/example") assert.equal(url.hash, "#example-start-title");
       else
         assert.equal(
           safeMemberNext(url.searchParams.get("next")),
@@ -55,7 +55,7 @@ for (const method of ["GET", "HEAD"]) {
   }
 }
 for (const [path, method] of [
-  ["/demo.data", "GET"],
+  ["/example.data", "GET"],
   ["/months/2026-10.data", "GET"],
 ]) {
   test(`${path} still requires sign-in`, async () => {
@@ -86,7 +86,7 @@ test("Return paths stay on member pages", () => {
   );
 });
 for (const path of ["/months", "/months/2026-10"]) {
-  test(`${path} accepts a member and sends a demo to its month`, async () => {
+  test(`${path} accepts a member and sends a example to its month`, async () => {
     await request(path, "GET", member.cookie).run();
     const response = await request(
       `${path}?lang=es`,
@@ -94,7 +94,7 @@ for (const path of ["/months", "/months/2026-10"]) {
       visitor.cookie,
     ).run();
     assert.equal(response.status, 302);
-    assert.equal(response.headers.get("location"), "/demo?lang=es");
+    assert.equal(response.headers.get("location"), "/example?lang=es");
   });
 }
 const asOf = "2026-11-05";
@@ -110,16 +110,16 @@ const line = {
     organization: "Employer",
   },
 };
-test("Members and the demo use the same facts and rules for 80 hours", () => {
-  const facts = DEMO_PROFILES.maria.facts;
-  assert.equal(monthInput, demoMonthInput);
+test("Members and the example use the same facts and rules for 80 hours", () => {
+  const facts = EXAMPLE_PROFILES.maria.facts;
+  assert.equal(monthInput, exampleMonthInput);
   const result = memberMonthResult(facts, [line], "2026-11", asOf);
-  const demo = assessDemoMonths(facts, [line], asOf).thisMonth;
+  const example = assessExampleMonths(facts, [line], asOf).thisMonth;
   assert.equal(result.status, "Meets");
   assert.equal(result.citation, "42 CFR 435.552(a)(1)–(5), (b), (d)–(e)");
-  assert.equal(result.status, demo.status);
-  assert.equal(result.hours, demo.hours);
-  assert.equal(result.citation, demo.citation);
+  assert.equal(result.status, example.status);
+  assert.equal(result.hours, example.hours);
+  assert.equal(result.citation, example.citation);
   const proposed = memberMonthResult(
     facts,
     [{ ...line, status: "proposed" }],
@@ -158,7 +158,7 @@ test("Bad and future months use the rule's words", () => {
     );
   }
 });
-test("Month reads use only the member's confirmed lines and refuse other callers", async () => {
+test("Month reads use only the member's confirmed lines for their own page or agent", async () => {
   for (const account of [member, other]) {
     const draft = await as(account, () =>
       createEvidenceDraft(
@@ -187,10 +187,12 @@ test("Month reads use only the member's confirmed lines and refuse other callers
   assert.equal(result.selected.lines.length, 1);
   assert.equal(result.selected.lines[0].fields.organization, member.email);
   assert.equal(result.waiting, 1);
+  const fromChat = await as(member, () =>
+    checkMemberMonth("2026-11", { ...member.context, caller: "tool" }),
+  );
+  assert.equal(fromChat.selected.hours, 80);
   await assert.rejects(
-    as(member, () =>
-      checkMemberMonth("2026-11", { ...member.context, caller: "agent" }),
-    ),
+    checkMemberMonth("2026-11", { caller: "tool", userEmail: member.email }),
     { statusCode: 403 },
   );
   await assert.rejects(
@@ -202,7 +204,7 @@ test("Month reads use only the member's confirmed lines and refuse other callers
     { statusCode: 403 },
   );
   assert.equal(
-    isDemoAllowedRequest("/_agent-native/actions/check_month", "GET"),
+    isExampleAllowedRequest("/_agent-native/actions/check_month", "GET"),
     false,
   );
 });
@@ -218,18 +220,18 @@ test("A signed-out evidence action still refuses the request", async () => {
   );
 });
 
-test("The demo month action and member calculation agree on saved confirmed proof", async () => {
-  const action = (await import("../../actions/demo_month.ts")).default;
+test("The example month action and member calculation agree on saved confirmed proof", async () => {
+  const action = (await import("../../actions/example_month.ts")).default;
   const { listEvidenceRecords } =
     await import("../../server/lib/evidence-records.ts");
-  const demo = await as(visitor, () => action.run({}, visitor.context));
+  const example = await as(visitor, () => action.run({}, visitor.context));
   const lines = await as(visitor, () => listEvidenceRecords(visitor.context));
-  for (const summary of [demo.thisMonth, demo.lastMonth]) {
+  for (const summary of [example.thisMonth, example.lastMonth]) {
     const result = memberMonthResult(
-      DEMO_PROFILES.maria.facts,
+      EXAMPLE_PROFILES.maria.facts,
       lines,
       summary.month,
-      demo.asOf,
+      example.asOf,
     );
     assert.equal(result.status, summary.status);
     assert.equal(result.citation, summary.citation);
@@ -240,21 +242,21 @@ test("The demo month action and member calculation agree on saved confirmed proo
     const { incomeTest } = await import("../../server/rules/income.ts");
     const income = incomeTest(
       monthInput(
-        DEMO_PROFILES.maria.facts,
+        EXAMPLE_PROFILES.maria.facts,
         lines.filter((line) => line.status === "confirmed"),
         summary.month,
-        demo.asOf,
+        example.asOf,
       ).income,
     );
     assert.equal(result.amountCents, income.math?.amountCents ?? null);
   }
 });
 
-test("The member month action has no owner input and requires browser review", async () => {
+test("The member month action has no owner input and allows its own agent", async () => {
   const action = (await import("../../actions/check_month.ts")).default;
   assert.equal(action.requiresAuth, true);
-  assert.equal(action.uiOnly, true);
-  assert.equal(action.agentTool, false);
+  assert.notEqual(action.uiOnly, true);
+  assert.equal(action.agentTool, true);
   assert.equal(action.mcpTool, false);
   assert.equal(
     action.schema.safeParse({ month: "2026-11", memberId: other.member.id })

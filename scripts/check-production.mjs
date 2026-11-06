@@ -16,7 +16,7 @@ import { promisify } from "node:util";
 
 import postgres from "postgres";
 
-import { checkDemo } from "./check-demo.mjs";
+import { checkExample } from "./check-example.mjs";
 import { checkPublicHeads } from "./check-public-heads.mjs";
 import { checkPublicPages } from "./check-public-pages.mjs";
 
@@ -30,7 +30,10 @@ const accountEncryptionKey = randomBytes(32).toString("hex");
 const databasePassword = randomBytes(32).toString("hex");
 const authSecret = randomBytes(32).toString("hex");
 const logPath = new URL("../.private/production-check.log", import.meta.url);
-const environmentFile = new URL(`../.private/${runId}.env`, import.meta.url);
+const environmentFile = new URL(
+  `../.private/${runId}.settings`,
+  import.meta.url,
+);
 const secrets = [databasePassword, authSecret, accountEncryptionKey];
 const browserEndpoint = new URL(
   "../.private/browser-endpoint.json",
@@ -50,7 +53,7 @@ const accountTlsCert = new URL(
   `../.private/${runId}-cert.pem`,
   import.meta.url,
 );
-let step = "prepare the check";
+let currentCheck = "prepare the check";
 
 await mkdir(new URL("../.private/", import.meta.url), {
   recursive: true,
@@ -119,7 +122,7 @@ async function publishedPort(container, port) {
 }
 
 try {
-  step = "check the image";
+  currentCheck = "check the image";
   const [metadata] = JSON.parse(
     await command("docker", ["image", "inspect", image]),
   );
@@ -132,7 +135,7 @@ try {
     ),
   );
 
-  step = "check the storage HTTP dependency";
+  currentCheck = "check the storage HTTP dependency";
   await command("docker", [
     "run",
     "--rm",
@@ -150,7 +153,7 @@ try {
     "PASS The image includes the HTTP safety checker, HEIC decoder and PDF page renderer.",
   );
 
-  step = "start a separate test database";
+  currentCheck = "start a separate test database";
   await command("docker", ["network", "create", runId]);
   resources.network = true;
   await command(
@@ -192,7 +195,7 @@ try {
   const databasePort = await publishedPort(database, "5432/tcp");
   const hostDatabaseUrl = `postgres://eighty:${databasePassword}@127.0.0.1:${databasePort}/eighty`;
 
-  step = "validate the deployment settings";
+  currentCheck = "validate the deployment settings";
   await command(
     "docker",
     [
@@ -214,7 +217,7 @@ try {
     },
   );
 
-  step = "run the release migrations";
+  currentCheck = "run the release migrations";
   await command("pnpm", ["migrate:production"], {
     ...process.env,
     DATABASE_URL: hostDatabaseUrl,
@@ -226,7 +229,7 @@ try {
   await sql`CREATE TABLE eighty_deploy_check (id text PRIMARY KEY)`;
   await sql`INSERT INTO eighty_deploy_check (id) VALUES (${runId})`;
 
-  step = "start the application with login enabled";
+  currentCheck = "start the application with login enabled";
   const appDatabaseUrl = `postgres://eighty:${databasePassword}@${database}:5432/eighty`;
   await command(
     "docker",
@@ -299,7 +302,7 @@ try {
   };
   await waitUntil(health, "application and database readiness");
   console.log("PASS Container runs as a regular user and reaches PostgreSQL.");
-  await checkDemo(baseUrl, sql);
+  await checkExample(baseUrl, sql);
   const closedSignup = await fetch(
     `${baseUrl}/_agent-native/auth/ba/sign-up/email`,
     {
@@ -324,7 +327,7 @@ try {
     "PASS Registration stays closed with configured test email, without creating an account.",
   );
 
-  step = "check private member records";
+  currentCheck = "check private member records";
   const memberOutput = await command(
     "node",
     ["scripts/check-member-records.mjs", runId],
@@ -339,11 +342,11 @@ try {
   for (const line of memberOutput.split("\n")) {
     if (line.startsWith("PASS ")) console.log(line);
   }
-  step = "check signed-out public pages and closed starter routes";
+  currentCheck = "check signed-out public pages and closed starter routes";
   await checkPublicPages(baseUrl);
-  step = "check public HEAD responses";
+  currentCheck = "check public HEAD responses";
   await checkPublicHeads(baseUrl);
-  step = "check the public tools in a phone browser";
+  currentCheck = "check the public tools in a phone browser";
   await writeFile(browserEndpoint, JSON.stringify({ baseURL: baseUrl }), {
     mode: 0o600,
     flag: "wx",
@@ -353,7 +356,7 @@ try {
   await unlink(browserEndpoint);
   browserEndpointCreated = false;
   console.log(browserOutput);
-  step = "check account creation with captured test mail";
+  currentCheck = "check account creation with captured test mail";
   await command("openssl", [
     "req",
     "-x509",
@@ -510,7 +513,7 @@ try {
     if (line.startsWith("PASS ")) console.log(line);
   const email = `${runId}@example.test`;
 
-  step = "check the scheduled runner without a model";
+  currentCheck = "check the scheduled runner without a model";
   const runnerOutput = await command(
     "node",
     ["scripts/check-job-runner.mjs", email],
@@ -529,7 +532,7 @@ try {
   assert(runnerMessage);
   console.log(runnerMessage);
 
-  step = "check database persistence after a restart";
+  currentCheck = "check database persistence after a restart";
   await command("docker", ["restart", database]);
   await waitUntil(health, "database recovery");
   await sql.end({ timeout: 5 });
@@ -550,7 +553,7 @@ try {
     [runId],
   );
   await checkPublicPages(baseUrl);
-  step = "check public HEAD responses";
+  currentCheck = "check public HEAD responses";
   await checkPublicHeads(baseUrl);
   console.log("PASS Test data survives database and application restarts.");
 } catch (error) {
@@ -573,7 +576,7 @@ try {
   for (const secret of secrets)
     summary = summary.replaceAll(secret, "[redacted]");
   console.error(
-    `FAIL Could not ${step}. Failed: ${summary}. See .private/production-check.log.`,
+    `FAIL Could not ${currentCheck}. Failed: ${summary}. See .private/production-check.log.`,
   );
 } finally {
   if (accountProxy) {

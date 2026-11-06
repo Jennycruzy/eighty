@@ -5,13 +5,13 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
-  DEMO_ENTER_PATH,
-  DEMO_SAMPLE_FILES,
+  EXAMPLE_ENTER_PATH,
+  EXAMPLE_SAMPLE_FILES,
   HEALTH_PATH,
   MEMBER_PAGES,
   PUBLIC_DATA_PATHS,
   PUBLIC_PAGES,
-  isDemoAllowedRequest,
+  isExampleAllowedRequest,
   isMemberPage,
   isPublicData,
   isPublicPage,
@@ -62,8 +62,8 @@ const appPaths = [
   ...staticFiles(),
   "/assets/entry.client-abc123.js",
   ...servicePaths(),
-  ...DEMO_SAMPLE_FILES,
-  DEMO_ENTER_PATH,
+  ...EXAMPLE_SAMPLE_FILES,
+  EXAMPLE_ENTER_PATH,
 ];
 
 test("The lists the checks read agree with the app's own rules", () => {
@@ -76,8 +76,9 @@ test("The lists the checks read agree with the app's own rules", () => {
 });
 
 for (const path of appPaths) {
-  // /demo/<anything> other than the two sample files is a member path the demo itself refuses.
-  if (path.startsWith("/demo/") && !DEMO_SAMPLE_FILES.includes(path)) continue;
+  // /example/<anything> other than the two sample files is a member path the example itself refuses.
+  if (path.startsWith("/example/") && !EXAMPLE_SAMPLE_FILES.includes(path))
+    continue;
   test(`Caddy lets through what the app allows: ${path}`, () => {
     assert.equal(
       caddyOpen(path),
@@ -88,19 +89,19 @@ for (const path of appPaths) {
 }
 
 for (const path of [
-  "/_agent-native/actions/start_demo",
-  "/_agent-native/actions/demo_month",
-  DEMO_ENTER_PATH,
-  "/demo",
-  "/demo.data",
+  "/_agent-native/actions/start_example",
+  "/_agent-native/actions/example_month",
+  EXAMPLE_ENTER_PATH,
+  "/example",
+  "/example.data",
   "/months.data",
   "/add/2026-10",
 ]) {
-  test(`A path the demo uses is open in Caddy: ${path}`, () => {
+  test(`A path the example uses is open in Caddy: ${path}`, () => {
     assert.equal(
-      isDemoAllowedRequest(
+      isExampleAllowedRequest(
         path,
-        path.startsWith("/_agent-native/") || path === DEMO_ENTER_PATH
+        path.startsWith("/_agent-native/") || path === EXAMPLE_ENTER_PATH
           ? "POST"
           : "GET",
       ),
@@ -119,7 +120,7 @@ for (const path of [
   "/terminal",
   "/_agent-native/actions/hello",
   "/_agent-native/agent-chat",
-  "/demo/other",
+  "/example/other",
   "/database",
 ]) {
   test(`Caddy keeps a closed path closed: ${path}`, () => {
