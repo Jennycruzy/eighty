@@ -147,7 +147,7 @@ function Conversation() {
           try {
             await control.sendMessage({
               queueWhileRunning: false,
-              text: `${text}\n\n${es ? "Idioma: es-US. Página actual" : "Language: en-US. Current page"}: ${window.location.pathname}${window.location.search}`,
+              text,
             });
             setText("");
           } catch (failure) {
