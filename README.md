@@ -1,6 +1,10 @@
 # Eighty
 
-**Keep your Medicaid by proving your month from your phone.**
+**In 2018, Arkansas cut about 18,000 people from Medicaid. Most of them qualified. They lost it to paperwork.**
+
+Over 40% of the people the Arkansas rule covered failed to report, and studies suggest only about 6% would not have met it through work or an exemption ([KFF](https://www.kff.org/medicaid/issue-brief/an-early-look-at-implementation-of-medicaid-work-requirements-in-arkansas/), [CBPP](https://www.cbpp.org/research/health/pain-but-no-gain-arkansas-failed-medicaid-work-reporting-requirements-should-not-be)). The federal work rule starts on 31 December 2026, and the Congressional Budget Office expects work requirements to leave about 5 million more people uninsured by 2034 ([KFF](https://www.kff.org/60c1aad)).
+
+**Eighty does the paperwork from the phone people already use.** Maria says into her phone, in Spanish, *"Trabajé cuatro horas en la despensa el sábado."* On her month page, her ring grows by four hours while she's still in the chat, and the bot answers in Spanish with what's left.
 
 The new federal work rule asks many adults on Medicaid to show 80 hours of work, school, volunteering or a work program each month, or pay of at least $580. Eighty keeps that proof. A member sends a pay stub photo or a Spanish voice note on Telegram. Eighty reads it, proposes a line, and the member's month fills in on the web as two rings: hours toward 80 and pay toward $580. Every result is cited to the law, plain words first. Nothing counts until the member confirms it, and the state decides.
 
