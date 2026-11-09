@@ -86,6 +86,21 @@ index 09af4c86252055f62b9ff4085e8da0e6bbd80e82..7a1e3ce7bfb5ea871acc961652aa156d
                      prepareRequest: async (details) => {
                          const prepared = await options?.prepareRequest?.(details);
                          return deferPriorThreadImageContext(prepared, details);
+diff --git a/dist/server/credential-provider.js b/dist/server/credential-provider.js
+index 9925537797197d340f13fc0bc8dce47166653157..72081bc2ed0e6e6672bdcdce9df546a275277ebf 100644
+--- a/dist/server/credential-provider.js
++++ b/dist/server/credential-provider.js
+@@ -179,6 +179,10 @@ const APP_PROVIDED_DEPLOY_CREDENTIAL_KEYS = new Set([
+     "SLACK_BOT_TOKEN",
+     // Signs events from the deployed Slack app, not the integration owner's identity.
+     "SLACK_SIGNING_SECRET",
++    // The deployed Telegram bot, the same as the Slack bot above: replies to a
++    // members message are sent as that member, and need the apps own bot.
++    "TELEGRAM_BOT_TOKEN",
++    "TELEGRAM_WEBHOOK_SECRET",
+     "RESEND_API_KEY",
+     "SENDGRID_API_KEY",
+ ]);
 diff --git a/dist/server/index.d.ts b/dist/server/index.d.ts
 index 9aa3de907c2c1a82ecfc90e76e6a0589175f631e..92537bf185b0402147a540ade303b23be2a87f30 100644
 --- a/dist/server/index.d.ts

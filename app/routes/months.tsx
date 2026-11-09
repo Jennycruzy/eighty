@@ -2,6 +2,7 @@ import { MonthHelper } from "../components/MonthHelper";
 import { MonthWork } from "../components/MonthWork";
 import { Rings } from "../components/Rings";
 import { TelegramLink } from "../components/TelegramLink";
+import { ExampleStart } from "../components/example/ExampleStart";
 import { NoticeDate } from "../components/NoticeDate";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
@@ -94,14 +95,21 @@ export default function MonthsPage() {
         <a className="button" href={link("/check")}>
           {lang === "es" ? "Responder las preguntas" : "Answer the questions"}
         </a>
+        <p className="note">
+          {lang === "es" ? "¿Viniste a ver el ejemplo?" : "Came to see the example?"}
+        </p>
+        <ExampleStart variant="hero" />
       </section>
     );
   if (error)
     return (
-      <section role="alert">
-        <p>{common.error}</p>
-        <button onClick={() => void load()}>{common.retry}</button>
-      </section>
+      <>
+        <section role="alert">
+          <p>{common.error}</p>
+          <button className="secondary" onClick={() => void load()}>{common.retry}</button>
+        </section>
+        <ExampleStart variant="hero" />
+      </>
     );
   if (!data)
     return (
