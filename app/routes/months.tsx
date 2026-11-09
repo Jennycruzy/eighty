@@ -2,6 +2,7 @@ import { MonthHelper } from "../components/MonthHelper";
 import { MonthWork } from "../components/MonthWork";
 import { Rings } from "../components/Rings";
 import { TelegramLink } from "../components/TelegramLink";
+import { NoticeDate } from "../components/NoticeDate";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -296,6 +297,7 @@ export default function MonthsPage() {
       )}
       <MonthWork />
       <TelegramLink />
+      <NoticeDate />
       <MonthHelper />
       <p className="note">{common.stateDecides}</p>
     </>

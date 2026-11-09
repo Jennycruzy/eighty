@@ -106,6 +106,15 @@ export default runMigrations(
       );
       CREATE INDEX IF NOT EXISTS eighty_telegram_links_owner ON eighty_telegram_links(owner_email);`,
     },
+    {
+      version: 8,
+      name: "eighty-checkins-and-notices",
+      sql: `ALTER TABLE eighty_telegram_links ADD COLUMN IF NOT EXISTS checkins boolean NOT NULL DEFAULT true;
+      ALTER TABLE eighty_telegram_links ADD COLUMN IF NOT EXISTS last_message_on date;
+      ALTER TABLE eighty_telegram_links ADD COLUMN IF NOT EXISTS month_checkin_on date;
+      ALTER TABLE eighty_members ADD COLUMN IF NOT EXISTS notice_printed date;
+      ALTER TABLE eighty_members ADD COLUMN IF NOT EXISTS notice_arrived date;`,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

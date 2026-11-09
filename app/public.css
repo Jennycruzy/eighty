@@ -1269,3 +1269,25 @@ input[type="file"]::file-selector-button {
   gap: 8px;
   margin-top: 10px;
 }
+
+.checkin-switch {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 8px 0 12px;
+  color: var(--text-2);
+}
+.checkin-switch input {
+  margin-top: 4px;
+  accent-color: var(--pay);
+}
+.notice-date form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.notice-date label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

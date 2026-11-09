@@ -11,6 +11,7 @@ interface LinkState {
   url: string | null;
   expiresAt?: string;
   language?: "en-US" | "es-US";
+  checkins?: boolean | null;
 }
 
 const COPY = {
@@ -27,6 +28,7 @@ const COPY = {
     linked: "Telegram is linked. Send a photo, a PDF or a voice note.",
     tryIt: 'Try a voice note: "I volunteered 4 hours at the pantry on Saturday."',
     unlink: "Unlink Telegram",
+    checkins: "Weekly check-in: from the 10th, if my month is short, send my plan, and remind me before a letter's reply date.",
     error: "That didn't work. Try again.",
     off: "Telegram linking is switched off on this site.",
     replies: "The bot hears and answers in:",
@@ -45,6 +47,7 @@ const COPY = {
     tryIt:
       'Prueba una nota de voz: "Trabajé cuatro horas en la despensa el sábado."',
     unlink: "Desvincular Telegram",
+    checkins: "Revisión semanal: desde el día 10, si me faltan horas, mándame mi plan y recuérdame antes de la fecha para responder una carta.",
     error: "No funcionó. Inténtalo otra vez.",
     off: "La vinculación con Telegram está apagada en este sitio.",
     replies: "El bot escucha y responde en:",
@@ -52,12 +55,13 @@ const COPY = {
 };
 
 const call = (
-  op: "status" | "code" | "unlink" | "language",
+  op: "status" | "code" | "unlink" | "language" | "checkins",
   language?: "en-US" | "es-US",
+  on?: boolean,
 ) =>
   callAction(
     "telegram_link",
-    language ? { op, language } : { op },
+    language ? { op, language } : on !== undefined ? { op, on } : { op },
     { method: "POST", uiOnly: true },
   ) as Promise<LinkState>;
 
@@ -112,13 +116,14 @@ export function TelegramLink({ onLinked }: { onLinked?: () => void }) {
     );
 
   const act = async (
-    op: "code" | "unlink" | "language",
+    op: "code" | "unlink" | "language" | "checkins",
     language?: "en-US" | "es-US",
+    on?: boolean,
   ) => {
     setBusy(true);
     setError(false);
     try {
-      setState(await call(op, language));
+      setState(await call(op, language, on));
     } catch {
       setError(true);
     } finally {
@@ -156,6 +161,15 @@ export function TelegramLink({ onLinked }: { onLinked?: () => void }) {
             {copy.linked}
           </p>
           <p className="note">{copy.tryIt}</p>
+          <label className="checkin-switch">
+            <input
+              type="checkbox"
+              checked={state.checkins !== false}
+              disabled={busy}
+              onChange={(event) => void act("checkins", undefined, event.target.checked)}
+            />
+            <span>{copy.checkins}</span>
+          </label>
           <button
             type="button"
             className="secondary"

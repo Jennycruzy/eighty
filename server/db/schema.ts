@@ -10,6 +10,7 @@ import {
   uniqueIndex,
   index,
   primaryKey,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 import type { DuplicateChoice } from "../../shared/evidence-review.ts";
@@ -30,6 +31,9 @@ export const members = pgTable(
     screener: jsonb("screener").$type<MemberProfile["screener"]>().notNull(),
     renewalDate: date("renewal_date", { mode: "string" }),
     caseNumber: text("case_number"),
+    /** The state letter the member saved: its printed date, and when it came if late. */
+    noticePrinted: date("notice_printed", { mode: "string" }),
+    noticeArrived: date("notice_arrived", { mode: "string" }),
     createdAt: createdAt(),
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
@@ -184,6 +188,10 @@ export const telegramLinks = pgTable(
     ownerEmail: text("owner_email").notNull(),
     userId: text("user_id").notNull(),
     telegramUserId: text("telegram_user_id").notNull(),
+    /** The daily check-in; the member turns it off with /checkins off. */
+    checkins: boolean("checkins").notNull().default(true),
+    lastMessageOn: date("last_message_on", { mode: "string" }),
+    monthCheckinOn: date("month_checkin_on", { mode: "string" }),
     createdAt: createdAt(),
   },
   (table) => [

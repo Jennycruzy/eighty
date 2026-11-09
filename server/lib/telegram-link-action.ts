@@ -6,6 +6,7 @@ import { members } from "../db/schema.ts";
 
 import { reviewedMemberActor } from "./member-identity.ts";
 import { configuredBotName, telegramBotToken } from "./telegram-config.ts";
+import { setCheckins } from "./member-reminders.ts";
 import { getMemberRecord } from "./member-records.ts";
 import {
   createLinkCode,
@@ -57,9 +58,10 @@ export function telegramBotName(): Promise<string | null> {
  * chat or an agent: the code proves the chat belongs to this account.
  */
 export async function telegramLink(
-  op: "status" | "code" | "unlink" | "language",
+  op: "status" | "code" | "unlink" | "language" | "checkins",
   context: ActionRunContext | undefined,
   language?: MemberLanguage,
+  on?: boolean,
 ) {
   const actor = await reviewedMemberActor(context);
   const member = await getMemberRecord(actor);
@@ -69,12 +71,14 @@ export async function telegramLink(
     await setMemberLanguage(member.id, language);
     member.language = language;
   }
+  if (op === "checkins" && typeof on === "boolean") await setCheckins(member.id, on);
   const link = await linkForMember(member.id);
   const base = {
     available: Boolean(bot),
     bot,
     linked: Boolean(link),
     linkedAt: link?.createdAt?.toISOString() ?? null,
+    checkins: link ? link.checkins : null,
     language: member.language === "es-US" ? "es-US" : "en-US",
   };
   if (op !== "code" || !bot) return { ...base, code: null, url: null };

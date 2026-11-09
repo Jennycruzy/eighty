@@ -109,7 +109,7 @@ export async function linkedTelegramActor(
 
 export async function linkForMember(memberId: string) {
   const [row] = await getDb()
-    .select({ createdAt: telegramLinks.createdAt })
+    .select({ createdAt: telegramLinks.createdAt, checkins: telegramLinks.checkins })
     .from(telegramLinks)
     .where(eq(telegramLinks.memberId, memberId));
   return row ?? null;

@@ -10,6 +10,7 @@ import {
 
 import actionsRegistry from "../../.generated/actions-registry.js";
 import { telegramBotToken } from "../lib/telegram-config.ts";
+import { setUpCheckins } from "../lib/checkins.ts";
 import {
   TELEGRAM_AGENT_PROMPT,
   TELEGRAM_AGENT_TOOLS,
@@ -42,6 +43,11 @@ const integrations = createIntegrationsPlugin({
 export default defineNitroPlugin(async (app) => {
   await integrations(app);
   if (!telegramBotToken()) return;
+  try {
+    await setUpCheckins();
+  } catch (error) {
+    console.error("[eighty-checkins] setup failed:", error instanceof Error ? error.message : error);
+  }
   const current = await getIntegrationConfig("telegram");
   if (current?.configData?.enabled === true) return;
   await saveIntegrationConfig("telegram", {

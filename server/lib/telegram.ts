@@ -27,6 +27,14 @@ import type { MemberActor } from "./member-identity.ts";
 import { setMemberLanguage } from "./telegram-link-action.ts";
 import { doMonth } from "./month-work.ts";
 import { buildProofPacket, packetMonth } from "./proof-packet.ts";
+import {
+  clearNotice,
+  parseTypedDate,
+  saveNotice,
+  setCheckins,
+  noticeText,
+} from "./member-reminders.ts";
+import { today } from "./example-accounts.ts";
 import { monthWorkText } from "./month-work-text.ts";
 import { getMemberRecord } from "./member-records.ts";
 import {
@@ -186,7 +194,7 @@ export function eightyTelegramAdapter(): PlatformAdapter {
  * checks the web uses, with the account the member linked from their own
  * verified browser session.
  */
-function asMember<T>(actor: MemberActor, fn: (context: ActionRunContext) => T) {
+export function asMember<T>(actor: MemberActor, fn: (context: ActionRunContext) => T) {
   return runWithRequestContext(
     { userEmail: actor.email, authUserId: actor.userId },
     () => fn({ caller: "tool", userEmail: actor.email }),
@@ -200,6 +208,20 @@ async function currentMonth(
   if (isExampleEmail(actor.email)) return (await exampleMonth(context)).thisMonth;
   const result = await checkMemberMonth(undefined, context);
   return result.months[0]!;
+}
+
+/** Sends a message to a linked chat, outside a reply: the daily check-in. */
+export async function sendTelegramText(chatId: string, text: string) {
+  const token = telegramBotToken();
+  if (!token) throw new Error("Telegram is not configured");
+  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text: text.slice(0, 4000), disable_web_page_preview: true }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  const data = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  if (!data?.ok) throw new Error(`Telegram sendMessage HTTP ${response.status}`);
 }
 
 /** Sends a file to a linked chat. Telegram only accepts it as a form upload. */
@@ -396,6 +418,29 @@ export async function beforeTelegramMessage(
         monthWorkText(await doMonth({ read: true }, context), lang),
       ),
     };
+  if (name === "checkins") {
+    const on = !/^(off|no|stop|apagar|apaga)$/i.test(argument);
+    await setCheckins(member.id, on);
+    return { handled: true, responseText: on ? words.checkinsOn : words.checkinsOff };
+  }
+  if (name === "notice" || name === "carta") {
+    if (/^(clear|borrar|off)$/i.test(argument)) {
+      await clearNotice(member.id);
+      return { handled: true, responseText: words.noticeCleared };
+    }
+    const [first, second] = argument.split(/\s+/).filter(Boolean);
+    const now = today();
+    const printed = first ? parseTypedDate(first, now) : null;
+    const arrived = second ? parseTypedDate(second, now) : null;
+    if (!printed || (second && !arrived))
+      return { handled: true, responseText: words.noticeHow };
+    try {
+      const dates = await saveNotice(member.id, printed, arrived, now);
+      return { handled: true, responseText: noticeText(dates, printed, lang, now) };
+    } catch {
+      return { handled: true, responseText: words.noticeHow };
+    }
+  }
   if (name === "packet") {
     const packet = await asMember(actor, async (context) => {
       const month = await packetMonth(context);
