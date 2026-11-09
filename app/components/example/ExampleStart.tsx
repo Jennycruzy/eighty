@@ -9,7 +9,7 @@ import {
 import { useLanguage } from "../../lib/language";
 
 // The landing page door into the example. It works without an account.
-export function ExampleStart() {
+export function ExampleStart({ variant = "card" }: { variant?: "card" | "hero" } = {}) {
   const lang = useLanguage();
   const copy = exampleCopy(lang).landing;
   const [busy, setBusy] = useState<ExamplePerson | null>(null);
@@ -25,6 +25,47 @@ export function ExampleStart() {
       setBusy(null);
     }
   }
+  if (variant === "hero")
+    return (
+      <div className="lx-example" id="example-start-title" tabIndex={-1}>
+        <button
+          type="button"
+          disabled={busy !== null}
+          aria-busy={busy === "maria"}
+          onClick={() => open("maria")}
+        >
+          {busy === "maria" ? copy.opening : copy.maria}
+        </button>
+        <p className="lx-others">
+          {copy.others}{" "}
+          <button
+            type="button"
+            className="link-button"
+            disabled={busy !== null}
+            aria-busy={busy === "daniel"}
+            onClick={() => open("daniel")}
+          >
+            {copy.daniel}
+          </button>{" "}
+          {lang === "es" ? "o" : "or"}{" "}
+          <button
+            type="button"
+            className="link-button"
+            disabled={busy !== null}
+            aria-busy={busy === "rosa"}
+            onClick={() => open("rosa")}
+          >
+            {copy.rosa}
+          </button>
+        </p>
+        {busy && busy !== "maria" && <p role="status">{copy.opening}</p>}
+        {failure && (
+          <p role="alert" className="error">
+            {copy[failure]}
+          </p>
+        )}
+      </div>
+    );
   return (
     <section
       className="card example-start"

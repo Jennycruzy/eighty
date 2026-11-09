@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import proof from "../../data/proof.json";
 import { MARIA } from "../../server/lib/example-people";
@@ -9,7 +9,6 @@ import {
 } from "../../server/rules/constants";
 import { BOT_TEXT, lineText } from "../../shared/telegram-words";
 import { ExampleStart } from "./example/ExampleStart";
-import { Rings } from "./Rings";
 import { languageLink, useLanguage } from "../lib/language";
 
 const money = (cents: number, es: boolean) =>
@@ -19,65 +18,144 @@ const money = (cents: number, es: boolean) =>
     maximumFractionDigits: cents % 100 ? 2 : 0,
   }).format(cents / 100);
 
-/** Drag hours and pay; the rings and the answer follow the rule's numbers. */
-function HeroTry({ es }: { es: boolean }) {
-  const [hours, setHours] = useState(61);
-  const [payCents, setPayCents] = useState(0);
-  const meets = hours >= REQUIRED_HOURS || payCents >= REQUIRED_INCOME_CENTS;
-  const hoursShort = Math.max(0, REQUIRED_HOURS - hours);
-  const payShort = Math.max(0, REQUIRED_INCOME_CENTS - payCents);
+/** Sections fade up once as they enter the screen. Off with reduced motion (CSS). */
+function useReveal() {
+  useEffect(() => {
+    const items = [...document.querySelectorAll<HTMLElement>("[data-reveal]")];
+    if (!("IntersectionObserver" in window)) {
+      items.forEach((item) => item.classList.add("is-in"));
+      return;
+    }
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries)
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            seen.unobserve(entry.target);
+          }
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+    );
+    items.forEach((item) => seen.observe(item));
+    return () => seen.disconnect();
+  }, []);
+}
+
+/** A number that counts up once it is on screen. */
+function Count({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [value, setValue] = useState(to);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setValue(0);
+    const seen = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      seen.disconnect();
+      const start = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / 1100);
+        setValue(Math.round(to * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+    seen.observe(node);
+    return () => seen.disconnect();
+  }, [to]);
   return (
-    <section className="hero-try" aria-labelledby="hero-try-title">
-      <h2 id="hero-try-title" className="sr-only">
-        {es ? "Prueba los números" : "Try the numbers"}
-      </h2>
-      <Rings
-        title={es ? "Tu mes" : "Your month"}
-        values={{ hours, amountCents: payCents }}
-      />
-      <label>
-        <span>
-          {es
-            ? "Horas de trabajo, estudio o voluntariado"
-            : "Hours of work, school or volunteering"}
+    <span ref={ref} className="num">
+      {value.toLocaleString("en-US")}
+      {suffix}
+    </span>
+  );
+}
+
+/** Maria's November, as two rings: hours toward 80, pay toward $580. */
+function HeroRings({ es }: { es: boolean }) {
+  const hours = MARIA.deliveryHours + MARIA.pantryHours + 4;
+  const pay = MARIA.sample.totalCents - MARIA.sample.costsCents;
+  const ring = (r: number, share: number, kind: "hours" | "pay") => {
+    const c = 2 * Math.PI * r;
+    return (
+      <>
+        <circle className={`lx-track ${kind}`} cx="120" cy="120" r={r} />
+        <circle
+          className={`lx-arc ${kind}`}
+          cx="120"
+          cy="120"
+          r={r}
+          style={{
+            strokeDasharray: `${c}`,
+            ["--lx-from" as string]: `${c}`,
+            ["--lx-to" as string]: `${c * (1 - Math.min(1, share))}`,
+          }}
+        />
+      </>
+    );
+  };
+  return (
+    <figure className="lx-rings" aria-label={es ? "El mes de María" : "Maria's month"}>
+      <svg viewBox="0 0 240 240" role="img" aria-hidden="true">
+        <g transform="rotate(-90 120 120)">
+          {ring(96, hours / REQUIRED_HOURS, "hours")}
+          {ring(64, pay / REQUIRED_INCOME_CENTS, "pay")}
+        </g>
+      </svg>
+      <figcaption>
+        <span className="lx-who">{es ? "María · noviembre" : "Maria · November"}</span>
+        <span className="lx-figs">
+          <span className="hours num">
+            {hours}
+            <small>/{REQUIRED_HOURS} h</small>
+          </span>
+          <span className="pay num">
+            {money(pay, es)}
+            <small>/{money(REQUIRED_INCOME_CENTS, es)}</small>
+          </span>
         </span>
-        <output className="num">{hours}</output>
-        <input
-          type="range"
-          min={0}
-          max={120}
-          step={1}
-          value={hours}
-          onChange={(event) => setHours(Number(event.target.value))}
-        />
-      </label>
-      <label className="pay-range">
-        <span>{es ? "Pago del mes" : "Pay this month"}</span>
-        <output className="num">{money(payCents, es)}</output>
-        <input
-          type="range"
-          min={0}
-          max={100_000}
-          step={500}
-          value={payCents}
-          onChange={(event) => setPayCents(Number(event.target.value))}
-        />
-      </label>
-      <p className="verdict" role="status" aria-live="polite">
-        {meets
-          ? es
-            ? "Eso cumple los números de la regla."
-            : "That meets the rule's numbers."
-          : es
-            ? `Faltan ${hoursShort} horas, o ${money(payShort, es)} más de pago.`
-            : `${hoursShort} hours short, or ${money(payShort, es)} more pay.`}
-        <small className="muted">
-          {es
-            ? "Solo los números. Las exenciones y tu estado pueden cambiar la respuesta. No se guarda nada."
-            : "Numbers only. Exemptions and your state can change the answer. Nothing is saved."}
-        </small>
-      </p>
-    </section>
+        <span className="lx-meets">{es ? "Cumple la regla" : "Meets the rule"}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** The phone: Maria's voice note and the bot's answer, in the bot's own words. */
+function HeroPhone({ es }: { es: boolean }) {
+  const words = BOT_TEXT[es ? "es" : "en"];
+  const said = es
+    ? "Trabajé cuatro horas en la despensa el sábado."
+    : "I volunteered 4 hours at the pantry on Saturday.";
+  const line = lineText(
+    { kind: "service", organization: MARIA.pantry, hours: 4 },
+    es ? "es" : "en",
+  );
+  return (
+    <div className="lx-phone" aria-hidden="true">
+      <div className="lx-phone-top">
+        <span className="lx-avatar">8</span>
+        <span>
+          <strong>Eighty</strong>
+          <small>@TryEightybot</small>
+        </span>
+      </div>
+      <div className="lx-msg me">
+        <span className="lx-play" />
+        <span className="lx-wave">
+          {Array.from({ length: 22 }, (_, i) => (
+            <i key={i} style={{ height: `${6 + ((i * 37) % 17)}px`, animationDelay: `${i * 40}ms` }} />
+          ))}
+        </span>
+        <small>0:04</small>
+      </div>
+      <div className="lx-msg bot">
+        {words.heard(said)}
+        {"\n• "}
+        {line}
+        {"\n"}
+        {words.check}
+      </div>
+    </div>
   );
 }
 
@@ -85,295 +163,197 @@ export function Landing() {
   const lang = useLanguage();
   const es = lang === "es";
   const link = (path: string) => languageLink(path, lang);
-  const words = BOT_TEXT[es ? "es" : "en"];
-  const mariaLine = lineText(
-    {
-      kind: "income",
-      organization: MARIA.delivery,
-      income: { grossPayCents: MARIA.sample.totalCents },
-    },
-    es ? "es" : "en",
-  );
+  useReveal();
+  const pay = money(REQUIRED_INCOME_CENTS, es);
   return (
-    <div className="landing">
-      <section className="stakes" aria-label={es ? "Por qué importa" : "Why it matters"}>
-        <p className="stakes-line">
-          {es
-            ? "En 2018, Arkansas sacó de Medicaid a unas 18,000 personas. La mayoría cumplía. Lo perdieron por el papeleo."
-            : "In 2018, Arkansas cut about 18,000 people from Medicaid. Most of them qualified. They lost it to paperwork."}
+    <div className="lx">
+      <section className="lx-hero" aria-labelledby="hero-title">
+        <div className="lx-hero-copy">
+          <h1 id="hero-title">
+            {es ? (
+              <>
+                Conserva tu Medicaid. <span>Eighty hace el papeleo.</span>
+              </>
+            ) : (
+              <>
+                Keep your Medicaid. <span>Eighty does the paperwork.</span>
+              </>
+            )}
+          </h1>
+          <p className="lx-lede">
+            {es
+              ? `La nueva regla federal pide ${REQUIRED_HOURS} horas o ${pay} cada mes. Manda tus pruebas desde el teléfono, en inglés o en español. Eighty las lee, planea lo que falta y arma el paquete. Tú solo confirmas.`
+              : `The new federal rule asks for ${REQUIRED_HOURS} hours or ${pay} every month. Send your proof from your phone, in English or Spanish. Eighty reads it, plans what's missing and makes the packet. You only confirm.`}
+          </p>
+          <div className="lx-actions">
+            <ExampleStart variant="hero" />
+            <a className="button secondary" href={link("/check")}>
+              {es ? "Revisar si me aplica" : "Check if it applies to me"}
+            </a>
+          </div>
+        </div>
+        <div className="lx-hero-art">
+          <HeroRings es={es} />
+          <HeroPhone es={es} />
+        </div>
+      </section>
+
+      <section className="lx-stakes" data-reveal aria-label={es ? "Por qué importa" : "Why it matters"}>
+        <p className="lx-stakes-line">
+          {es ? (
+            <>
+              En 2018, Arkansas sacó de Medicaid a unas <em>18,000 personas</em>. La mayoría cumplía. Lo perdieron por el papeleo.
+            </>
+          ) : (
+            <>
+              In 2018, Arkansas cut about <em>18,000 people</em> from Medicaid. Most of them qualified. They lost it to paperwork.
+            </>
+          )}
         </p>
-        <p className="stakes-note">
+        <p className="lx-source">
           {es
-            ? "Más del 40% no logró reportar, y solo cerca del 6% no habría cumplido. La regla federal empieza el 31 de diciembre de 2026. "
-            : "Over 40% failed to report, and only about 6% would not have met the rule. The federal rule starts on 31 December 2026. "}
+            ? "Más del 40% no logró reportar; cerca del 6% no habría cumplido. La regla federal empieza el 31 de diciembre de 2026. "
+            : "Over 40% failed to report; about 6% would not have met the rule. The federal rule starts on 31 December 2026. "}
           <a href="https://www.kff.org/medicaid/issue-brief/an-early-look-at-implementation-of-medicaid-work-requirements-in-arkansas/">KFF</a>
           {" · "}
           <a href="https://www.cbpp.org/research/health/pain-but-no-gain-arkansas-failed-medicaid-work-reporting-requirements-should-not-be">CBPP</a>
         </p>
       </section>
-      <section className="hero" aria-labelledby="hero-title">
-        <div>
-          <h1 id="hero-title">
-            {es ? (
-              <>
-                <span className="hours-word">80 horas</span> o{" "}
-                <span className="pay-word">
-                  {money(REQUIRED_INCOME_CENTS, true)}
-                </span>
-                . Cada mes.
-              </>
-            ) : (
-              <>
-                <span className="hours-word">80 hours</span> or{" "}
-                <span className="pay-word">
-                  {money(REQUIRED_INCOME_CENTS, false)}
-                </span>
-                . Every month.
-              </>
-            )}
-          </h1>
-          <p className="intro">
-            {es
-              ? "La nueva regla federal de trabajo pide a muchos adultos con Medicaid mostrar trabajo, estudios, voluntariado o pago cada mes. Eighty hace el papeleo de tu mes desde el teléfono: lee tus pruebas, te dice lo que falta, planea el resto y arma el paquete que envías. Tú solo confirmas."
-              : "The new federal work rule asks many adults on Medicaid to show work, school, volunteering or pay each month. Eighty does the month's paperwork from your phone: it reads your proof, finds what's missing, plans the rest and makes the packet you send. You only confirm."}
-          </p>
-          <div className="actions">
-            <a className="button" href={link("/check")}>
-              {es ? "Revisar si me aplica" : "Check if it applies to me"}
-            </a>
-            <a className="button secondary" href={link("/try")}>
-              {es ? "Probar con mi mes" : "Try your own month"}
-            </a>
-          </div>
-        </div>
-        <HeroTry es={es} />
-      </section>
 
-      <section className="band" aria-labelledby="phone-title">
-        <div className="split">
-          <div>
-            <h2 id="phone-title">
+      <section className="lx-band" aria-labelledby="how-title">
+        <h2 id="how-title" data-reveal>
+          {es ? "Así se completa un mes." : "How a month gets done."}
+        </h2>
+        <ol className="lx-steps">
+          <li data-reveal>
+            <span className="lx-step-n num">1</span>
+            <h3>{es ? "Dilo o mándalo." : "Say it or send it."}</h3>
+            <p>
               {es
-                ? "Envía pruebas como envías un mensaje."
-                : "Send proof the way you send a text."}
-            </h2>
-            <p className="intro">
-              {es
-                ? "Vincula Telegram una vez. Luego envía una foto de un talón de pago, un PDF o una nota de voz en inglés o español. Eighty lo lee y propone una línea. Nada cuenta hasta que tú lo revises."
-                : "Link Telegram once. Then send a photo of a pay stub, a PDF, or a voice note in English or Spanish. Eighty reads it and proposes a line. Nothing counts until you check it."}
+                ? "Una nota de voz, la foto de un talón o un PDF por Telegram. En inglés o en español."
+                : "A voice note, a photo of a pay stub or a PDF, on Telegram. In English or Spanish."}
             </p>
-            <ul className="steps">
-              <li>
-                <strong>{es ? "Foto o voz" : "Snap or speak"}</strong>
-                <span>
-                  {es
-                    ? "Un talón, una hoja de horas, una carta del voluntariado, o di tus horas en voz alta."
-                    : "A pay stub, a timesheet, a volunteer letter, or say your hours out loud."}
-                </span>
-              </li>
-              <li>
-                <strong>{es ? "Eighty lo lee" : "Eighty reads it"}</strong>
-                <span>
-                  {es
-                    ? "Fechas, horas y pago, guardados cifrados en tu cuenta."
-                    : "Dates, hours and pay, kept encrypted in your account."}
-                </span>
-              </li>
-              <li>
-                <strong>{es ? "Tú lo revisas" : "You check it"}</strong>
-                <span>
-                  {es
-                    ? "El anillo se llena solo cuando confirmas."
-                    : "The ring fills only when you confirm."}
-                </span>
-              </li>
-            </ul>
-          </div>
-          <figure className="phone-figure">
-            <div className="phone" aria-hidden="true">
-              <p className="chat-title">Eighty · @TryEightybot</p>
-              <div className="bubble me photo-bubble">
-                <img
-                  src="/example/maria-earnings-sample.png"
-                  alt=""
-                  width="240"
-                  height="160"
-                  loading="lazy"
-                />
-              </div>
-              <div className="bubble bot">
-                {`${words.read(1)}\n• ${mariaLine}\n${words.check}: tryeighty.space/review`}
-              </div>
-            </div>
-            <figcaption className="note">
+          </li>
+          <li data-reveal>
+            <span className="lx-step-n num">2</span>
+            <h3>{es ? "Eighty hace el papeleo." : "Eighty does the paperwork."}</h3>
+            <p>
               {es
-                ? "El ejemplo de María (inventado). Así responde el bot cuando lee su resumen de ganancias."
-                : "Maria's example (made up). This is how the bot answers when it reads her earnings summary."}
-            </figcaption>
-          </figure>
-        </div>
+                ? "Lee cada archivo, encuentra lo que falta, hace la única pregunta que necesita y arma un plan que las reglas aceptan."
+                : "It reads each file, finds the gap, asks the one question it needs and lays out a plan the rules accept."}
+            </p>
+          </li>
+          <li data-reveal>
+            <span className="lx-step-n num">3</span>
+            <h3>{es ? "Tú confirmas." : "You confirm."}</h3>
+            <p>
+              {es
+                ? "Nada cuenta hasta que tú lo tocas. Cuando el mes cumple, tu paquete en PDF está listo para enviar."
+                : "Nothing counts until you tap it. When the month meets the rule, your PDF packet is ready to send."}
+            </p>
+          </li>
+        </ol>
       </section>
 
-      <section className="band" aria-labelledby="rule-title">
-        <h2 id="rule-title">
+      <section className="lx-band lx-rule" aria-labelledby="rule-title">
+        <h2 id="rule-title" data-reveal>
           {es ? "La regla, en palabras simples." : "The rule, in plain words."}
         </h2>
-        <p className="intro">
-          {es
-            ? "Una de estas dos cosas cada mes, a menos que la regla no te aplique."
-            : "One of these two each month, unless the rule doesn't apply to you."}
-        </p>
-        <div className="rule-pair">
-          <div className="hours">
-            <span className="big num">{REQUIRED_HOURS}</span>
-            <h3>{es ? "horas" : "hours"}</h3>
+        <div className="lx-rule-row">
+          <div className="hours" data-reveal>
+            <span className="lx-big num">{REQUIRED_HOURS}</span>
+            <h3>{es ? "horas al mes" : "hours a month"}</h3>
             <p>
               {es
                 ? "De trabajo, voluntariado, estudios o un programa de trabajo. Se suman."
                 : "Of work, volunteering, school or a work program. They add up."}
             </p>
           </div>
-          <div className="pay">
-            <span className="big num">
-              {money(REQUIRED_INCOME_CENTS, es)}
-            </span>
-            <h3>{es ? "de pago" : "in pay"}</h3>
+          <div className="pay" data-reveal>
+            <span className="lx-big num">{pay}</span>
+            <h3>{es ? "o de pago" : "or in pay"}</h3>
             <p>
               {es
-                ? `O ganar lo de ${REQUIRED_HOURS} horas al salario mínimo federal de ${money(FEDERAL_WAGE.cents, true)}.`
-                : `Or earn what ${REQUIRED_HOURS} hours pay at the ${money(FEDERAL_WAGE.cents, false)} federal minimum wage.`}
+                ? `Lo que pagan ${REQUIRED_HOURS} horas al salario mínimo federal de ${money(FEDERAL_WAGE.cents, true)}.`
+                : `What ${REQUIRED_HOURS} hours pay at the ${money(FEDERAL_WAGE.cents, false)} federal minimum wage.`}
             </p>
           </div>
-          <div className="free">
-            <span className="big">{es ? "Exento" : "Exempt"}</span>
+          <div className="free" data-reveal>
+            <span className="lx-big">{es ? "Exento" : "Exempt"}</span>
             <h3>{es ? "si te aplica" : "if it applies"}</h3>
             <p>
               {es
-                ? "Por ejemplo, cuidar a un familiar con discapacidad, estar embarazada o ciertas condiciones de salud. Eighty te pregunta."
-                : "For example, caring for a family member with a disability, being pregnant, or certain health conditions. Eighty asks."}
+                ? "Por ejemplo, cuidar a un familiar con discapacidad, un embarazo o ciertas condiciones de salud. Eighty pregunta."
+                : "For example, caring for a family member with a disability, pregnancy, or certain health conditions. Eighty asks."}
             </p>
           </div>
         </div>
-        <p className="note">
+        <p className="lx-source" data-reveal>
           {es ? "La ley: " : "The law: "}
-          <a href="https://www.ecfr.gov/current/title-42/section-435.552">
-            42 CFR 435.552
-          </a>
+          <a href="https://www.ecfr.gov/current/title-42/section-435.552">42 CFR 435.552</a>
           {" · "}
-          <a href="https://www.ecfr.gov/current/title-42/section-435.554">
-            42 CFR 435.554
-          </a>
-          {". "}
-          {es ? "Tu estado decide." : "Your state decides."}
+          <a href="https://www.ecfr.gov/current/title-42/section-435.554">42 CFR 435.554</a>
+          {es ? ". Tu estado decide." : ". Your state decides."}
         </p>
       </section>
 
-      <section className="band" aria-labelledby="checked-title">
-        <h2 id="checked-title">
-          {es ? "Revisado, no adivinado." : "Checked, not guessed."}
+      <section className="lx-band" aria-labelledby="checked-title">
+        <h2 id="checked-title" data-reveal>
+          {es ? "Medido, no adivinado." : "Measured, not guessed."}
         </h2>
-        <p className="intro">
-          {es
-            ? "Las reglas y la lectura de documentos se prueban con respuestas conocidas. Los resultados son públicos."
-            : "The rules and the document reading are tested against known answers. The results are public."}
-        </p>
-        <dl className="figures">
-          <div>
-            <dt className="num">
-              {proof.passed}/{proof.cases}
+        <dl className="lx-figures">
+          <div data-reveal>
+            <dt>
+              <Count to={797} />
+              <small className="num">/822</small>
             </dt>
             <dd>
               {es
-                ? "casos citados de la regla federal pasan"
-                : "cited federal rule cases pass"}
+                ? "campos leídos bien en 26 documentos reservados, sin ningún valor equivocado"
+                : "fields read right on 26 held-out documents, with no wrong values"}
             </dd>
           </div>
-          <div>
-            <dt className="num">97%</dt>
-            <dd>
-              {es
-                ? "de los campos leídos bien en 26 documentos reservados, tres lecturas (797 de 822), sin ningún valor equivocado"
-                : "of fields read right on 26 held-out documents, three reads (797 of 822), with no wrong values"}
-            </dd>
+          <div data-reveal>
+            <dt>
+              <Count to={proof.passed} />
+              <small className="num">/{proof.cases}</small>
+            </dt>
+            <dd>{es ? "casos citados de la regla federal pasan" : "cited federal rule cases pass"}</dd>
           </div>
-          <div>
-            <dt className="num">0</dt>
+          <div data-reveal>
+            <dt>
+              <Count to={0} />
+            </dt>
             <dd>
               {es
-                ? "meses marcados como que cumplen por error, en 78 meses reservados"
-                : "months wrongly marked as meeting the rule, out of 78 held-out months"}
+                ? "meses marcados como que cumplen por error, de 78 reservados"
+                : "months wrongly marked as meeting the rule, of 78 held out"}
             </dd>
           </div>
         </dl>
-        <p>
-          <a href={link("/proof")}>
-            {es ? "Ver las pruebas y los archivos" : "See the tests and files"}
-          </a>
+        <p className="lx-source" data-reveal>
+          <a href={link("/proof")}>{es ? "Ver las pruebas y los archivos" : "See the tests and files"}</a>
         </p>
       </section>
 
-      <section className="band" aria-labelledby="start-title">
-        <h2 id="start-title">
-          {es ? "Empieza donde estés." : "Start where you are."}
-        </h2>
-        <div className="paths">
-          <section className="card">
-            <h3>{es ? "Tengo Medicaid" : "I’m on Medicaid"}</h3>
-            <p>
-              {es
-                ? "Responde unas preguntas para ver si la regla puede aplicarte."
-                : "Answer a few questions to see if the rule may apply to you."}
-            </p>
-            <a className="button" href={link("/check")}>
-              {es ? "Responder las preguntas" : "Answer the questions"}
-            </a>
-          </section>
-          <section className="card">
-            <h3>
-              {es ? "Prueba con tu propio mes" : "Try it on your own month"}
-            </h3>
-            <p>
-              {es
-                ? "Escribe tu pago y tus horas, o sube un talón. No guardamos tus datos."
-                : "Type your pay and hours, or read one pay stub. Nothing is saved."}
-            </p>
-            <a className="button secondary" href={link("/try")}>
-              {es ? "Revisar un mes" : "Check a month"}
-            </a>
-          </section>
-          <ExampleStart />
-        </div>
-        <p className="note">
-          <a href={link("/states")}>
-            {es ? "Busca tu estado" : "Find your state"}
-          </a>
-          {" · "}
-          <a href={link("/for-navigators")}>
-            {es ? "Para navegadores" : "For navigators"}
-          </a>
-          {" · "}
-          <a href={link("/share")}>
-            {es ? "Envía Eighty a alguien" : "Send Eighty to someone"}
-          </a>
-        </p>
-      </section>
-
-      <section className="closing" aria-labelledby="closing-title">
+      <section className="lx-close" data-reveal aria-labelledby="closing-title">
         <h2 id="closing-title">
-          {es
-            ? "Tu estado decide. Llega con tus pruebas listas."
-            : "Your state decides. Show up with your proof ready."}
+          {es ? "Tu estado decide. Llega con tus pruebas listas." : "Your state decides. Show up with your proof ready."}
         </h2>
-        <p>
-          {es
-            ? "Guarda cada prueba en un solo lugar, en tu teléfono, en inglés o en español."
-            : "Keep every piece of proof in one place, on your phone, in English or Spanish."}
-        </p>
-        <div className="actions">
+        <div className="lx-actions">
           <a className="button" href={link("/check")}>
-            {es ? "Empezar" : "Get started"}
+            {es ? "Empezar con mi mes" : "Start with my month"}
           </a>
         </div>
+        <p className="lx-source">
+          <a href={link("/try")}>{es ? "Revisar un mes" : "Check a month"}</a>
+          {" · "}
+          <a href={link("/states")}>{es ? "Busca tu estado" : "Find your state"}</a>
+          {" · "}
+          <a href={link("/for-navigators")}>{es ? "Para navegadores" : "For navigators"}</a>
+          {" · "}
+          <a href={link("/share")}>{es ? "Envía Eighty a alguien" : "Send Eighty to someone"}</a>
+        </p>
       </section>
     </div>
   );
