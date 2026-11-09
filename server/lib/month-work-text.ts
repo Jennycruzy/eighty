@@ -80,6 +80,17 @@ export function monthWorkText(work: MonthWork, lang: Lang): string {
           : `   – or ${money(work.plan.payNeededCents, lang)} more pay`,
       );
   }
+  if (work.packet) {
+    const shown = new Date(`${work.packet}-15T12:00:00Z`).toLocaleDateString(
+      es ? "es-US" : "en-US",
+      { month: "long", year: "numeric", timeZone: "UTC" },
+    );
+    out.push(
+      es
+        ? `• Tu paquete de prueba de ${shown} está listo. Envía /packet y te mando el PDF.`
+        : `• Your proof packet for ${shown} is ready. Send /packet and I'll send you the PDF.`,
+    );
+  }
   const status = STATUS[lang][work.now.status] ?? work.now.status;
   out.push(
     "",

@@ -26,6 +26,7 @@ import { checkMemberMonth } from "./member-month.ts";
 import type { MemberActor } from "./member-identity.ts";
 import { setMemberLanguage } from "./telegram-link-action.ts";
 import { doMonth } from "./month-work.ts";
+import { buildProofPacket, packetMonth } from "./proof-packet.ts";
 import { monthWorkText } from "./month-work-text.ts";
 import { getMemberRecord } from "./member-records.ts";
 import {
@@ -201,6 +202,27 @@ async function currentMonth(
   return result.months[0]!;
 }
 
+/** Sends a file to a linked chat. Telegram only accepts it as a form upload. */
+export async function sendTelegramDocument(
+  chatId: string,
+  bytes: Uint8Array,
+  filename: string,
+  caption: string,
+) {
+  const token = telegramBotToken();
+  if (!token) throw new Error("Telegram is not configured");
+  const form = new FormData();
+  form.set("chat_id", chatId);
+  form.set("caption", caption.slice(0, 1000));
+  form.set("document", new Blob([new Uint8Array(bytes)], { type: "application/pdf" }), filename);
+  const response = await fetch(
+    `https://api.telegram.org/bot${token}/sendDocument`,
+    { method: "POST", body: form, signal: AbortSignal.timeout(30_000) },
+  );
+  const data = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  if (!data?.ok) throw new Error(`Telegram sendDocument HTTP ${response.status}`);
+}
+
 async function telegramFile(fileId: string) {
   const token = telegramBotToken();
   if (!token) throw new Error("Telegram is not configured");
@@ -374,6 +396,22 @@ export async function beforeTelegramMessage(
         monthWorkText(await doMonth({ read: true }, context), lang),
       ),
     };
+  if (name === "packet") {
+    const packet = await asMember(actor, async (context) => {
+      const month = await packetMonth(context);
+      return month
+        ? buildProofPacket({ month, language: lang }, context)
+        : null;
+    }).catch(() => undefined);
+    if (packet === null) return { handled: true, responseText: words.noPacket };
+    if (!packet) return { handled: true, responseText: words.packetFailed };
+    try {
+      await sendTelegramDocument(chatId, packet.pdf, packet.filename, packet.email.subject);
+    } catch {
+      return { handled: true, responseText: words.packetFailed };
+    }
+    return { handled: true, responseText: words.packetSent };
+  }
   if (name === "status")
     return {
       handled: true,

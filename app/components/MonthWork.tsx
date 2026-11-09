@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { lineText, ruleUrl, STATUS, type LineFields } from "../../shared/telegram-words";
 import type { EvidenceFields } from "../../shared/evidence";
 import { useLanguage, languageLink } from "../lib/language";
+import { ProofPacket } from "./ProofPacket";
 
 export interface MonthWorkResult {
   widget: "eighty.month-work";
@@ -45,6 +46,7 @@ export interface MonthWorkResult {
     }[];
   } | null;
   done: boolean;
+  packet: string | null;
 }
 interface MonthState {
   status: string;
@@ -388,6 +390,8 @@ export function MonthWork({
           <p>{copy.done}</p>
         </div>
       )}
+
+      {data.packet && <ProofPacket key={data.packet} month={data.packet} />}
 
       <p className="rule">
         {copy.rule}: <a href={ruleUrl(data.now.citation)}>{data.now.citation}</a>

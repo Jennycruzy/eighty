@@ -21,6 +21,7 @@ import { ownMemberActor } from "./member-identity.ts";
 import { checkMemberMonth, memberMonthFacts } from "./member-month.ts";
 import { getMemberRecord } from "./member-records.ts";
 import { monthInput, type MonthFacts, type SavedLine } from "./month-input.ts";
+import { packetMonth } from "./proof-packet.ts";
 
 export const MONTH_WORK_WIDGET = "eighty.month-work";
 export const monthWorkInput = z.strictObject({
@@ -85,6 +86,8 @@ export interface MonthWork {
     steps: PlanStep[];
   } | null;
   done: boolean;
+  /** The latest finished month a proof packet can be made for. */
+  packet: string | null;
 }
 
 const asConfirmed = (lines: SavedLine[]) =>
@@ -282,5 +285,6 @@ export async function doMonth(
     question,
     plan,
     done: isDone,
+    packet: await packetMonth(context),
   };
 }

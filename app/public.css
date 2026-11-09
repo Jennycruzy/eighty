@@ -1259,3 +1259,13 @@ input[type="file"]::file-selector-button {
 .lang-switch button {
   padding: 6px 14px;
 }
+
+.mw-packet {
+  border: 1px solid var(--pay);
+}
+.packet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}

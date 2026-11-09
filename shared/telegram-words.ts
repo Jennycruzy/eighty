@@ -77,9 +77,12 @@ export const BOT_TEXT = {
     short: (hours: string) => `${hours} hours still needed.`,
     rule: "Rule",
     state: "Your state decides.",
-    help: `Send a photo or PDF of your proof, or a voice note about your hours. Send /status for this month, /month to have me do your month's paperwork, /espanol for Spanish, /stop to unlink this chat.`,
+    help: `Send a photo or PDF of your proof, or a voice note about your hours. Send /status for this month, /month to have me do your month's paperwork, /packet for your proof PDF, /espanol for Spanish, /stop to unlink this chat.`,
     language: `OK, I'll answer in English now. Send voice notes in English. For Spanish, send /espanol.`,
     rest: "The example helper is resting until tomorrow. You can still look around and type lines yourself.",
+    packetSent: "Here is your proof packet. Check it, sign the cover, and send it to your state's Medicaid office.",
+    noPacket: "No month is finished yet. Send /month and I'll show you what is left.",
+    packetFailed: "I couldn't make the packet. Try again, or download it from your month page.",
   },
   es: {
     welcome: `Hola, soy Eighty. Guardo juntas tus pruebas de trabajo para Medicaid.\n\nPara vincular este chat, abre tu mes en ${SITE}, toca "Vincular Telegram" y envíame el código que aparece.`,
@@ -121,9 +124,12 @@ export const BOT_TEXT = {
     short: (hours: string) => `Faltan ${hours} horas.`,
     rule: "Regla",
     state: "Tu estado decide.",
-    help: `Envía una foto o un PDF de tu prueba, o una nota de voz sobre tus horas. Envía /status para ver este mes, /month para que haga el papeleo de tu mes, /english para inglés y /stop para desvincular este chat.`,
+    help: `Envía una foto o un PDF de tu prueba, o una nota de voz sobre tus horas. Envía /status para ver este mes, /month para que haga el papeleo de tu mes, /packet para el PDF de tu prueba, /english para inglés y /stop para desvincular este chat.`,
     language: `Listo, ahora te respondo en español. Envía las notas de voz en español. Para inglés, envía /english.`,
     rest: "La ayuda del ejemplo descansa hasta mañana. Aún puedes mirar y escribir líneas por tu cuenta.",
+    packetSent: "Aquí está tu paquete de prueba. Revísalo, firma la portada y envíalo a la oficina de Medicaid de tu estado.",
+    noPacket: "Todavía no hay un mes completo. Envía /month y te muestro lo que falta.",
+    packetFailed: "No pude hacer el paquete. Inténtalo otra vez o descárgalo en la página de tu mes.",
   },
 } as const;
 
