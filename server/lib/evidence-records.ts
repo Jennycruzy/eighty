@@ -159,12 +159,116 @@ export async function createEvidenceDraft(
   const member = await getMemberRecord(actor);
   return getDb().transaction(async (tx) => {
     await lockMemberAndDocument(tx, actor, member, parsed.documentId);
-    return insertProposedLine(tx, actor, member, {
-      fields: parsed.fields,
+    const { fields, carried } = await carryServiceFacts(
+      tx,
+      actor,
+      member,
+      parsed.fields,
+    );
+    const row = await insertProposedLine(tx, actor, member, {
+      fields,
       documentId: parsed.documentId ?? null,
       createdBy,
     });
+    return carried ? { ...row, carried } : row;
   });
+}
+
+const SERVICE_FACTS = [
+  "unpaid",
+  "directCommunityBenefit",
+  "publicOrNonprofit",
+  "structuredAndSupervised",
+  "nonpartisan",
+  "tracksDatesAndHours",
+  "confirmationContact",
+] as const;
+
+/** Lowercase words of a name, without notes in brackets or punctuation. */
+export function organizationWords(name: string | null | undefined): string[] {
+  return (name ?? "")
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, " ")
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter(Boolean);
+}
+
+type EvidenceRow = typeof evidence.$inferSelect;
+const fieldsOf = (row: EvidenceRow) => row.fields as EvidenceFields;
+
+/**
+ * A volunteer line told in a few words ("4 hours at the pantry on Saturday")
+ * lacks the facts the rule needs. When the member already has a confirmed
+ * service line at the same organization, copy that line's service facts and
+ * contact into the new proposal: only fields still missing, and only from this
+ * member's own confirmed lines. The member still checks the line before it counts.
+ */
+async function carryServiceFacts(
+  tx: Tx,
+  actor: MemberActor,
+  member: Member,
+  fields: EvidenceFields,
+): Promise<{
+  fields: EvidenceFields;
+  carried?: { fromLine: string; organization: string; facts: string[] };
+}> {
+  const said = organizationWords(fields.organization);
+  if (fields.kind !== "service" || !said.length) return { fields };
+  const confirmed = await tx
+    .select()
+    .from(evidence)
+    .where(
+      and(
+        eq(evidence.memberId, member.id),
+        eq(evidence.ownerEmail, actor.email),
+        eq(evidence.status, "confirmed"),
+      ),
+    )
+    .orderBy(evidence.createdAt, evidence.id);
+  const lines = confirmed.filter((row) => {
+    const f = fieldsOf(row);
+    return f.kind === "service" && f.service && f.organization;
+  });
+  const wordsOf = (row: EvidenceRow) =>
+    organizationWords(fieldsOf(row).organization);
+  // The same name first; otherwise the one organization whose name holds every word said.
+  let matches = lines.filter((row) => wordsOf(row).join(" ") === said.join(" "));
+  if (!matches.length && said.length >= 2) {
+    const named = new Set(
+      lines
+        .filter((row) => said.every((word) => wordsOf(row).includes(word)))
+        .map((row) => fieldsOf(row).organization),
+    );
+    if (named.size === 1) {
+      const [only] = [...named];
+      matches = lines.filter((row) => fieldsOf(row).organization === only);
+    }
+  }
+  const source = matches[matches.length - 1];
+  if (!source) return { fields };
+  const from = fieldsOf(source);
+  const known = (from.service ?? {}) as Record<string, unknown>;
+  const service = { ...(fields.service ?? {}) } as Record<string, unknown>;
+  const facts: string[] = [];
+  for (const key of SERVICE_FACTS) {
+    if (service[key] == null && known[key] != null) {
+      service[key] = known[key];
+      facts.push(key);
+    }
+  }
+  if (!facts.length) return { fields };
+  return {
+    fields: evidenceFields.parse({
+      ...fields,
+      organization: from.organization,
+      service,
+    }),
+    carried: {
+      fromLine: source.id,
+      organization: from.organization as string,
+      facts,
+    },
+  };
 }
 
 /** Lines the reader already proposed from this document, in any status. */

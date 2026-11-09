@@ -91,7 +91,7 @@ test("The helper saves one proposed line through typed entry code, with the agen
   const action = (await import("../../actions/propose_evidence.ts")).default;
   const fields = {
     kind: "service",
-    organization: "Food pantry",
+    organization: "Library book sale",
     start: "2026-10-31",
     end: "2026-10-31",
     hours: 4,
