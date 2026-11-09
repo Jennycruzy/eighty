@@ -90,6 +90,22 @@ export default runMigrations(
         sent integer NOT NULL DEFAULT 0 CHECK (sent >= 0), updated_at timestamptz NOT NULL DEFAULT now()
       );`,
     },
+    {
+      version: 7,
+      name: "eighty-telegram-links",
+      sql: `CREATE TABLE IF NOT EXISTS eighty_telegram_codes (
+        code_hash text PRIMARY KEY, member_id uuid NOT NULL REFERENCES eighty_members(id) ON DELETE CASCADE,
+        owner_email text NOT NULL, user_id text NOT NULL, expires_at timestamptz NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+      CREATE INDEX IF NOT EXISTS eighty_telegram_codes_member ON eighty_telegram_codes(member_id);
+      CREATE TABLE IF NOT EXISTS eighty_telegram_links (
+        chat_id text PRIMARY KEY, member_id uuid NOT NULL UNIQUE REFERENCES eighty_members(id) ON DELETE CASCADE,
+        owner_email text NOT NULL, user_id text NOT NULL, telegram_user_id text NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now()
+      );
+      CREATE INDEX IF NOT EXISTS eighty_telegram_links_owner ON eighty_telegram_links(owner_email);`,
+    },
   ],
   { table: "eighty_schema_migrations" },
 );

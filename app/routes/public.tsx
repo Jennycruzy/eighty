@@ -3,86 +3,14 @@ import { useLocation } from "react-router";
 import proof from "../../data/proof.json";
 import en from "../../locales/en-US.json";
 import es from "../../locales/es-US.json";
-import { ExampleStart } from "../components/example/ExampleStart";
+import { Landing } from "../components/Landing";
 import { useLanguage, languageLink } from "../lib/language";
 export default function PublicPage() {
   const lang = useLanguage(),
     spanish = lang === "es";
   const path = useLocation().pathname;
   const link = (path: string) => languageLink(path, lang);
-  if (path === "/")
-    return (
-      <>
-        <p className="eyebrow">
-          {spanish
-            ? "Medicaid · Tus pruebas, claras"
-            : "Medicaid · Your proof, made clear"}
-        </p>
-        <h1>
-          {spanish
-            ? "Entiende la regla. Guarda tu cobertura."
-            : "Understand the rule. Keep your coverage."}
-        </h1>
-        <p className="intro">
-          {spanish
-            ? "Revisa qué pide la regla federal de 80 horas y qué pruebas puedes guardar. Sin cuenta."
-            : "Check what the federal 80-hour rule asks for and what proof to keep. No account needed."}
-        </p>
-        <div className="cards">
-          <section className="card">
-            <h2>{spanish ? "Tengo Medicaid" : "I’m on Medicaid"}</h2>
-            <p>
-              {spanish
-                ? "Responde unas preguntas para ver si la regla puede aplicarte."
-                : "Answer a few questions to see if the rule may apply to you."}
-            </p>
-            <a className="button" href={link("/check")}>
-              {spanish ? "Revisar si me aplica" : "Check if it applies to me"}
-            </a>
-          </section>
-          <section className="card">
-            <h2>
-              {spanish
-                ? "Prueba con tu propio mes"
-                : "Try it on your own month"}
-            </h2>
-            <p>
-              {spanish
-                ? "Escribe tu pago y tus horas. Mira qué dice la regla. No guardamos tus datos."
-                : "Type your pay and hours. See how the rule reads them. Nothing is saved."}
-            </p>
-            <a className="button secondary" href={link("/try")}>
-              {spanish ? "Revisar un mes" : "Check a month"}
-            </a>
-          </section>
-        </div>
-        <ExampleStart />
-        <p>
-          {spanish
-            ? "Conoce la regla. Revisa tus datos. Guarda tus pruebas."
-            : "Learn the rule. Check your facts. Keep your proof."}
-        </p>
-        <p>
-          <a href={link("/states")}>
-            {spanish ? "Busca tu estado" : "Find your state"}
-          </a>{" "}
-          ·{" "}
-          <a href={link("/share")}>
-            {spanish ? "Envía Eighty a alguien" : "Send Eighty to someone"}
-          </a>
-        </p>
-        <details>
-          <summary>
-            {spanish
-              ? "Hecho con la regla federal, 42 CFR 435"
-              : "Built from the federal rule, 42 CFR 435"}
-          </summary>
-          <a href="https://www.ecfr.gov/current/title-42/section-435.552">
-            42 CFR 435.552
-          </a>
-        </details>
-      </>
-    );
+  if (path === "/") return <Landing />;
   if (path === "/proof")
     return (
       <>
@@ -125,13 +53,18 @@ export default function PublicPage() {
           </h2>
           <p>
             {spanish
-              ? "El conjunto sintético tiene 51 documentos: 25 de práctica y 26 reservados para las pruebas finales. Las dos lecturas usaron los mismos 25 documentos de práctica."
-              : "The synthetic set has 51 documents: 25 practice and 26 kept apart for the final runs. Both reads used the same 25 practice documents."}
+              ? "El conjunto sintético tiene 51 documentos: 25 de práctica, usados para ajustar el lector, y 26 reservados que el lector nunca vio mientras se construía."
+              : "The synthetic set has 51 documents: 25 practice documents, used to tune the reader, and 26 held-out documents the reader never saw while it was built."}
           </p>
           <p>
             {spanish
-              ? "Segunda lectura: 267 de 269 campos correctos (99.3%), 25 de 25 meses correctos, 0 meses marcados Meets por error y 0 documentos ilegibles. Primera lectura: 228 de 269 campos correctos (84.8%)."
-              : "Second read: 267 of 269 fields right (99.3%), 25 of 25 months right, 0 months wrongly marked Meets and 0 unreadable documents. First read: 228 of 269 fields right (84.8%)."}
+              ? "Documentos reservados, que nunca se usaron para ajustar el lector, leídos tres veces: 797 de 822 campos correctos (97.0%), 0 valores equivocados, 77 de 78 meses correctos y 0 meses marcados Meets por error. El único mes fallido es un talón con una instrucción escondida para el modelo: el lector se negó a leerlo y mostró «Aún no sabemos»."
+              : "Held-out documents, never used to tune the reader, read three times: 797 of 822 fields right (97.0%), 0 wrong values, 77 of 78 months right and 0 months wrongly marked Meets. The one month missed is a pay stub hiding an instruction aimed at the model: the reader refused it and showed “Not sure yet”."}
+          </p>
+          <p>
+            {spanish
+              ? "Documentos de práctica: 267 de 269 campos correctos (99.3%) y 25 de 25 meses correctos en la segunda lectura. Primera lectura: 228 de 269 (84.8%)."
+              : "Practice documents: 267 of 269 fields right (99.3%) and 25 of 25 months right on the second read. First read: 228 of 269 (84.8%)."}
           </p>
           <p>
             {spanish

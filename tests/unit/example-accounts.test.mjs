@@ -555,7 +555,10 @@ const refused = [
   ["/_agent-native/auth/ba/forget-password", "POST", "closed"],
   ["/_agent-native/org/invitations", "POST", "closed"],
   ["/_agent-native/org/members", "GET", "closed"],
-  ["/_agent-native/integrations/telegram/webhook", "POST", "closed"],
+  // Open to Telegram and the framework's signed processor, never to an example browser.
+  ["/_agent-native/integrations/telegram/webhook", "POST", "member"],
+  ["/_agent-native/integrations/process-task", "POST", "member"],
+  ["/_agent-native/integrations/telegram/setup", "POST", "closed"],
   ["/_agent-native/integrations/whatsapp/connect", "POST", "closed"],
   ["/_agent-native/email/send", "POST", "closed"],
   ["/_agent-native/agent-chat", "POST", "closed"],

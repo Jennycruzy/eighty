@@ -98,6 +98,40 @@ export function memberMonthResult(
   month: string,
   asOf: string,
 ) {
+  const result = confirmedMonthResult(facts, lines, month, asOf);
+  if (!lines.some((line) => line.status === "proposed"))
+    return { ...result, ifConfirmed: null };
+  // The same rules, as if every waiting line were confirmed: the dashed part
+  // of the meter. Nothing counts until the member confirms it.
+  const projected = confirmedMonthResult(
+    facts,
+    lines.map((line) =>
+      line.status === "proposed" ? { ...line, status: "confirmed" } : line,
+    ),
+    month,
+    asOf,
+  );
+  const changed =
+    projected.status !== result.status ||
+    projected.hours !== result.hours ||
+    projected.amountCents !== result.amountCents;
+  return {
+    ...result,
+    ifConfirmed: changed
+      ? {
+          status: projected.status,
+          hours: projected.hours,
+          amountCents: projected.amountCents,
+        }
+      : null,
+  };
+}
+function confirmedMonthResult(
+  facts: MonthFacts,
+  lines: SavedLine[],
+  month: string,
+  asOf: string,
+) {
   const confirmed = lines.filter((line) => line.status === "confirmed");
   const input = monthInput(facts, confirmed, month, asOf);
   const result = assessMonth(input);

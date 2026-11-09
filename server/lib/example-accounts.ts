@@ -349,7 +349,7 @@ export async function enterExample(event: H3Event, input: unknown) {
   return { person: account.person };
 }
 
-async function exampleAccountFor(actor: MemberActor) {
+export async function exampleAccountForActor(actor: MemberActor) {
   if (!isExampleEmail(actor.email)) return null;
   const [account] = await getDb()
     .select()
@@ -366,7 +366,7 @@ export async function requireExampleAccount(
   context: ActionRunContext | undefined,
 ) {
   const actor = await ownMemberActor(context);
-  const account = await exampleAccountFor(actor);
+  const account = await exampleAccountForActor(actor);
   if (!account)
     throw createError({
       statusCode: 403,
@@ -385,15 +385,43 @@ export async function exampleMonth(context: ActionRunContext | undefined) {
   const { actor, person } = await requireExampleAccount(context);
   await getMemberRecord(actor);
   const rows = (await listEvidenceRecords(context)) as SavedLine[];
-  const months = assessExampleMonths(
-    EXAMPLE_PROFILES[person].facts,
-    rows,
-    today(),
-  );
+  const asOf = today();
+  const months = assessExampleMonths(EXAMPLE_PROFILES[person].facts, rows, asOf);
+  const waiting = rows.filter((row) => row.status === "proposed").length;
+  // The same rules, as if the member confirmed every waiting line. The meter
+  // shows it as the dashed part; nothing counts until it is confirmed.
+  const ifConfirmed = waiting
+    ? assessExampleMonths(
+        EXAMPLE_PROFILES[person].facts,
+        asIfConfirmed(rows),
+        asOf,
+      )
+    : null;
   return {
     person,
     ...months,
-    waiting: rows.filter((row) => row.status === "proposed").length,
+    thisMonth: {
+      ...months.thisMonth,
+      ifConfirmed: ifConfirmed ? pendingPart(ifConfirmed.thisMonth) : null,
+    },
+    waiting,
+  };
+}
+
+export function asIfConfirmed(rows: SavedLine[]): SavedLine[] {
+  return rows.map((row) =>
+    row.status === "proposed" ? { ...row, status: "confirmed" } : row,
+  );
+}
+export function pendingPart(month: {
+  status: string;
+  hours: number | null;
+  amountCents: number | null;
+}) {
+  return {
+    status: month.status,
+    hours: month.hours,
+    amountCents: month.amountCents,
   };
 }
 

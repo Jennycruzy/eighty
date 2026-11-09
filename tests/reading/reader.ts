@@ -1,6 +1,6 @@
 // The one place the test set reaches the document reader.
-// The reader (server/lib/reader.ts) is built on the reader branch. Until that branch merges, the file is not
-// here and loadReader() stops with a plain message instead of running anything.
+// The reader is server/lib/reader.ts, the same code the app runs. If that file is missing, loadReader()
+// stops with a plain message instead of running anything.
 // Contract:
 //   readDocument(input: { bytes: Uint8Array; mime: string; language?: "en" | "es" })
 //     : Promise<{ result: ReaderResult; usage: { inputTokens: number | null; outputTokens: number | null } }>
@@ -27,10 +27,10 @@ export async function loadReader(location: URL = READER_MODULE): Promise<ReadDoc
     module = await import(location.href);
   } catch (error) {
     const code = (error as { code?: string }).code;
-    // Only the reader file itself being absent means the reader branch has not merged; any other missing file is a real error.
+    // Only the reader file itself being absent gets the plain message; any other missing file is a real error.
     if (code === "ERR_MODULE_NOT_FOUND" && String((error as Error).message).includes(`'${fileURLToPath(location)}'`))
       throw new Error(
-        "The document reader is not on this branch yet. server/lib/reader.ts comes from the reader branch; merge it, then run this again.",
+        "The document reader is missing: the runner loads server/lib/reader.ts.",
       );
     throw error;
   }

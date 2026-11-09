@@ -19,6 +19,7 @@ import {
   isPublicData,
   isStaticFile,
   isMemberPage,
+  isTelegramPath,
 } from "../../shared/access.ts";
 import {
   reservePublicModelUse,
@@ -103,6 +104,16 @@ export default defineEventHandler(async (event) => {
       statusCode: 403,
       statusMessage: "This is not part of the example.",
     });
+  // Telegram's webhook checks Telegram's secret header and the processor checks
+  // the framework's signed task token. Neither carries a browser session; an example
+  // account's browser was refused above.
+  if (isTelegramPath(path)) {
+    if (getMethod(event) !== "POST")
+      throw createError({ statusCode: 405, statusMessage: "Use POST" });
+    assertBodySize(event, 1024 * 1024);
+    event.res.headers.set("Cache-Control", "no-store");
+    return;
+  }
   if (path === "/send-verification-link") {
     if (getMethod(event) !== "POST")
       throw createError({ statusCode: 405, statusMessage: "Use POST" });

@@ -35,8 +35,8 @@ export default function State() {
       )}
       <p>
         {es
-          ? "Perfil: base federal. Las opciones y fechas del estado aún no están aprobadas aquí. Confirma la fecha que te aplica con el estado."
-          : "Profile: federal baseline. State choices and dates are not approved here yet. Confirm your own start date with the state."}
+          ? "Perfil: la regla federal. Tu estado fija sus propias opciones y fechas; confirma con el estado la fecha que te aplica."
+          : "Profile: the federal rule. Your state sets its own choices and dates; confirm your start date with the state."}
       </p>
       <section className="card">
         <h2>{es ? "Contacta al estado" : "Contact your state"}</h2>

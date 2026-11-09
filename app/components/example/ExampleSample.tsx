@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { exampleCopy, exampleStatus } from "../../lib/example";
 import { useLanguage } from "../../lib/language";
 
-// Maria's 60-second path: one tap saves the sample as her own upload. Until a
-// document reader is added, the typed-entry form opens for its facts.
+// Maria's 60-second path: one tap saves the sample as her own upload, and the
+// reader proposes its line for her to check.
 export function ExampleSample({
   busy,
   work,

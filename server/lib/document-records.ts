@@ -48,8 +48,20 @@ export async function saveDocument(
   input: unknown,
   context: ActionRunContext | undefined,
 ) {
-  const parsed = documentUpload.parse(input),
-    actor = await reviewedMemberActor(context);
+  return saveDocumentFor(
+    documentUpload.parse(input),
+    await reviewedMemberActor(context),
+  );
+}
+/**
+ * The one save path for a member's file, from the web or a linked chat. The
+ * caller has already proved who the member is; the same checks, limits and
+ * encryption apply either way.
+ */
+export async function saveDocumentFor(
+  parsed: ReturnType<typeof documentUpload.parse>,
+  actor: MemberActor,
+) {
   const member = await getMemberRecord(actor),
     bytes = Buffer.from(parsed.data, "base64");
   const inspected = await inspectDocument(bytes, parsed.rotation);

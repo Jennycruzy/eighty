@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useLocation,
   useRouteLoaderData,
 } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
@@ -39,6 +40,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             : "Eighty · Medicaid proof, in plain words"}
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
         <Meta />
         <Links />
       </head>
@@ -55,35 +57,55 @@ export default function Root() {
   const [answers, setAnswers] = useState<ScreenerAnswers>({});
   const [questionIndex, setQuestionIndex] = useState(0);
   const link = (path: string) => languageLink(path, lang);
+  const landing = useLocation().pathname === "/";
   return (
     <LanguageContext value={lang}>
       <a className="skip-link" href="#main">
         {lang === "es" ? "Ir al contenido" : "Skip to content"}
       </a>
-      <header>
-        <a className="brand" href={link("/")} aria-label="Eighty">
-          eighty<span aria-hidden="true">.</span>
-        </a>
-        <nav aria-label={lang === "es" ? "Menú principal" : "Main menu"}>
-          <a href={link("/help")}>{lang === "es" ? "Ayuda" : "Help"}</a>
-          <Link
-            to={lang === "en" ? "?lang=es" : "?lang=en"}
-            lang={lang === "en" ? "es" : "en"}
-          >
-            {lang === "en" ? "Español" : "English"}
-          </Link>
-        </nav>
+      <header className="site-header">
+        <div className="inner">
+          <a className="brand" href={link("/")} aria-label="Eighty">
+            <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+              <circle cx="13" cy="13" r="10.5" fill="none" stroke="rgba(255,45,85,.25)" strokeWidth="4" />
+              <circle cx="13" cy="13" r="10.5" fill="none" stroke="#ff2d55" strokeWidth="4" strokeLinecap="round" strokeDasharray="50 66" transform="rotate(-90 13 13)" />
+              <circle cx="13" cy="13" r="4.5" fill="none" stroke="rgba(166,244,0,.25)" strokeWidth="4" />
+              <circle cx="13" cy="13" r="4.5" fill="none" stroke="#a6f400" strokeWidth="4" strokeLinecap="round" strokeDasharray="20 29" transform="rotate(-90 13 13)" />
+            </svg>
+            <span>
+              eighty<span aria-hidden="true">.</span>
+            </span>
+          </a>
+          <nav aria-label={lang === "es" ? "Menú principal" : "Main menu"}>
+            <a className="wide" href={link("/how-it-works")}>
+              {lang === "es" ? "Cómo funciona" : "How it works"}
+            </a>
+            <a className="wide" href={link("/help")}>
+              {lang === "es" ? "Ayuda" : "Help"}
+            </a>
+            <a href={link("/check/sign-in")}>
+              {lang === "es" ? "Entrar" : "Sign in"}
+            </a>
+            <Link
+              to={lang === "en" ? "?lang=es" : "?lang=en"}
+              lang={lang === "en" ? "es" : "en"}
+            >
+              {lang === "en" ? "Español" : "English"}
+            </Link>
+          </nav>
+        </div>
       </header>
       <ScreenerDraftContext
         value={{ answers, setAnswers, questionIndex, setQuestionIndex }}
       >
-        <main id="main">
+        <main id="main" className={landing ? "landing-page" : "narrow-page"}>
           <ConnectionNotice />
           <ExampleNotice />
           <Outlet />
         </main>
       </ScreenerDraftContext>
-      <footer>
+      <footer className="site-footer">
+        <div className="inner">
         <p>
           {lang === "es"
             ? "Eighty no es el estado. Tu estado decide. Tú envías tus pruebas al estado."
@@ -93,6 +115,8 @@ export default function Root() {
           aria-label={lang === "es" ? "Más información" : "More information"}
         >
           {[
+            ["/how-it-works", "How it works", "Cómo funciona"],
+            ["/help", "Help", "Ayuda"],
             ["/about", "About", "Acerca de"],
             ["/privacy", "Privacy", "Privacidad"],
             ["/terms", "Terms", "Términos"],
@@ -105,6 +129,7 @@ export default function Root() {
             </a>
           ))}
         </nav>
+        </div>
       </footer>
     </LanguageContext>
   );

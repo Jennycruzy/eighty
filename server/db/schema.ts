@@ -158,6 +158,39 @@ export const memberEvents = pgTable(
   },
   (table) => [index("eighty_events_owner").on(table.ownerEmail)],
 );
+// A one-time code a signed-in member uses to link one Telegram chat.
+export const telegramCodes = pgTable(
+  "eighty_telegram_codes",
+  {
+    codeHash: text("code_hash").primaryKey(),
+    memberId: uuid("member_id")
+      .notNull()
+      .references(() => members.id, { onDelete: "cascade" }),
+    ownerEmail: text("owner_email").notNull(),
+    userId: text("user_id").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: createdAt(),
+  },
+  (table) => [index("eighty_telegram_codes_member").on(table.memberId)],
+);
+// One linked Telegram chat per member, and one member per chat.
+export const telegramLinks = pgTable(
+  "eighty_telegram_links",
+  {
+    chatId: text("chat_id").primaryKey(),
+    memberId: uuid("member_id")
+      .notNull()
+      .references(() => members.id, { onDelete: "cascade" }),
+    ownerEmail: text("owner_email").notNull(),
+    userId: text("user_id").notNull(),
+    telegramUserId: text("telegram_user_id").notNull(),
+    createdAt: createdAt(),
+  },
+  (table) => [
+    uniqueIndex("eighty_telegram_links_member_id_key").on(table.memberId),
+    index("eighty_telegram_links_owner").on(table.ownerEmail),
+  ],
+);
 export const aiLedger = pgTable(
   "eighty_ai_ledger",
   {

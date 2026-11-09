@@ -91,7 +91,9 @@ export function servicePaths(): string[] {
       "remove_document",
       "extract_evidence",
       "try_read_document",
+      "telegram_link",
     ].map((name) => `/_agent-native/actions/${name}`),
+    ...TELEGRAM_PATHS,
     "/send-verification-link",
     "/_agent-native/agent-engine/status",
     ...HELPER_PATHS,
@@ -133,6 +135,7 @@ export const EXAMPLE_ACTIONS = [
   "add_example_sample",
 ];
 const EXAMPLE_MEMBER_ACTIONS = [
+  "telegram_link",
   "extract_evidence",
   "propose_evidence",
   "add_manual_evidence",
@@ -191,6 +194,15 @@ export function safeMemberNext(value: string | null): string | null {
     : null;
 }
 
+// Telegram posts updates here, and the framework hands each queued message to
+// its processor with a signed token. Both check their own secret.
+export const TELEGRAM_PATHS = [
+  "/_agent-native/integrations/telegram/webhook",
+  "/_agent-native/integrations/process-task",
+];
+export function isTelegramPath(path: string): boolean {
+  return TELEGRAM_PATHS.includes(path);
+}
 export const HELPER_PATHS = ["/_agent-native/month-helper"];
 export function isHelperPath(path: string): boolean {
   return (

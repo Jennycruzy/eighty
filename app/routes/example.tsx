@@ -1,4 +1,6 @@
 import { MonthHelper } from "../components/MonthHelper";
+import { Rings } from "../components/Rings";
+import { TelegramLink } from "../components/TelegramLink";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -21,6 +23,13 @@ interface MonthSummary {
   targetHours: number;
   amountCents: number | null;
   missing: string[];
+  explanation?: string;
+  explanationEs?: string;
+  ifConfirmed?: {
+    status: Status;
+    hours: number | null;
+    amountCents: number | null;
+  } | null;
 }
 interface ExampleMonth {
   person: ExamplePerson;
@@ -62,6 +71,17 @@ export default function ExampleMonthPage() {
   useEffect(() => {
     void load();
   }, []);
+  // Proof sent from a phone shows up here without a reload.
+  useEffect(() => {
+    if (state !== "ready") return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      callAction("example_month", {}, { method: "GET" })
+        .then((result) => setData(result as ExampleMonth))
+        .catch(() => {});
+    }, 4000);
+    return () => window.clearInterval(timer);
+  }, [state]);
   const monthName = (month: string) =>
     new Date(`${month}-01T12:00:00Z`).toLocaleDateString(
       es ? "es-US" : "en-US",
@@ -74,33 +94,36 @@ export default function ExampleMonthPage() {
     }).format(cents / 100);
   function summary(title: string, month: MonthSummary, main: boolean) {
     const Heading = main ? "h2" : "h3";
+    const plain = es ? month.explanationEs : month.explanation;
     return (
       <section
-        className="result"
+        className="month-panel result"
         data-status={month.status}
         aria-labelledby={`example-${month.month}`}
       >
-        <Heading id={`example-${month.month}`}>
-          {title} · {monthName(month.month)}
-        </Heading>
-        <p className="status" data-status={month.status}>
-          {copy.month.status[month.status]}
-        </p>
-        {month.hours !== null && (
-          <p>
-            {fill(copy.month.hours, {
-              hours: month.hours.toLocaleString(es ? "es-US" : "en-US"),
-              target: month.targetHours,
-            })}
+        <header>
+          <Heading id={`example-${month.month}`}>
+            {title} · {monthName(month.month)}
+          </Heading>
+          <p className="status" data-status={month.status}>
+            {copy.month.status[month.status]}
+          </p>
+        </header>
+        <Rings
+          title={`${title} · ${monthName(month.month)}`}
+          values={{
+            hours: month.hours,
+            amountCents: month.amountCents,
+            ifConfirmed: month.ifConfirmed ?? null,
+          }}
+        />
+        {plain && <p className="plain">{plain}</p>}
+        {month.missing.length > 0 && (
+          <p className="note">
+            {fill(copy.month.missing, { count: month.missing.length })}
           </p>
         )}
-        {month.amountCents !== null && (
-          <p>{fill(copy.month.pay, { amount: money(month.amountCents) })}</p>
-        )}
-        {month.missing.length > 0 && (
-          <p>{fill(copy.month.missing, { count: month.missing.length })}</p>
-        )}
-        <p>
+        <p className="rule">
           {copy.month.rule}:{" "}
           <a href={ruleLink(month.citation)}>{month.citation}</a>
         </p>
@@ -138,6 +161,11 @@ export default function ExampleMonthPage() {
       <p className="intro">{person.about}</p>
       {summary(copy.month.thisMonth, data.thisMonth, true)}
       <p>{copy.month.next[data.person]}</p>
+      <p className={data.waiting ? "waiting-pill" : "waiting-pill none"} role="status">
+        {data.waiting
+          ? fill(copy.month.waiting, { count: data.waiting })
+          : copy.month.none}
+      </p>
       <div className="actions">
         <Link className="button" to={link("/add")}>
           {copy.month.add}
@@ -146,13 +174,9 @@ export default function ExampleMonthPage() {
           {copy.month.review}
         </Link>
       </div>
-      <p role="status">
-        {data.waiting
-          ? fill(copy.month.waiting, { count: data.waiting })
-          : copy.month.none}
-      </p>
-      {summary(copy.month.lastMonth, data.lastMonth, false)}
+      <TelegramLink />
       <MonthHelper />
+      {summary(copy.month.lastMonth, data.lastMonth, false)}
       <p className="note">{copy.month.stateDecides}</p>
     </>
   );

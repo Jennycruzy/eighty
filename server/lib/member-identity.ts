@@ -6,6 +6,7 @@ import {
 } from "@agent-native/core/server";
 import { H3Event, createError } from "h3";
 
+import { linkedTelegramActor } from "./telegram-links.ts";
 import {
   requireMemberIdentity,
   requireMemberReview,
@@ -83,6 +84,21 @@ export async function browserMemberActor(
   return { email, userId };
 }
 
+/** The Telegram chat a framework message run came from, if it came from one. */
+function telegramChatOf(ambient: object): string | null {
+  const incoming = (
+    ambient as {
+      integration?: {
+        incoming?: { platform?: string; platformContext?: { chatId?: unknown } };
+      };
+    }
+  ).integration?.incoming;
+  const chatId = incoming?.platformContext?.chatId;
+  return incoming?.platform === "telegram" &&
+    (typeof chatId === "string" || typeof chatId === "number")
+    ? String(chatId)
+    : null;
+}
 export async function ownMemberActor(
   context: ActionRunContext | undefined,
 ): Promise<MemberActor> {
@@ -94,6 +110,28 @@ export async function ownMemberActor(
     !ambient.agentRunAnonymous
   ) {
     return memberActor(context);
+  }
+  // A message from a linked Telegram chat runs the member's helper with only
+  // the member's email in context. The link, made from the member's own
+  // verified browser session, supplies the account id.
+  if (
+    context?.caller === "tool" &&
+    context.userEmail &&
+    ambient?.userEmail === context.userEmail &&
+    !ambient.authUserId &&
+    !ambient.agentRunAnonymous &&
+    (ambient as { isIntegrationCaller?: boolean }).isIntegrationCaller ===
+      true &&
+    telegramChatOf(ambient)
+  ) {
+    const linked = await linkedTelegramActor(
+      context.userEmail,
+      telegramChatOf(ambient)!,
+    );
+    if (linked) {
+      ambient.authUserId = linked.userId;
+      return linked;
+    }
   }
   return browserMemberActor(context);
 }

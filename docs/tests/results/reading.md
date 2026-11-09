@@ -1,6 +1,23 @@
 # Document reading
 
-The synthetic set has 51 documents: 25 practice and 26 locked. Both practice runs below read the same 25 practice documents. The locked set is kept apart for the final model runs.
+The synthetic set has 51 documents: 25 practice and 26 locked. The reader's instructions were tuned only on the practice set. The locked set was then read three times, with nothing changed between runs.
+
+## Locked set (held out)
+
+| Locked run | Fields right       | Wrong fields | Months right | Months wrongly marked Meets |
+| ---------- | ------------------ | ------------ | ------------ | --------------------------- |
+| Run 1      | 265 of 274 (96.7%) | 0            | 26 of 26     | 0                           |
+| Run 2      | 264 of 274 (96.4%) | 0            | 25 of 26     | 0                           |
+| Run 3      | 268 of 274 (97.8%) | 0            | 26 of 26     | 0                           |
+| All three  | 797 of 822 (97.0%) | 0            | 77 of 78     | 0                           |
+
+Across 78 months there were 0 false Meets, so the exact 95% upper bound on the false-Meets rate is 3.8%. The reader never put a wrong value in a field: every field it did not read right, it left blank for the member. The one month not matched is `paystub-b-weekly-injection-en.png`, a pay stub with a hidden instruction aimed at the model. In run 2 the reader refused to read it, so the month showed "Not sure yet" instead of a result.
+
+- [Run 1](https://github.com/Jennycruzy/eighty/blob/main/data/reading-results/locked-2026-11-09-run1.json) · [Run 2](https://github.com/Jennycruzy/eighty/blob/main/data/reading-results/locked-2026-11-09-run2.json) · [Run 3](https://github.com/Jennycruzy/eighty/blob/main/data/reading-results/locked-2026-11-09-run3.json)
+
+## Practice set
+
+Both practice runs read the same 25 practice documents.
 
 | Practice run    | Fields right       | Months right | Months wrongly marked Meets | Invalid outputs |
 | --------------- | ------------------ | ------------ | --------------------------- | --------------- |

@@ -32,7 +32,7 @@ There are five statuses: Meets, Exempt, Deemed, Short and Not sure yet. Only a p
 
 A proven compliance path can satisfy the month while a possible exclusion still needs follow-up, consistent with 435.557(c)(3). The result keeps those follow-up fields. It never invents hours, approves a hardship or diagnoses a condition.
 
-Callers must load confirmed evidence and verified state choices. These are function contracts, not access controls. No signed-in member action or HTTP endpoint is exposed yet. The public manual tools call these same pure functions in the browser and save nothing. Future actions must check identity, ownership, consent, evidence confirmation and state-profile approval inside the action. A caller's assertion that a fact is confirmed is not sufficient at that boundary.
+Callers must load confirmed evidence and verified state choices. These are function contracts, not access controls. Access is checked by the actions that call them: `check_month` and `example_month` load only the signed-in member's own confirmed lines, and the public manual tools call these same pure functions in the browser and save nothing. A caller's assertion that a fact is confirmed is never enough; only a line the member confirmed in their own browser counts.
 
 ## Important calculations
 

@@ -47,7 +47,7 @@ How the answers are written:
 - An enrollment letter states the status, the term and credits, and that the program carries credit.
 - Notices, receipts, foreign pay slips and notes that give orders have no proposals. Foreign pay slips have `usDocument: false`.
 
-A reviewer outside this branch reads every rendered document again, before any reader run, and fills in an ignored local record at `internal-notes/SECOND-READING.md`. Any difference is settled before the locked runs. The second reading was done on 4 November 2026: all 51 answer files match their documents.
+Before any reader run, a second reviewer read every rendered document again against its answer file. All 51 answer files match their documents.
 
 ## Practice and locked sets
 
@@ -99,32 +99,22 @@ Results from 4 November 2026 (`data/reading-results/baseline-*.json`):
 | Practice (25) | 61 of 269 (22.7%)  | 21 of 25                | 0           | 11.3%     |
 | Locked (26)   | 123 of 274 (44.9%) | 18 of 26                | 0           | 10.9%     |
 
-The reader should read far more fields than this, with the same 0 false Meets.
+The reader reads far more: 797 of 822 locked fields (97.0%) across three runs, with the same 0 false Meets. See [the results](tests/results/reading.md).
 
 ## Running the reader test
 
-The reader is `server/lib/reader.ts`, from the reader branch. `tests/reading/reader.ts` is the only place this test set loads it. Until that branch merges, the runner stops with a plain message.
+The reader is `server/lib/reader.ts`, the same code the app runs. `tests/reading/reader.ts` is the only place this test set loads it.
 
 ```sh
 pnpm test:reading --set practice --runs 1
 pnpm test:reading --set locked --runs 3
 ```
 
-The reader needs its model key in the environment. Each run writes `data/reading-results/<set>-<date>-run<k>.json` and never overwrites an earlier run. The file holds every document and field, the totals, the false-Meets count and bound, the tokens used and the reader version (the git commit).
+The reader needs its model key in the environment. Give each run its own database, for example `DATABASE_URL=pglite:memory://`, so test reads never use a live site's daily reading limit. Each run writes `data/reading-results/<set>-<date>-run<k>.json` and never overwrites an earlier run. The file holds every document and field, the totals, the false-Meets count and bound, the tokens used and the reader version (the git commit).
 
 Exit codes: 0 when every document was read and there was no false Meets; 1 on any false Meets; 2 when a document could not be read or the reader returned something that is not a reader result; 3 for bad arguments, a changed test file or a missing reader.
 
 These runs need a live model, so `pnpm test` does not include them. `pnpm test` does check the scorer, the bound, the baseline, the answers against the rules, the set hashes and that the make scripts give the same files every time.
-
-## The eval suite
-
-`evals/reading.eval.ts` adds one case per locked document to the framework's eval tool. `agent-native eval` runs only the chat agent, so each case asks the agent to read the document with the `extract_evidence` tool and nothing else. The scorer finds that tool's result, scores it like the runner does, and gives 0 for a false Meets. The threshold is 1, so a single false Meets fails the run. A run with no usable tool result also fails.
-
-```sh
-pnpm exec agent-native eval reading --owner-email <email> --org-id <org>
-```
-
-The framework also needs `evals/production-context.ts`, which connects the eval to the app's real chat request path, and the `extract_evidence` tool from the reader branch. Neither is on this branch, so the eval suite cannot run yet.
 
 ## Reading a results file
 

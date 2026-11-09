@@ -1,4 +1,6 @@
 import { MonthHelper } from "../components/MonthHelper";
+import { Rings } from "../components/Rings";
+import { TelegramLink } from "../components/TelegramLink";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
@@ -38,6 +40,19 @@ export default function MonthsPage() {
   useEffect(() => {
     void load();
   }, [m]);
+  // Proof sent from a phone shows up here without a reload.
+  useEffect(() => {
+    if (!data) return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      callAction("check_month", m === undefined ? {} : { month: m }, {
+        method: "GET",
+      })
+        .then((result) => setData(result as Months))
+        .catch(() => {});
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [m, Boolean(data)]);
   const money = (value: number) =>
     new Intl.NumberFormat(lang === "es" ? "es-US" : "en-US", {
       style: "currency",
@@ -78,7 +93,10 @@ export default function MonthsPage() {
           {common.review}
         </Link>
       </div>
-      <p role="status">
+      <p
+        className={data.waiting ? "waiting-pill" : "waiting-pill none"}
+        role="status"
+      >
         {data.waiting
           ? fill(common.waiting, { count: data.waiting })
           : common.none}
@@ -119,11 +137,12 @@ export default function MonthsPage() {
         ];
         return (
           <section
-            className="result"
+            className="month-panel result"
             data-status={month.status}
             key={month.month}
             aria-labelledby={`month-${month.month}`}
           >
+            <header>
             <h2 id={`month-${month.month}`}>
               <Link to={link(`/months/${encodeURIComponent(month.month)}`)}>
                 {m === undefined && index < 2
@@ -135,7 +154,18 @@ export default function MonthsPage() {
             <p className="status" data-status={month.status}>
               {common.status[month.status]}
             </p>
-            <p>
+            </header>
+            {(index === 0 || m !== undefined) && (
+              <Rings
+                title={monthName(month.month)}
+                values={{
+                  hours: month.hours,
+                  amountCents: month.amountCents,
+                  ifConfirmed: month.ifConfirmed,
+                }}
+              />
+            )}
+            <p className="plain">
               {reason ?? (lang === "es" ? copy.unknownQuestion : month.basis)}
             </p>
             {month.hours !== null && (
@@ -160,7 +190,7 @@ export default function MonthsPage() {
               <p>{fill(common.pay, { amount: money(month.amountCents) })}</p>
             )}
             <p>{copy.incomeTarget}</p>
-            <p>
+            <p className="rule">
               {common.rule}:{" "}
               <a
                 href={`https://www.ecfr.gov/current/title-42/section-435.${section}`}
@@ -263,6 +293,7 @@ export default function MonthsPage() {
           <Link to={link("/months")}>{copy.back}</Link>
         </p>
       )}
+      <TelegramLink />
       <MonthHelper />
       <p className="note">{common.stateDecides}</p>
     </>
