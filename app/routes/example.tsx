@@ -3,6 +3,7 @@ import { MonthWork } from "../components/MonthWork";
 import { Rings } from "../components/Rings";
 import { TelegramLink } from "../components/TelegramLink";
 import { NoticeDate } from "../components/NoticeDate";
+import { ExampleStart } from "../components/example/ExampleStart";
 import { callAction } from "@agent-native/core/client/hooks";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -56,19 +57,29 @@ export default function ExampleMonthPage() {
   );
   async function load() {
     setState("loading");
-    try {
-      setData(
-        (await callAction(
-          "example_month",
-          {},
-          { method: "GET" },
-        )) as ExampleMonth,
-      );
-      setState("ready");
-    } catch (error) {
-      const code = (error as { status?: number })?.status;
-      setState(code === 401 || code === 403 ? "denied" : "error");
+    // A short network or server hiccup should not leave the page empty: try
+    // three times, then offer a fresh example.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        setData(
+          (await callAction(
+            "example_month",
+            {},
+            { method: "GET" },
+          )) as ExampleMonth,
+        );
+        setState("ready");
+        return;
+      } catch (error) {
+        const code = (error as { status?: number })?.status;
+        if (code === 401 || code === 403) {
+          setState("denied");
+          return;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
+      }
     }
+    setState("error");
   }
   useEffect(() => {
     void load();
@@ -149,12 +160,15 @@ export default function ExampleMonthPage() {
     );
   if (state === "error" || !data)
     return (
-      <section role="alert">
-        <p>{copy.month.error}</p>
-        <button type="button" onClick={() => void load()}>
-          {copy.month.retry}
-        </button>
-      </section>
+      <>
+        <section role="alert">
+          <p>{copy.month.error}</p>
+          <button type="button" className="secondary" onClick={() => void load()}>
+            {copy.month.retry}
+          </button>
+        </section>
+        <ExampleStart />
+      </>
     );
   const person = copy.people[data.person];
   return (

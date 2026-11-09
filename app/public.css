@@ -1740,3 +1740,202 @@ input[type="file"]::file-selector-button {
     transition: none;
   }
 }
+
+/* ---- Inner pages: the same voice as the landing ----------------------- */
+main.narrow-page > * {
+  margin-inline: auto;
+}
+main.narrow-page {
+  padding-top: clamp(40px, 6vw, 72px);
+}
+main.narrow-page h1 {
+  font-size: clamp(2.4rem, 5.2vw, 3.9rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  margin-bottom: 20px;
+}
+main.narrow-page h2 {
+  letter-spacing: -0.03em;
+}
+.card,
+fieldset,
+.result {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  padding: clamp(20px, 3vw, 28px);
+}
+main.narrow-page > .card,
+main.narrow-page > section,
+main.narrow-page > .result {
+  animation: page-in 0.6s var(--ease) both;
+}
+main.narrow-page > :nth-child(2) { animation-delay: 0.04s; }
+main.narrow-page > :nth-child(3) { animation-delay: 0.08s; }
+main.narrow-page > :nth-child(4) { animation-delay: 0.12s; }
+main.narrow-page > :nth-child(5) { animation-delay: 0.16s; }
+main.narrow-page > :nth-child(n + 6) { animation-delay: 0.2s; }
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.mw-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  main.narrow-page > .card,
+  main.narrow-page > section,
+  main.narrow-page > .result {
+    animation: none;
+  }
+}
+
+/* An inline pill lines up with the column, not the page edge. */
+main.narrow-page > .waiting-pill {
+  display: flex;
+  width: fit-content;
+  max-width: 720px;
+  margin-inline: max(0px, calc((100% - 720px) / 2)) auto;
+}
+@media (max-width: 760px) {
+  main.narrow-page > .waiting-pill {
+    margin-inline: 0 auto;
+  }
+}
+
+/* ==== Design system: Apple Fitness voice across every page ============== */
+:root {
+  --bg: #050506;
+  --panel: #131315;
+  --panel-2: #1e1e21;
+  --line: rgba(255, 255, 255, 0.09);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Variable", Inter, system-ui, sans-serif;
+  --font-num: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Inter Variable", Inter, system-ui, sans-serif;
+  font-family: var(--font);
+}
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font);
+}
+h1,
+h2,
+h3,
+.status,
+.lx-big,
+.lx-stakes-line,
+.lx-close h2 {
+  font-family: var(--font-display);
+}
+.num,
+.ring-legend dd,
+.lx-figures dt,
+.lx-figs,
+.lx-step-n,
+.lx-big.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Panels with depth: a lit top edge, a hairline, a soft drop. */
+.card,
+fieldset,
+.result,
+.month-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 38%),
+    var(--panel);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 24px 48px -28px rgba(0, 0, 0, 0.9);
+}
+.mw-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 50%),
+    var(--panel-2);
+  border: 1px solid var(--line);
+}
+
+/* The month: rings beside a status headline, the status in its ring colour. */
+main.narrow-page > * {
+  max-width: 760px;
+}
+.month-panel {
+  padding: clamp(22px, 3.4vw, 34px);
+  border-radius: 32px;
+}
+.month-panel header .status {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.035em;
+}
+.month-panel[data-status="Meets"],
+.month-panel[data-status="Deemed"] {
+  box-shadow:
+    inset 0 0 0 1px rgba(166, 244, 0, 0.22),
+    0 30px 80px -40px rgba(166, 244, 0, 0.35);
+}
+.month-panel[data-status="Short"] {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 45, 85, 0.18),
+    0 30px 80px -40px rgba(255, 45, 85, 0.3);
+}
+.month-panel[data-status="Exempt"] {
+  box-shadow:
+    inset 0 0 0 1px rgba(51, 217, 255, 0.2),
+    0 30px 80px -40px rgba(51, 217, 255, 0.3);
+}
+.rings svg {
+  width: min(66vw, 280px);
+}
+.ring-arc:not(.proposed) {
+  filter: drop-shadow(0 0 7px currentColor);
+}
+.ring-legend dd {
+  font-size: clamp(2rem, 5.4vw, 2.8rem);
+  letter-spacing: -0.04em;
+}
+
+/* Controls: immediate feedback, a clear focus ring. */
+.button,
+button {
+  transition:
+    transform 0.16s var(--ease),
+    background-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    opacity 0.2s;
+}
+.button:not(.secondary):hover,
+button:not(.secondary):not(.link-button):not(:disabled):hover {
+  box-shadow: 0 8px 28px -10px rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+.button:active,
+button:active {
+  transform: scale(0.97);
+}
+:focus-visible {
+  outline: 2px solid var(--pay);
+  outline-offset: 3px;
+}
+
+/* The one action on a month: Do my month. */
+.month-work:not([aria-labelledby]) {
+  display: grid;
+  gap: 10px;
+}
+.month-work:not([aria-labelledby]) > button {
+  min-height: 60px;
+  font-size: 1.08rem;
+}
+
+/* Status chips in the review list and cards keep the ring colours. */
+.mw-status[data-status="Short"] strong,
+.mw-status strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}

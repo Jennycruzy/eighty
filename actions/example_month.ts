@@ -12,5 +12,14 @@ export default defineAction({
   mcpTool: false,
   audit: { recordInputs: false },
   http: { method: "GET" },
-  run: (_input, context) => exampleMonth(context),
+  run: async (_input, context) => {
+    try {
+      return await exampleMonth(context);
+    } catch (error) {
+      const status = (error as { statusCode?: number })?.statusCode;
+      if (status !== 401 && status !== 403)
+        console.error("[example_month] failed:", status ?? "", error instanceof Error ? error.stack ?? error.message : error);
+      throw error;
+    }
+  },
 });

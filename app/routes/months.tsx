@@ -25,19 +25,31 @@ export default function MonthsPage() {
   const { m } = useParams();
   const [data, setData] = useState<Months | null>(null);
   const [error, setError] = useState(false);
+  const [setup, setSetup] = useState(false);
   const link = (path: string) => languageLink(path, lang);
   async function load() {
     setError(false);
+    setSetup(false);
     setData(null);
-    try {
-      setData(
-        (await callAction("check_month", m === undefined ? {} : { month: m }, {
-          method: "GET",
-        })) as Months,
-      );
-    } catch {
-      setError(true);
+    // A signed-in member who has not answered the questions has no month yet:
+    // send them to the questions. Other failures retry before showing an error.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        setData(
+          (await callAction("check_month", m === undefined ? {} : { month: m }, {
+            method: "GET",
+          })) as Months,
+        );
+        return;
+      } catch (failure) {
+        if ((failure as { status?: number })?.status === 404) {
+          setSetup(true);
+          return;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
+      }
     }
+    setError(true);
   }
   useEffect(() => {
     void load();
@@ -70,6 +82,20 @@ export default function MonthsPage() {
           timeZone: "UTC",
         });
   };
+  if (setup)
+    return (
+      <section className="card">
+        <h1>{lang === "es" ? "Primero, tu mes." : "First, your month."}</h1>
+        <p className="intro">
+          {lang === "es"
+            ? "Responde unas preguntas cortas para ver si la regla te aplica. Después tu mes aparece aquí."
+            : "Answer a few short questions to see if the rule applies to you. Then your month shows here."}
+        </p>
+        <a className="button" href={link("/check")}>
+          {lang === "es" ? "Responder las preguntas" : "Answer the questions"}
+        </a>
+      </section>
+    );
   if (error)
     return (
       <section role="alert">
