@@ -115,7 +115,25 @@ export function servicePaths(): string[] {
     "/_agent-native/auth/ba/sign-out",
   ];
 }
+/** A connected assistant's MCP endpoint and the OAuth steps it signs in with. */
+export const MCP_PATHS = [
+  "/_agent-native/mcp",
+  "/_agent-native/mcp/oauth/register",
+  "/_agent-native/mcp/oauth/authorize",
+  "/_agent-native/mcp/oauth/token",
+  // The OAuth steps the discovery document advertises.
+  "/mcp/oauth/register",
+  "/mcp/oauth/authorize",
+  "/mcp/oauth/token",
+];
+export function isMcpPath(path: string): boolean {
+  return (
+    MCP_PATHS.includes(path) ||
+    /^\/\.well-known\/(?:oauth-protected-resource|oauth-authorization-server)(?:\/_agent-native\/mcp)?$/.test(path)
+  );
+}
 export function isAllowedRequest(path: string, method: string): boolean {
+  if (isMcpPath(path)) return true;
   if (
     (isPublicPage(path) || isPublicData(path) || isStaticFile(path)) &&
     (method === "GET" || method === "HEAD")

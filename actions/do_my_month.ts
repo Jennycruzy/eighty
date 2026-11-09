@@ -12,7 +12,7 @@ export default defineAction({
   requiresAuth: true,
   audit: { recordInputs: false },
   agentTool: true,
-  mcpTool: false,
+  mcpTool: true,
   http: { method: "POST" },
   chatUI: { renderer: MONTH_WORK_WIDGET, title: "Your month" },
   run: doMonth,

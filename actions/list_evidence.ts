@@ -9,7 +9,7 @@ export default defineAction({
   readOnly: true,
   audit: { recordInputs: false },
   agentTool: true,
-  mcpTool: false,
+  mcpTool: true,
   http: { method: "GET" },
   run: (_input, context) => listEvidenceRecords(context),
 });

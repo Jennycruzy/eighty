@@ -190,7 +190,9 @@ export async function doMonth(
     if (!(await readerLinesFor(actor, member, file.id)).length)
       unreadIds.push(file.id);
   const done: MonthWork["read"] = [];
-  if (read)
+  // Files are read only from the member's own browser or chat, never from an
+  // outside assistant.
+  if (read && context?.caller !== "mcp")
     for (const documentId of unreadIds.slice(0, MAX_READS)) {
       const reading = await extractEvidence({ documentId }, context);
       done.push({

@@ -257,7 +257,7 @@ test("The member month action has no owner input and allows its own agent", asyn
   assert.equal(action.requiresAuth, true);
   assert.notEqual(action.uiOnly, true);
   assert.equal(action.agentTool, true);
-  assert.equal(action.mcpTool, false);
+  assert.equal(action.mcpTool, true, "a connected assistant reads the month for the verified member");
   assert.equal(
     action.schema.safeParse({ month: "2026-11", memberId: other.member.id })
       .success,

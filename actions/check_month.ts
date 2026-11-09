@@ -9,7 +9,7 @@ export default defineAction({
   requiresAuth: true,
   readOnly: true,
   agentTool: true,
-  mcpTool: false,
+  mcpTool: true,
   http: { method: "GET" },
   run: (input, context) => checkMemberMonth(input.month, context),
 });

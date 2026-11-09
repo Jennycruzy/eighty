@@ -4,7 +4,10 @@ import {
   getRequestContext,
   getBetterAuthUserIdForEmail,
 } from "@agent-native/core/server";
+import { getDbExec } from "@agent-native/core/db";
 import { H3Event, createError } from "h3";
+
+import { isExampleEmail } from "./example-identity.ts";
 
 import { linkedTelegramActor } from "./telegram-links.ts";
 import {
@@ -99,10 +102,43 @@ function telegramChatOf(ambient: object): string | null {
     ? String(chatId)
     : null;
 }
+/**
+ * An MCP tool call from an assistant the member connected (Claude, for one).
+ * The framework sets the account id only after it verified the MCP token for
+ * that user, and every MCP call carries its request id. The member's email must
+ * be verified, and example accounts never connect.
+ */
+async function mcpMemberActor(
+  context: ActionRunContext | undefined,
+  ambient: ReturnType<typeof getRequestContext>,
+): Promise<MemberActor | null> {
+  if (
+    context?.caller !== "mcp" ||
+    !context.userEmail ||
+    !ambient?.mcpRequestId ||
+    !ambient.authUserId ||
+    ambient.userEmail !== context.userEmail ||
+    ambient.agentRunAnonymous ||
+    isExampleEmail(context.userEmail)
+  )
+    return null;
+  const { rows } = await getDbExec().execute({
+    sql: 'SELECT id, email_verified FROM "user" WHERE email = ?',
+    args: [context.userEmail],
+  });
+  const row = rows[0] as { id?: string; email_verified?: unknown } | undefined;
+  const verified = row?.email_verified === true || row?.email_verified === 1 || row?.email_verified === "t";
+  if (!row || row.id !== ambient.authUserId || !verified)
+    throw createError({ statusCode: 403, statusMessage: "Verify your email first" });
+  return { email: context.userEmail, userId: ambient.authUserId };
+}
+
 export async function ownMemberActor(
   context: ActionRunContext | undefined,
 ): Promise<MemberActor> {
   const ambient = getRequestContext();
+  const mcp = await mcpMemberActor(context, ambient);
+  if (mcp) return mcp;
   if (
     context?.caller === "tool" &&
     ambient?.userEmail === context.userEmail &&

@@ -40,7 +40,7 @@ const statuses = async (account) =>
 
 test("the action is the member's own agent tool and the month card renderer", () => {
   assert.equal(action.agentTool, true);
-  assert.equal(action.mcpTool, false);
+  assert.equal(action.mcpTool, true, "a connected assistant may do the month; it never reads files or confirms");
   assert.equal(action.chatUI.renderer, "eighty.month-work");
   assert.equal(confirmAction.agentTool, false);
   assert.equal(confirmAction.uiOnly, true);
