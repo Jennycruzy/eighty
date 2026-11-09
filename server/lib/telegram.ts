@@ -1,7 +1,6 @@
 import type { ActionRunContext } from "@agent-native/core/action";
 import {
   runWithRequestContext,
-  resolveSecret,
   telegramAdapter,
   type IncomingMessage,
   type PlatformAdapter,
@@ -9,6 +8,7 @@ import {
 import { readBody, type H3Event } from "h3";
 
 import { MAX_DOCUMENT_BYTES } from "../../shared/document-upload.ts";
+import { telegramBotToken } from "./telegram-config.ts";
 import {
   BOT_TEXT,
   SITE,
@@ -24,6 +24,9 @@ import { isExampleEmail } from "./example-identity.ts";
 import { extractEvidence } from "./extraction.ts";
 import { checkMemberMonth } from "./member-month.ts";
 import type { MemberActor } from "./member-identity.ts";
+import { setMemberLanguage } from "./telegram-link-action.ts";
+import { doMonth } from "./month-work.ts";
+import { monthWorkText } from "./month-work-text.ts";
 import { getMemberRecord } from "./member-records.ts";
 import {
   consumeLinkCode,
@@ -199,7 +202,7 @@ async function currentMonth(
 }
 
 async function telegramFile(fileId: string) {
-  const token = await resolveSecret("TELEGRAM_BOT_TOKEN");
+  const token = telegramBotToken();
   if (!token) throw new Error("Telegram is not configured");
   const info = (await (
     await fetch(
@@ -354,6 +357,23 @@ export async function beforeTelegramMessage(
   }
   if (name === "help" || name === "start")
     return { handled: true, responseText: words.help };
+  const switchTo =
+    name === "english" || name === "en"
+      ? "en"
+      : name === "espanol" || name === "español" || name === "es"
+        ? "es"
+        : null;
+  if (switchTo) {
+    await setMemberLanguage(member.id, switchTo === "es" ? "es-US" : "en-US");
+    return { handled: true, responseText: BOT_TEXT[switchTo].language };
+  }
+  if (name === "month")
+    return {
+      handled: true,
+      responseText: await asMember(actor, async (context) =>
+        monthWorkText(await doMonth({ read: true }, context), lang),
+      ),
+    };
   if (name === "status")
     return {
       handled: true,

@@ -1154,3 +1154,108 @@ input[type="file"]::file-selector-button {
   font-weight: 650;
   cursor: pointer;
 }
+
+/* ---- Month work cards ------------------------------------------------ */
+.month-work {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.month-work h2 {
+  margin: 0;
+}
+.mw-status {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mw-status[data-status="Meets"] strong,
+.mw-status[data-status="Exempt"] strong,
+.mw-status[data-status="Deemed"] strong {
+  color: var(--pay);
+}
+.mw-status[data-status="Short"] strong {
+  color: var(--hours);
+}
+.mw-status .mw-if {
+  color: var(--text-2);
+}
+.mw-card {
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  animation: mw-in 0.35s var(--ease) both;
+}
+.mw-card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.mw-card p {
+  margin: 4px 0;
+}
+.mw-question {
+  border: 1px solid var(--warn);
+}
+.mw-done {
+  border: 1px solid var(--pay);
+}
+.mw-question label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+.mw-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mw-lines li + li {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.mw-lines .actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 420px;
+}
+.mw-lines .actions > * {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 8px;
+  text-align: center;
+  white-space: nowrap;
+  justify-content: center;
+}
+.mw-plan ul {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+@keyframes mw-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mw-card {
+    animation: none;
+  }
+}
+.lang-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 10px;
+}
+.lang-switch span {
+  color: var(--text-2);
+}
+.lang-switch button {
+  padding: 6px 14px;
+}

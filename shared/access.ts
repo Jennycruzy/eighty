@@ -92,6 +92,7 @@ export function servicePaths(): string[] {
       "extract_evidence",
       "try_read_document",
       "telegram_link",
+      "do_my_month",
     ].map((name) => `/_agent-native/actions/${name}`),
     ...TELEGRAM_PATHS,
     "/send-verification-link",
@@ -136,6 +137,7 @@ export const EXAMPLE_ACTIONS = [
 ];
 const EXAMPLE_MEMBER_ACTIONS = [
   "telegram_link",
+  "do_my_month",
   "extract_evidence",
   "propose_evidence",
   "add_manual_evidence",

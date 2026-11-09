@@ -6,10 +6,10 @@ import {
   createIntegrationsPlugin,
   defineNitroPlugin,
   loadActionsFromStaticRegistry,
-  resolveSecret,
 } from "@agent-native/core/server";
 
 import actionsRegistry from "../../.generated/actions-registry.js";
+import { telegramBotToken } from "../lib/telegram-config.ts";
 import {
   TELEGRAM_AGENT_PROMPT,
   TELEGRAM_AGENT_TOOLS,
@@ -41,7 +41,7 @@ const integrations = createIntegrationsPlugin({
 // Telegram switched on. Without a token, the webhook stays refused.
 export default defineNitroPlugin(async (app) => {
   await integrations(app);
-  if (!(await resolveSecret("TELEGRAM_BOT_TOKEN"))) return;
+  if (!telegramBotToken()) return;
   const current = await getIntegrationConfig("telegram");
   if (current?.configData?.enabled === true) return;
   await saveIntegrationConfig("telegram", {

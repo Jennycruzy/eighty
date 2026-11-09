@@ -15,6 +15,7 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useAgentRouteState } from "@agent-native/core/client/navigation";
 import { TAB_ID } from "../lib/tab-id";
+import { MonthWork, type MonthWorkResult } from "./MonthWork";
 import { useLanguage } from "../lib/language";
 
 export function MonthHelper() {
@@ -101,6 +102,9 @@ function Conversation() {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const monthCalls = (
+    (thread as { toolCalls?: ToolCallView[] }).toolCalls ?? []
+  ).filter((call) => call.name === "do_my_month" && call.status === "completed");
   const runError = Object.values(thread.runs)
     .reverse()
     .find((run) => run.error)?.error;
@@ -142,6 +146,9 @@ function Conversation() {
           );
         })}
       </div>
+      {monthCalls.slice(-1).map((call) => (
+        <MonthWork key={call.id} initial={monthWorkOf(call.output)} autoLoad />
+      ))}
       {questions.questions && (
         <GuidedQuestionFlow
           questions={questions.questions}
@@ -209,4 +216,28 @@ function Conversation() {
       )}
     </>
   );
+}
+
+interface ToolCallView {
+  id: string;
+  name: string;
+  status: string;
+  output?: unknown;
+}
+/** The card data from a do_my_month result, whatever form the run stored it in. */
+function monthWorkOf(output: unknown): MonthWorkResult | null {
+  let value = output;
+  if (typeof value === "string")
+    try {
+      value = JSON.parse(value);
+    } catch {
+      return null;
+    }
+  if (value && typeof value === "object" && "result" in value)
+    value = (value as { result: unknown }).result;
+  return value &&
+    typeof value === "object" &&
+    (value as { widget?: unknown }).widget === "eighty.month-work"
+    ? (value as MonthWorkResult)
+    : null;
 }

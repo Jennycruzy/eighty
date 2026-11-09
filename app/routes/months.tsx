@@ -1,4 +1,5 @@
 import { MonthHelper } from "../components/MonthHelper";
+import { MonthWork } from "../components/MonthWork";
 import { Rings } from "../components/Rings";
 import { TelegramLink } from "../components/TelegramLink";
 import { callAction } from "@agent-native/core/client/hooks";
@@ -293,6 +294,7 @@ export default function MonthsPage() {
           <Link to={link("/months")}>{copy.back}</Link>
         </p>
       )}
+      <MonthWork />
       <TelegramLink />
       <MonthHelper />
       <p className="note">{common.stateDecides}</p>

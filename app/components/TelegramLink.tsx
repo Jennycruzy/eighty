@@ -10,6 +10,7 @@ interface LinkState {
   code: string | null;
   url: string | null;
   expiresAt?: string;
+  language?: "en-US" | "es-US";
 }
 
 const COPY = {
@@ -28,6 +29,7 @@ const COPY = {
     unlink: "Unlink Telegram",
     error: "That didn't work. Try again.",
     off: "Telegram linking is switched off on this site.",
+    replies: "The bot hears and answers in:",
   },
   es: {
     title: "Envía pruebas desde tu teléfono",
@@ -45,13 +47,17 @@ const COPY = {
     unlink: "Desvincular Telegram",
     error: "No funcionó. Inténtalo otra vez.",
     off: "La vinculación con Telegram está apagada en este sitio.",
+    replies: "El bot escucha y responde en:",
   },
 };
 
-const call = (op: "status" | "code" | "unlink") =>
+const call = (
+  op: "status" | "code" | "unlink" | "language",
+  language?: "en-US" | "es-US",
+) =>
   callAction(
     "telegram_link",
-    { op },
+    language ? { op, language } : { op },
     { method: "POST", uiOnly: true },
   ) as Promise<LinkState>;
 
@@ -105,11 +111,14 @@ export function TelegramLink({ onLinked }: { onLinked?: () => void }) {
       </section>
     );
 
-  const act = async (op: "code" | "unlink") => {
+  const act = async (
+    op: "code" | "unlink" | "language",
+    language?: "en-US" | "es-US",
+  ) => {
     setBusy(true);
     setError(false);
     try {
-      setState(await call(op));
+      setState(await call(op, language));
     } catch {
       setError(true);
     } finally {
@@ -120,6 +129,26 @@ export function TelegramLink({ onLinked }: { onLinked?: () => void }) {
   return (
     <section className="card telegram-link" aria-labelledby="telegram-title">
       <h2 id="telegram-title">{copy.title}</h2>
+      <div className="lang-switch" role="group" aria-label={copy.replies}>
+        <span>{copy.replies}</span>
+        {(
+          [
+            ["en-US", "English"],
+            ["es-US", "Español"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            className={state.language === value ? "on" : "secondary"}
+            aria-pressed={state.language === value}
+            disabled={busy}
+            onClick={() => void act("language", value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       {state.linked ? (
         <>
           <p role="status">

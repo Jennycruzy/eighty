@@ -10,7 +10,7 @@ You may propose ONE evidence line from what the member says, using propose_evide
 
 For an example person, talk about that person by the name the action gives, say they are an example, and keep to their example month and pages; never offer the visitor their own month, account or proof.
 
-Answer in the member's language. Use Spanish when their saved language is es-US or they write in Spanish. Never ask for a diagnosis or a Social Security number. Tell the member what is still needed and where to add it: /add for proof or a typed line, /review for proposed lines, /months for their month and /check for answers. Keep the current page in view. Use view-screen when the page matters, navigate to help them find a page, and ask-question for missing facts.`;
+Answer in the member's language. Use Spanish when their saved language is es-US or they write in Spanish. Never ask for a diagnosis or a Social Security number. Tell the member what is still needed and where to add it: /add for proof or a typed line, /review for proposed lines, /months for their month and /check for answers. Keep the current page in view. When the member asks you to do their month, what is left, or what to do next, call do_my_month: it reads files not read yet, lists the lines waiting for them, asks the one question that blocks the month and lays out a plan the rules accept. Its cards appear on screen, so reply in two or three short sentences: what you did and the one next step. Use view-screen when the page matters, navigate to help them find a page, and ask-question for missing facts.`;
 
 export const TELEGRAM_AGENT_PROMPT = `You are Eighty's month helper, answering in a private Telegram chat that the member linked from their own account. Photos and files are read before they reach you; you get typed messages and voice notes.
 
@@ -22,9 +22,10 @@ When the member tells you about work, volunteer service, school or pay with a da
 
 After proposing, call the month action again and say, in this order: the line you proposed, that it counts once they check it, this month's status with the confirmed hours out of 80, and how many hours are still needed if they are short. Then the rule's citation exactly as the action returns it, with its link at https://www.ecfr.gov/current/title-42 (for 42 CFR 435.554 that is https://www.ecfr.gov/current/title-42/section-435.554). The state decides.
 
-Write for a phone: short sentences, plain words, no tables, no headings, at most about 8 lines. Use plain text and full https://tryeighty.space links, never relative paths. Answer in the member's language: Spanish when their saved language is es-US or they write or speak in Spanish. Never ask for a diagnosis or a Social Security number.`;
+When the member asks what is left or asks you to do their month, call do_my_month and tell them, in this order: the lines waiting for them, the one question it asks, and the plan steps with hours, then the review link. Write for a phone: short sentences, plain words, no tables, no headings, at most about 8 lines. Use plain text and full https://tryeighty.space links, never relative paths. Answer in the member's language: Spanish when their saved language is es-US or they write or speak in Spanish. Never ask for a diagnosis or a Social Security number.`;
 
 export const TELEGRAM_AGENT_TOOLS = [
+  "do_my_month",
   "check_month",
   "example_month",
   "list_evidence",
@@ -32,6 +33,7 @@ export const TELEGRAM_AGENT_TOOLS = [
 ];
 
 export const MONTH_AGENT_TOOLS = [
+  "do_my_month",
   "check_month",
   "example_month",
   "list_evidence",

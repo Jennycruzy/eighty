@@ -54,6 +54,27 @@ const incoming = (chatId, rawText, extra = {}) => ({
   timestamp: Date.now(),
 });
 
+test("Telegram settings come from the deployment, never from a member's secrets", async () => {
+  // In production the framework will not let a signed-in member's request fall
+  // back to deployment values, so reading these through resolveSecret showed
+  // members "Telegram linking is switched off".
+  const { readFileSync } = await import("node:fs");
+  const config = await import("../../server/lib/telegram-config.ts");
+  for (const file of [
+    "server/lib/telegram.ts",
+    "server/lib/telegram-link-action.ts",
+    "server/plugins/integrations.ts",
+  ]) {
+    const text = readFileSync(new URL(`../../${file}`, import.meta.url), "utf8");
+    assert.doesNotMatch(text, /resolveSecret\(\s*["'](TELEGRAM_BOT_TOKEN|EIGHTY_TELEGRAM_BOT)/, file);
+  }
+  assert.equal(config.configuredBotName(), "TryEightybot");
+  const before = process.env.EIGHTY_TELEGRAM_BOT;
+  process.env.EIGHTY_TELEGRAM_BOT = " @TryEightybot "; // guard:allow-env-credential — test process only: a public bot name
+  assert.equal(config.configuredBotName(), "TryEightybot");
+  process.env.EIGHTY_TELEGRAM_BOT = before; // guard:allow-env-credential — test process only: restore
+});
+
 test("photos, PDFs and voice notes reach the app with their file", () => {
   const photo = telegram.parseTelegramUpdate(
     update({

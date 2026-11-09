@@ -77,7 +77,8 @@ export const BOT_TEXT = {
     short: (hours: string) => `${hours} hours still needed.`,
     rule: "Rule",
     state: "Your state decides.",
-    help: `Send a photo or PDF of your proof, or a voice note about your hours. Send /status for this month, /stop to unlink this chat.`,
+    help: `Send a photo or PDF of your proof, or a voice note about your hours. Send /status for this month, /month to have me do your month's paperwork, /espanol for Spanish, /stop to unlink this chat.`,
+    language: `OK, I'll answer in English now. Send voice notes in English. For Spanish, send /espanol.`,
     rest: "The example helper is resting until tomorrow. You can still look around and type lines yourself.",
   },
   es: {
@@ -120,7 +121,8 @@ export const BOT_TEXT = {
     short: (hours: string) => `Faltan ${hours} horas.`,
     rule: "Regla",
     state: "Tu estado decide.",
-    help: `Envía una foto o un PDF de tu prueba, o una nota de voz sobre tus horas. Envía /status para ver este mes y /stop para desvincular este chat.`,
+    help: `Envía una foto o un PDF de tu prueba, o una nota de voz sobre tus horas. Envía /status para ver este mes, /month para que haga el papeleo de tu mes, /english para inglés y /stop para desvincular este chat.`,
+    language: `Listo, ahora te respondo en español. Envía las notas de voz en español. Para inglés, envía /english.`,
     rest: "La ayuda del ejemplo descansa hasta mañana. Aún puedes mirar y escribir líneas por tu cuenta.",
   },
 } as const;

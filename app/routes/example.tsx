@@ -1,4 +1,5 @@
 import { MonthHelper } from "../components/MonthHelper";
+import { MonthWork } from "../components/MonthWork";
 import { Rings } from "../components/Rings";
 import { TelegramLink } from "../components/TelegramLink";
 import { callAction } from "@agent-native/core/client/hooks";
@@ -174,6 +175,7 @@ export default function ExampleMonthPage() {
           {copy.month.review}
         </Link>
       </div>
+      <MonthWork />
       <TelegramLink />
       <MonthHelper />
       {summary(copy.month.lastMonth, data.lastMonth, false)}
