@@ -20,6 +20,7 @@ import {
   isStaticFile,
   isMemberPage,
   isTelegramPath,
+  isMonthStateBulk,
 } from "../../shared/access.ts";
 import {
   reservePublicModelUse,
@@ -48,7 +49,8 @@ export default defineEventHandler(async (event) => {
   )
     assertBodySize(event, 22 * 1024 * 1024);
   // Deny unknown services as well as screens. A hidden navigation link is not a permission check.
-  if (!isAllowedRequest(path, getMethod(event))) {
+  const stateBulk = isMonthStateBulk(path, getMethod(event), getRequestURL(event).search);
+  if (!stateBulk && !isAllowedRequest(path, getMethod(event))) {
     throw createError({ statusCode: 404, statusMessage: "Not found" });
   }
   if (isPublicPage(path) || isPublicData(path) || isStaticFile(path)) return;
@@ -98,6 +100,7 @@ export default defineEventHandler(async (event) => {
   // Checked on the server for every request, not by hiding links.
   if (
     isExampleEmail(session?.email) &&
+    !stateBulk &&
     !isExampleAllowedRequest(path, getMethod(event))
   )
     throw createError({

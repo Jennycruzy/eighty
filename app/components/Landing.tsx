@@ -96,6 +96,21 @@ export function Landing() {
   );
   return (
     <div className="landing">
+      <section className="stakes" aria-label={es ? "Por qué importa" : "Why it matters"}>
+        <p className="stakes-line">
+          {es
+            ? "En 2018, Arkansas sacó de Medicaid a unas 18,000 personas. La mayoría cumplía. Lo perdieron por el papeleo."
+            : "In 2018, Arkansas cut about 18,000 people from Medicaid. Most of them qualified. They lost it to paperwork."}
+        </p>
+        <p className="stakes-note">
+          {es
+            ? "Más del 40% no logró reportar, y solo cerca del 6% no habría cumplido. La regla federal empieza el 31 de diciembre de 2026. "
+            : "Over 40% failed to report, and only about 6% would not have met the rule. The federal rule starts on 31 December 2026. "}
+          <a href="https://www.kff.org/medicaid/issue-brief/an-early-look-at-implementation-of-medicaid-work-requirements-in-arkansas/">KFF</a>
+          {" · "}
+          <a href="https://www.cbpp.org/research/health/pain-but-no-gain-arkansas-failed-medicaid-work-reporting-requirements-should-not-be">CBPP</a>
+        </p>
+      </section>
       <section className="hero" aria-labelledby="hero-title">
         <div>
           <h1 id="hero-title">
@@ -119,8 +134,8 @@ export function Landing() {
           </h1>
           <p className="intro">
             {es
-              ? "La nueva regla federal de trabajo pide a muchos adultos con Medicaid mostrar trabajo, estudios, voluntariado o pago cada mes. Eighty guarda tus pruebas, las lee y te muestra cómo va tu mes."
-              : "The new federal work rule asks many adults on Medicaid to show work, school, volunteering or pay each month. Eighty keeps your proof, reads it, and shows where your month stands."}
+              ? "La nueva regla federal de trabajo pide a muchos adultos con Medicaid mostrar trabajo, estudios, voluntariado o pago cada mes. Eighty hace el papeleo de tu mes desde el teléfono: lee tus pruebas, te dice lo que falta, planea el resto y arma el paquete que envías. Tú solo confirmas."
+              : "The new federal work rule asks many adults on Medicaid to show work, school, volunteering or pay each month. Eighty does the month's paperwork from your phone: it reads your proof, finds what's missing, plans the rest and makes the packet you send. You only confirm."}
           </p>
           <div className="actions">
             <a className="button" href={link("/check")}>

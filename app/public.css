@@ -562,6 +562,23 @@ legend + * {
 .landing {
   max-width: none;
 }
+.stakes {
+  padding: 32px 0 8px;
+  max-width: 46rem;
+}
+.stakes-line {
+  margin: 0;
+  font-size: clamp(1.35rem, 3.4vw, 2rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--text);
+}
+.stakes-note {
+  margin: 12px 0 0;
+  color: var(--text-2);
+  font-size: 0.95rem;
+}
 .hero {
   display: grid;
   gap: 40px;

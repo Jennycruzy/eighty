@@ -453,10 +453,10 @@
     },
     "sample": {
       "title": "Try it with Maria's sample earnings summary",
-      "intro": "One tap adds a made-up earnings summary to Maria's private files. Then type its facts.",
+      "intro": "One tap adds a made-up earnings summary to Maria's private files. Then the helper reads it for you.",
       "button": "Add Maria's sample",
       "working": "Adding the sample…",
-      "saved": "The sample is saved. Type the facts from it below.",
+      "saved": "The sample is saved. Go back to Maria's month and tap Do my month: the helper reads it and asks the one question it needs. Or tap Read this file below.",
       "hint": "Choose Pay, then Gig or own business. The summary shows $824.45 in total earnings. Maria spent $206.60 on gas and her phone for deliveries, so her net pay after costs is $617.85. Answer Yes to the business-costs question. Net pay is what counts, not the total.",
       "picture": "See the sample as a picture",
       "error": "The sample was not saved. You can still type the facts."

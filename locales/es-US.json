@@ -453,10 +453,10 @@
     },
     "sample": {
       "title": "Pruébalo con el resumen de ganancias de muestra de María",
-      "intro": "Un toque añade un resumen de ganancias inventado a los archivos privados de María. Luego escribe sus datos.",
+      "intro": "Un toque añade un resumen de ganancias inventado a los archivos privados de María. Luego la ayuda lo lee por ti.",
       "button": "Añadir la muestra de María",
       "working": "Añadiendo la muestra…",
-      "saved": "La muestra está guardada. Escribe sus datos abajo.",
+      "saved": "La muestra está guardada. Vuelve al mes de María y toca Haz mi mes: la ayuda la lee y hace la única pregunta que necesita. O toca Leer este archivo abajo.",
       "hint": "Elige Pago y luego Trabajo por cuenta propia. El resumen muestra $824.45 en ganancias totales. María gastó $206.60 en gasolina y teléfono para las entregas, así que su pago neto después de gastos es $617.85. Responde Sí a la pregunta de los gastos del negocio. Cuenta el pago neto, no el total.",
       "picture": "Ver la muestra como imagen",
       "error": "La muestra no se guardó. Aún puedes escribir los datos."

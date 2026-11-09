@@ -219,6 +219,23 @@ export function isHelperPath(path: string): boolean {
   );
 }
 
+/**
+ * The helper reads the same two page-state keys in one request
+ * (?keys=navigate:<id>,guided-questions:<id>). Only a read, and only those keys.
+ */
+export const MONTH_STATE_BULK_PATH = "/_agent-native/application-state";
+export function isMonthStateBulk(path: string, method: string, search: string): boolean {
+  if (path !== MONTH_STATE_BULK_PATH || (method !== "GET" && method !== "HEAD")) return false;
+  const keys = new URLSearchParams(search).get("keys");
+  if (!keys) return false;
+  const list = keys.split(",");
+  return (
+    list.length > 0 &&
+    list.length <= 4 &&
+    list.every((key) => isMonthStatePath(`${MONTH_STATE_BULK_PATH}/${key}`))
+  );
+}
+
 export function isMonthStatePath(path: string): boolean {
   return /^\/_agent-native\/application-state\/(?:(?:navigation|navigate):[A-Za-z0-9_-]{1,96}|guided-questions(?::[A-Za-z0-9_-]{1,96})?)$/.test(
     path,
