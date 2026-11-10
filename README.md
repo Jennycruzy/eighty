@@ -20,6 +20,20 @@ Live at **[tryeighty.space](https://tryeighty.space)** · Telegram **[@TryEighty
 | **B** | A real member account: add a line, confirm it, Do my month | Judge login below | 2 min |
 | **C** | Claude reads that same month over MCP | Judge login below | 3 min |
 
+**A. Example month, no sign-in (start here)**
+
+No account, no email. Everything below runs on a made-up person.
+
+1. Open **[tryeighty.space](https://tryeighty.space)** and choose **See Maria's month**. Maria is a made-up delivery driver who volunteers at a food pantry. Her month opens at 61 of 80 hours.
+2. Under **Send proof from your phone**, tap **Link Telegram** and open the bot. The one-time code links your Telegram to Maria's month.
+3. Send a voice note: *"Trabajé cuatro horas en la despensa el sábado."* Eighty transcribes it, proposes a 4-hour volunteer line and answers in Spanish. Maria's page shows **New from your phone** without a reload.
+4. Send `/month` in the chat: what is waiting, and a plan the rules accept.
+5. On the web, tap **Do my month**. It reads her earnings summary and asks the one question only she can answer: gas and phone costs. Type `206.60`, save, and confirm the lines. Her pay ring closes at $617.85 and the month changes to **Meets the rule**, with the citation underneath.
+6. Download **the proof packet**: a plain-words cover page, cited to the law, with her documents.
+7. Back on the home page, open **Rosa's month**: the rule does not apply to her, and Eighty says why, with 42 CFR 435.554(c)(3)(i)(A) underneath.
+
+**Want a real account for paths B and C?** Use the judge login, or make your own.
+
 **Judge login** (a shared, made-up member in Nebraska, with one confirmed line: Corner Bakery, 30 hours)
 
 ```
@@ -38,17 +52,6 @@ Other judges use the same account, so you may see their lines too.
 4. Open the email from Eighty, click the link, then **Continue**. Your month page opens.
 5. **Add proof**: upload a photo or PDF of a pay stub, or **Type a proof line**. Then confirm it on **Review the lines**.
 6. Optional: **Link Telegram** from your month page, or connect Claude as in path C below, signing in with your own email.
-
-
-**A. Example month, no sign-in**
-
-1. Open **[tryeighty.space](https://tryeighty.space)** and choose **See Maria's month**. Maria is a made-up delivery driver who volunteers at a food pantry. Her month opens at 61 of 80 hours.
-2. Under **Send proof from your phone**, tap **Link Telegram** and open the bot. The one-time code links your Telegram to Maria's month.
-3. Send a voice note: *"Trabajé cuatro horas en la despensa el sábado."* Eighty transcribes it, proposes a 4-hour volunteer line and answers in Spanish. Maria's page shows **New from your phone** without a reload.
-4. Send `/month` in the chat: what is waiting, and a plan the rules accept.
-5. On the web, tap **Do my month**. It reads her earnings summary and asks the one question only she can answer: gas and phone costs. Type `206.60`, save, and confirm the lines. Her pay ring closes at $617.85 and the month changes to **Meets the rule**, with the citation underneath.
-6. Download **the proof packet**: a plain-words cover page, cited to the law, with her documents.
-7. Back on the home page, open **Rosa's month**: the rule does not apply to her, and Eighty says why, with 42 CFR 435.554(c)(3)(i)(A) underneath.
 
 **B. A real member account**
 
