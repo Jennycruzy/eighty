@@ -5,7 +5,7 @@ import { TelegramLink } from "../components/TelegramLink";
 import { NoticeDate } from "../components/NoticeDate";
 import { ExampleStart } from "../components/example/ExampleStart";
 import { callAction } from "@agent-native/core/client/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
 import { exampleCopy, fill, type ExamplePerson } from "../lib/example";
@@ -52,6 +52,23 @@ export default function ExampleMonthPage() {
     link = (path: string) => languageLink(path, lang);
   const copy = exampleCopy(lang);
   const [data, setData] = useState<ExampleMonth | null>(null);
+  // Proof that arrives from the phone while the page is open gets a moment:
+  // a banner with what came in, and the month panel pulses as the ring grows.
+  const previous = useRef<ExampleMonth | null>(null);
+  const [arrival, setArrival] = useState<{ hours: number; cents: number } | null>(null);
+  useEffect(() => {
+    const before = previous.current;
+    previous.current = data;
+    if (!before || !data || data.waiting <= before.waiting) return;
+    const hoursOf = (m: ExampleMonth) => m.thisMonth.ifConfirmed?.hours ?? m.thisMonth.hours ?? 0;
+    const centsOf = (m: ExampleMonth) => m.thisMonth.ifConfirmed?.amountCents ?? m.thisMonth.amountCents ?? 0;
+    setArrival({
+      hours: Math.max(0, hoursOf(data) - hoursOf(before)),
+      cents: Math.max(0, centsOf(data) - centsOf(before)),
+    });
+    const timer = window.setTimeout(() => setArrival(null), 10000);
+    return () => window.clearTimeout(timer);
+  }, [data]);
   const [state, setState] = useState<"loading" | "ready" | "error" | "denied">(
     "loading",
   );
@@ -175,7 +192,30 @@ export default function ExampleMonthPage() {
     <>
       <h1>{fill(copy.month.title, { name: person.name })}</h1>
       <p className="intro">{person.about}</p>
-      {summary(copy.month.thisMonth, data.thisMonth, true)}
+      {arrival && (
+        <p className="arrival" role="status">
+          <span className="arrival-dot" aria-hidden="true" />
+          <span>
+            {es ? "Nuevo desde tu teléfono: " : "New from your phone: "}
+            <strong>
+              {arrival.hours > 0
+                ? es
+                  ? `+${arrival.hours} horas`
+                  : `+${arrival.hours} hours`
+                : arrival.cents > 0
+                  ? `+${money(arrival.cents)}`
+                  : es
+                    ? "una línea"
+                    : "a line"}
+            </strong>
+            {es ? " esperan tu revisión. " : " waiting for you to check. "}
+            <Link to={link("/review")}>{es ? "Revisar" : "Check it"}</Link>
+          </span>
+        </p>
+      )}
+      <div className={arrival ? "arrival-pulse" : undefined}>
+        {summary(copy.month.thisMonth, data.thisMonth, true)}
+      </div>
       <p>{copy.month.next[data.person]}</p>
       <p className={data.waiting ? "waiting-pill" : "waiting-pill none"} role="status">
         {data.waiting
