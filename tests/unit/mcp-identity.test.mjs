@@ -48,8 +48,10 @@ test("without the framework's verified MCP identity, the call is refused", async
   await assert.rejects(
     mcp(member, { authUserId: undefined }, (context) => ownMemberActor(context)),
   );
-  await assert.rejects(
-    mcp(member, { mcpRequestId: undefined }, (context) => ownMemberActor(context)),
+  // A stateless MCP connection has no request id; the verified account id is what counts.
+  assert.deepEqual(
+    await mcp(member, { mcpRequestId: undefined }, (context) => ownMemberActor(context)),
+    { email: member.email, userId: member.userId },
   );
   await assert.rejects(
     mcp(member, { authUserId: "someone-else" }, (context) => ownMemberActor(context)),
@@ -80,6 +82,7 @@ test("the MCP endpoint and its OAuth steps pass the site's check", () => {
     "/mcp/oauth/register",
     "/mcp/oauth/authorize",
     "/mcp/oauth/token",
+    "/_agent-native/auth/login",
   ])
     assert.equal(access.isAllowedRequest(path, "POST"), true, path);
   assert.equal(access.isAllowedRequest("/_agent-native/mcp/approvals/x", "POST"), false);

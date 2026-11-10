@@ -105,7 +105,7 @@ function telegramChatOf(ambient: object): string | null {
 /**
  * An MCP tool call from an assistant the member connected (Claude, for one).
  * The framework sets the account id only after it verified the MCP token for
- * that user, and every MCP call carries its request id. The member's email must
+ * that user (a stateless connection carries no request id, so that is not used). The member's email must
  * be verified, and example accounts never connect.
  */
 async function mcpMemberActor(
@@ -115,8 +115,7 @@ async function mcpMemberActor(
   if (
     context?.caller !== "mcp" ||
     !context.userEmail ||
-    !ambient?.mcpRequestId ||
-    !ambient.authUserId ||
+    !ambient?.authUserId ||
     ambient.userEmail !== context.userEmail ||
     ambient.agentRunAnonymous ||
     isExampleEmail(context.userEmail)

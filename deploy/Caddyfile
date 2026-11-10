@@ -1,4 +1,21 @@
 tryeighty.space {
+	# The Claude (MCP) authorize form needs its own origin on its POST; every other page keeps no-referrer.
+	@not_oauth not path /mcp/oauth/*
+	header @not_oauth {
+		Referrer-Policy no-referrer
+		defer
+	}
+	header /mcp/oauth/* {
+		Referrer-Policy same-origin
+		defer
+	}
+	log {
+		output file /var/log/caddy/tryeighty-access.log {
+			roll_size 20MiB
+			roll_keep 2
+		}
+		format json
+	}
 	encode zstd gzip
 	request_body /_agent-native/actions/* {
 		max_size 22MB
@@ -7,7 +24,6 @@ tryeighty.space {
 	header {
 		Strict-Transport-Security "max-age=31536000"
 		X-Content-Type-Options nosniff
-		Referrer-Policy no-referrer
 		X-Frame-Options DENY
 		-Server
 	}
@@ -16,7 +32,7 @@ tryeighty.space {
 	@former path_regexp former ^/d[e]mo(\.data)?$
 	redir @former /example?{query} 301
 
-	@unpublished not path /_agent-native/agent-engine/status /_agent-native/application-state /_agent-native/application-state/guided-questions /_agent-native/application-state/guided-questions:* /_agent-native/application-state/navigation:* /_agent-native/application-state/navigate:* /send-verification-link /_agent-native/month-helper /_agent-native/month-helper/* /_agent-native/actions/propose_evidence /check/sign-in /check/sign-in.data /add.data /review.data /_agent-native/auth/ba/sign-in/email /_agent-native/auth/ba/sign-out /_agent-native/auth/session /_agent-native/actions/add_manual_evidence /_agent-native/actions/confirm_evidence /_agent-native/actions/edit_evidence /_agent-native/actions/reject_evidence /_agent-native/actions/list_evidence /_agent-native/actions/check_month /_agent-native/actions/save_coverage_answer /_agent-native/actions/inspect_document /_agent-native/actions/upload_document /_agent-native/actions/list_documents /_agent-native/actions/get_document /_agent-native/actions/remove_document /_agent-native/actions/extract_evidence /_agent-native/actions/try_read_document /_agent-native/actions/telegram_link /_agent-native/actions/do_my_month /_agent-native/actions/proof_packet /_agent-native/actions/notice_date /_agent-native/mcp /_agent-native/mcp/oauth/register /_agent-native/mcp/oauth/authorize /_agent-native/mcp/oauth/token /mcp/oauth/register /mcp/oauth/authorize /mcp/oauth/token /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/_agent-native/mcp /.well-known/oauth-authorization-server /.well-known/oauth-authorization-server/_agent-native/mcp /_agent-native/integrations/telegram/webhook /_agent-native/integrations/process-task /_.data /try.data /check.data /check/account.data /states.data /how-it-works.data /help.data /proof.data /share.data /for-navigators.data /about.data /privacy.data /terms.data /accessibility.data /security.data / /try /check /check/account /_agent-native/actions/prepare_member_account /_agent-native/actions/finish_member_account /_agent-native/ui-capability /_agent-native/auth/ba/sign-up/email /_agent-native/auth/ba/get-session /_agent-native/auth/ba/verify-email /_agent-native/auth/email-link/landing /states /states/* /how-it-works /help /proof /proof/answer-key.md /proof/answer-cases.json /share /for-navigators /about /privacy /terms /accessibility /security /assets/* /favicon.svg /icon-180.svg /robots.txt /sitemap.xml /months /months/* /add /review /plan /notice /settings /settings/* /proof/packets /navigator /navigator/* /admin /admin/* /example /example.data /enter-example /example/maria-earnings-sample.png /example/maria-earnings-sample.pdf /_agent-native/actions/start_example /_agent-native/actions/example_status /_agent-native/actions/example_month /_agent-native/actions/add_example_sample /months.data /plan.data /notice.data /settings.data /navigator.data /admin.data /proof/packets.data /add/* /review/* /plan/* /notice/* /proof/packets/*
+	@unpublished not path /_agent-native/agent-engine/status /_agent-native/application-state /_agent-native/application-state/guided-questions /_agent-native/application-state/guided-questions:* /_agent-native/application-state/navigation:* /_agent-native/application-state/navigate:* /send-verification-link /_agent-native/month-helper /_agent-native/month-helper/* /_agent-native/actions/propose_evidence /check/sign-in /check/sign-in.data /add.data /review.data /_agent-native/auth/ba/sign-in/email /_agent-native/auth/ba/sign-out /_agent-native/auth/session /_agent-native/actions/add_manual_evidence /_agent-native/actions/confirm_evidence /_agent-native/actions/edit_evidence /_agent-native/actions/reject_evidence /_agent-native/actions/list_evidence /_agent-native/actions/check_month /_agent-native/actions/save_coverage_answer /_agent-native/actions/inspect_document /_agent-native/actions/upload_document /_agent-native/actions/list_documents /_agent-native/actions/get_document /_agent-native/actions/remove_document /_agent-native/actions/extract_evidence /_agent-native/actions/try_read_document /_agent-native/actions/telegram_link /_agent-native/actions/do_my_month /_agent-native/actions/proof_packet /_agent-native/actions/notice_date /_agent-native/mcp /_agent-native/mcp/oauth/register /_agent-native/mcp/oauth/authorize /_agent-native/mcp/oauth/token /mcp/oauth/register /mcp/oauth/authorize /mcp/oauth/token /_agent-native/auth/login /_agent-native/auth/consent-region /_agent-native/auth/attribution /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/_agent-native/mcp /.well-known/oauth-authorization-server /.well-known/oauth-authorization-server/_agent-native/mcp /_agent-native/integrations/telegram/webhook /_agent-native/integrations/process-task /_.data /try.data /check.data /check/account.data /states.data /how-it-works.data /help.data /proof.data /share.data /for-navigators.data /about.data /privacy.data /terms.data /accessibility.data /security.data / /try /check /check/account /_agent-native/actions/prepare_member_account /_agent-native/actions/finish_member_account /_agent-native/ui-capability /_agent-native/auth/ba/sign-up/email /_agent-native/auth/ba/get-session /_agent-native/auth/ba/verify-email /_agent-native/auth/email-link/landing /states /states/* /how-it-works /help /proof /proof/answer-key.md /proof/answer-cases.json /share /for-navigators /about /privacy /terms /accessibility /security /assets/* /favicon.svg /icon-180.svg /robots.txt /sitemap.xml /months /months/* /add /review /plan /notice /settings /settings/* /proof/packets /navigator /navigator/* /admin /admin/* /example /example.data /enter-example /example/maria-earnings-sample.png /example/maria-earnings-sample.pdf /_agent-native/actions/start_example /_agent-native/actions/example_status /_agent-native/actions/example_month /_agent-native/actions/add_example_sample /months.data /plan.data /notice.data /settings.data /navigator.data /admin.data /proof/packets.data /add/* /review/* /plan/* /notice/* /proof/packets/*
 	respond @unpublished "Not found" 404
 
 	reverse_proxy 127.0.0.1:3000

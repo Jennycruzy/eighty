@@ -125,6 +125,10 @@ export const MCP_PATHS = [
   "/mcp/oauth/register",
   "/mcp/oauth/authorize",
   "/mcp/oauth/token",
+  // The sign-in page those steps show: password sign-in and its two page calls.
+  "/_agent-native/auth/login",
+  "/_agent-native/auth/consent-region",
+  "/_agent-native/auth/attribution",
 ];
 export function isMcpPath(path: string): boolean {
   return (
