@@ -7,7 +7,7 @@ import {
   REQUIRED_INCOME_CENTS,
   FEDERAL_WAGE,
 } from "../../server/rules/constants";
-import { BOT_TEXT, lineText } from "../../shared/telegram-words";
+import { BOT_TEXT, STATUS, lineText } from "../../shared/telegram-words";
 import { ExampleStart } from "./example/ExampleStart";
 import { languageLink, useLanguage } from "../lib/language";
 
@@ -71,10 +71,82 @@ function Count({ to, suffix = "" }: { to: number; suffix?: string }) {
   );
 }
 
-/** Maria's November, as two rings: hours toward 80, pay toward $580. */
-function HeroRings({ es }: { es: boolean }) {
-  const hours = MARIA.deliveryHours + MARIA.pantryHours + 4;
-  const pay = MARIA.sample.totalCents - MARIA.sample.costsCents;
+/**
+ * The hero plays Maria's month in about five seconds: her voice note arrives,
+ * she confirms it and the hours ring grows 61 -> 65, Do my month counts her
+ * pay after costs, and the month changes to Meets the rule. The figures are
+ * her example record's own numbers. With reduced motion it shows the end.
+ */
+const STORY_STEPS = [0, 900, 2100, 3300, 4700] as const;
+
+function useStory() {
+  const ref = useRef<HTMLElement>(null);
+  const [step, setStep] = useState(-1);
+  const [run, setRun] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStep(STORY_STEPS.length - 1);
+      return;
+    }
+    setStep(-1);
+    let timers: number[] = [];
+    const play = () => {
+      timers = STORY_STEPS.map((at, i) => window.setTimeout(() => setStep(i), at + 60));
+    };
+    const node = ref.current;
+    if (!node || !("IntersectionObserver" in window)) {
+      play();
+      return () => timers.forEach((t) => window.clearTimeout(t));
+    }
+    // Starts when the rings are on screen, so a phone visitor sees it too.
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        seen.disconnect();
+        play();
+      },
+      { threshold: 0.45 },
+    );
+    seen.observe(node);
+    return () => {
+      seen.disconnect();
+      timers.forEach((t) => window.clearTimeout(t));
+    };
+  }, [run]);
+  return { ref, step, replay: () => setRun((n) => n + 1) };
+}
+
+/** A figure that glides to its new value. */
+function useGlide(to: number, ms = 900) {
+  const [value, setValue] = useState(to);
+  const from = useRef(to);
+  useEffect(() => {
+    const start = performance.now();
+    const begin = from.current;
+    let frame = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / ms);
+      const next = begin + (to - begin) * (1 - Math.pow(1 - t, 3));
+      from.current = next;
+      setValue(next);
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [to, ms]);
+  return value;
+}
+
+function HeroStory({ es }: { es: boolean }) {
+  const { ref, step, replay } = useStory();
+  const before = MARIA.deliveryHours + MARIA.pantryHours;
+  const added = 4;
+  const payAfterCosts = MARIA.sample.totalCents - MARIA.sample.costsCents;
+  const hoursNow = step < 0 ? 0 : step >= 2 ? before + added : before;
+  const payNow = step >= 3 ? payAfterCosts : 0;
+  const meets = step >= 4;
+  const hours = useGlide(hoursNow);
+  const pay = useGlide(payNow);
   const ring = (r: number, share: number, kind: "hours" | "pay") => {
     const c = 2 * Math.PI * r;
     return (
@@ -87,75 +159,100 @@ function HeroRings({ es }: { es: boolean }) {
           r={r}
           style={{
             strokeDasharray: `${c}`,
-            ["--lx-from" as string]: `${c}`,
-            ["--lx-to" as string]: `${c * (1 - Math.min(1, share))}`,
+            strokeDashoffset: `${c * (1 - Math.min(1, Math.max(0, share)))}`,
+            opacity: share > 0 ? 1 : 0,
           }}
         />
       </>
     );
   };
-  return (
-    <figure className="lx-rings" aria-label={es ? "El mes de María" : "Maria's month"}>
-      <svg viewBox="0 0 240 240" role="img" aria-hidden="true">
-        <g transform="rotate(-90 120 120)">
-          {ring(96, hours / REQUIRED_HOURS, "hours")}
-          {ring(64, pay / REQUIRED_INCOME_CENTS, "pay")}
-        </g>
-      </svg>
-      <figcaption>
-        <span className="lx-who">{es ? "María · noviembre" : "Maria · November"}</span>
-        <span className="lx-figs">
-          <span className="hours num">
-            {hours}
-            <small>/{REQUIRED_HOURS} h</small>
-          </span>
-          <span className="pay num">
-            {money(pay, es)}
-            <small>/{money(REQUIRED_INCOME_CENTS, es)}</small>
-          </span>
-        </span>
-        <span className="lx-meets">{es ? "Cumple la regla" : "Meets the rule"}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
-/** The phone: Maria's voice note and the bot's answer, in the bot's own words. */
-function HeroPhone({ es }: { es: boolean }) {
+  const notes = es
+    ? [
+        "María manda una nota de voz",
+        "Eighty la escucha y propone la línea",
+        `Ella la confirma: +${added} horas`,
+        "Haz mi mes: su pago después de gasolina y teléfono",
+        "Noviembre cumple la regla",
+      ]
+    : [
+        "Maria sends a voice note",
+        "Eighty hears it and proposes the line",
+        `She confirms it: +${added} hours`,
+        "Do my month: her pay after gas and phone",
+        "November meets the rule",
+      ];
   const words = BOT_TEXT[es ? "es" : "en"];
   const said = es
     ? "Trabajé cuatro horas en la despensa el sábado."
     : "I volunteered 4 hours at the pantry on Saturday.";
   const line = lineText(
-    { kind: "service", organization: MARIA.pantry, hours: 4 },
+    { kind: "service", organization: MARIA.pantry, hours: added },
     es ? "es" : "en",
   );
+  const status = STATUS[es ? "es" : "en"][meets ? "Meets" : "Not sure yet"];
   return (
-    <div className="lx-phone" aria-hidden="true">
-      <div className="lx-phone-top">
-        <span className="lx-avatar">8</span>
-        <span>
-          <strong>Eighty</strong>
-          <small>@TryEightybot</small>
-        </span>
+    <>
+      <p className="lx-story-note" aria-live="polite">
+        <span key={step}>{notes[Math.max(0, step)]}</span>
+        {meets ? (
+          <button type="button" className="lx-replay" onClick={replay}>
+            {es ? "Otra vez" : "Replay"}
+          </button>
+        ) : null}
+      </p>
+      <figure
+        ref={ref}
+        className={`lx-rings${meets ? " is-met" : ""}`}
+        aria-label={es ? "El mes de María" : "Maria's month"}
+      >
+        <svg viewBox="0 0 240 240" role="img" aria-hidden="true">
+          <g transform="rotate(-90 120 120)">
+            {ring(96, hours / REQUIRED_HOURS, "hours")}
+            {ring(64, pay / REQUIRED_INCOME_CENTS, "pay")}
+          </g>
+        </svg>
+        <figcaption>
+          <span className="lx-who">{es ? "María · noviembre" : "Maria · November"}</span>
+          <span className="lx-figs">
+            <span className="hours num">
+              {Math.round(hours)}
+              <small>/{REQUIRED_HOURS} h</small>
+              {step === 2 || step === 3 ? <em className="lx-plus">+{added} h</em> : null}
+            </span>
+            <span className="pay num">
+              {money(Math.round(pay), es)}
+              <small>/{money(REQUIRED_INCOME_CENTS, es)}</small>
+            </span>
+          </span>
+          <span className={`lx-meets${meets ? " on" : ""}`}>{status}</span>
+        </figcaption>
+      </figure>
+      <div className="lx-phone" aria-hidden="true">
+        <div className="lx-phone-top">
+          <span className="lx-avatar">8</span>
+          <span>
+            <strong>Eighty</strong>
+            <small>@TryEightybot</small>
+          </span>
+        </div>
+        <div className={`lx-msg me${step >= 0 ? " shown" : ""}`}>
+          <span className="lx-play" />
+          <span className="lx-wave">
+            {Array.from({ length: 22 }, (_, i) => (
+              <i key={i} style={{ height: `${6 + ((i * 37) % 17)}px`, animationDelay: `${i * 40}ms` }} />
+            ))}
+          </span>
+          <small>0:04</small>
+        </div>
+        <div className={`lx-msg bot${step >= 1 ? " shown" : ""}`}>
+          {words.heard(said)}
+          {"\n• "}
+          {line}
+          {"\n"}
+          {words.check}
+        </div>
       </div>
-      <div className="lx-msg me">
-        <span className="lx-play" />
-        <span className="lx-wave">
-          {Array.from({ length: 22 }, (_, i) => (
-            <i key={i} style={{ height: `${6 + ((i * 37) % 17)}px`, animationDelay: `${i * 40}ms` }} />
-          ))}
-        </span>
-        <small>0:04</small>
-      </div>
-      <div className="lx-msg bot">
-        {words.heard(said)}
-        {"\n• "}
-        {line}
-        {"\n"}
-        {words.check}
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -193,8 +290,7 @@ export function Landing() {
           </div>
         </div>
         <div className="lx-hero-art">
-          <HeroRings es={es} />
-          <HeroPhone es={es} />
+          <HeroStory es={es} />
         </div>
       </section>
 

@@ -1986,3 +1986,123 @@ button:active {
 @media (prefers-reduced-motion: reduce) {
   .arrival, .arrival-dot, .arrival-pulse .month-panel, .arrival-pulse .ring-arc.proposed { animation: none; }
 }
+
+/* ---- Hero story: Maria's month plays in about five seconds ------------- */
+.lx-arc {
+  animation: none;
+  transition:
+    stroke-dashoffset 0.9s var(--ease),
+    opacity 0.3s ease;
+}
+.lx-rings figcaption {
+  animation: lx-rise 0.6s 0.2s var(--ease) both;
+}
+.lx-figs .hours {
+  position: relative;
+}
+.lx-plus {
+  position: absolute;
+  left: 100%;
+  top: -0.2em;
+  margin-left: 6px;
+  font-style: normal;
+  font-size: 0.62em;
+  color: var(--hours);
+  white-space: nowrap;
+  animation: lx-rise 0.5s var(--ease) both;
+}
+.lx-meets {
+  transition: color 0.4s ease;
+  color: var(--text-3);
+}
+.lx-meets.on {
+  color: var(--pay);
+  animation: lx-pop 0.6s var(--ease) both;
+}
+.lx-rings.is-met svg {
+  animation: lx-glow 1.2s var(--ease) both;
+}
+@keyframes lx-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+  }
+}
+@keyframes lx-glow {
+  40% {
+    filter: drop-shadow(0 0 28px rgba(166, 244, 0, 0.45));
+  }
+}
+.lx-story-note {
+  margin: 0 0 6px;
+  min-height: 1.6em;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  font-size: 0.92rem;
+  text-align: center;
+}
+.lx-story-note span {
+  animation: lx-rise 0.45s var(--ease) both;
+}
+.lx-replay,
+.lx-replay:hover {
+  all: unset;
+  box-sizing: border-box;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text-2);
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.lx-replay:hover {
+  color: var(--text);
+}
+.lx-replay:focus-visible {
+  outline: 2px solid var(--pay);
+  outline-offset: 2px;
+}
+.lx-phone {
+  animation: lx-rise 0.6s 0.05s var(--ease) both;
+}
+.lx-msg.me,
+.lx-msg.bot {
+  animation: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s var(--ease);
+}
+.lx-msg.me.shown,
+.lx-msg.bot.shown {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 900px) {
+  .lx-story-note {
+    justify-content: flex-end;
+    width: min(440px, 84vw);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lx-arc,
+  .lx-msg.me,
+  .lx-msg.bot {
+    transition: none;
+  }
+  .lx-plus,
+  .lx-meets.on,
+  .lx-rings.is-met svg,
+  .lx-story-note span,
+  .lx-phone {
+    animation: none;
+  }
+}
