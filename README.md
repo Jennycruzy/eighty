@@ -26,7 +26,17 @@ Email:     judge@tryeighty.space
 Password:  EightyJudge-2026
 ```
 
-Other judges use the same account, so you may see their lines too. To try your own month instead, choose **Check if it applies to me** on the home page, then **Track my months**, and confirm your email.
+Other judges use the same account, so you may see their lines too.
+
+**Or make your own account** (about 2 minutes, any email you can open):
+
+1. Open **[tryeighty.space](https://tryeighty.space)** and choose **Check if it applies to me**.
+2. Answer the questions: your state, the kind of Medicaid, your age, and a few yes or no questions. Only the questions that matter for your answers appear. The result never says the rule applies; your state decides that.
+3. Choose **Track my months**. Type your email and a password of at least 12 characters, then **Create account**.
+4. Open the email from Eighty, click the link, then **Continue**. Your month page opens.
+5. **Add proof**: upload a photo or PDF of a pay stub, or **Type a proof line**. Then confirm it on **Review the lines**.
+6. Optional: **Link Telegram** from your month page, or connect Claude as in path C below, signing in with your own email.
+
 
 **A. Example month, no sign-in**
 
