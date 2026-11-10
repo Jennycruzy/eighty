@@ -10,6 +10,8 @@ The new federal work rule asks many adults on Medicaid to show 80 hours of work,
 
 Live at **[tryeighty.space](https://tryeighty.space)** · Telegram **[@TryEightybot](https://t.me/TryEightybot)** · Claude connector **`https://tryeighty.space/_agent-native/mcp`** · Built on **[Agent-Native](https://agent-native.com)**
 
+**Watch the demo (3 min):** [Clips recording](https://clips.agent-native.com/share/wH5UAjTaA9Ww) · **Slides:** [the deck, 10 slides](https://drive.google.com/file/d/1Y-KgMVKOefQZdVBHKjU6vAiGyePuiSJm/view?usp=sharing)
+
 ## Judges: start here
 
 | | What you see | Sign-in | Time |

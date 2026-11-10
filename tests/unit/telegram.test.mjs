@@ -69,9 +69,11 @@ test("Telegram settings come from the deployment, never from a member's secrets"
     assert.doesNotMatch(text, /resolveSecret\(\s*["'](TELEGRAM_BOT_TOKEN|EIGHTY_TELEGRAM_BOT)/, file);
   }
   assert.equal(config.configuredBotName(), "TryEightybot");
-  const before = process.env.EIGHTY_TELEGRAM_BOT;
+  const before = process.env.EIGHTY_TELEGRAM_BOT; // guard:allow-env-credential — test process only: a public bot name, saved to restore
+  // guard:allow-env-mutation — test process only: a public bot name
   process.env.EIGHTY_TELEGRAM_BOT = " @TryEightybot "; // guard:allow-env-credential — test process only: a public bot name
   assert.equal(config.configuredBotName(), "TryEightybot");
+  // guard:allow-env-mutation — test process only: restore
   process.env.EIGHTY_TELEGRAM_BOT = before; // guard:allow-env-credential — test process only: restore
 });
 

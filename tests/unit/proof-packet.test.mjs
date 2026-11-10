@@ -230,6 +230,7 @@ test("/packet in Telegram sends the PDF itself to the linked chat", async () => 
     );
   } finally {
     globalThis.fetch = realFetch;
+    // guard:allow-env-mutation — test process only: restore
     delete process.env.TELEGRAM_BOT_TOKEN; // guard:allow-env-credential — test process only: restore
   }
 });
