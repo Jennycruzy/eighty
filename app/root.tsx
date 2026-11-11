@@ -20,6 +20,20 @@ import { ScreenerDraftContext } from "./lib/screener-draft";
 
 import stylesheet from "./public.css?url";
 export const links = () => [{ rel: "stylesheet", href: stylesheet }];
+// Link previews need a full address, and the app sits behind a proxy.
+const SHARE_IMAGE = "https://tryeighty.space/og.png";
+const SHARE_TITLE = {
+  en: "Eighty · Keep your Medicaid. Eighty does the paperwork.",
+  es: "Eighty · Conserva tu Medicaid. Eighty hace el papeleo.",
+};
+const DESCRIPTION = {
+  en: "Send a photo or a voice note. Eighty counts your hours and pay against Medicaid's 80-hour work rule and builds the proof for your state. The state decides.",
+  es: "Envía una foto o una nota de voz. Eighty cuenta tus horas y tu pago según la regla de 80 horas de Medicaid y prepara la prueba para tu estado. El estado decide.",
+};
+const SHARE_ALT = {
+  en: "Eighty: a month's hours and pay shown as two rings",
+  es: "Eighty: las horas y el pago de un mes en dos anillos",
+};
 export function loader({ request }: LoaderFunctionArgs) {
   return {
     lang:
@@ -41,6 +55,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
+        <meta
+          name="description"
+          content={data?.lang === "es" ? DESCRIPTION.es : DESCRIPTION.en}
+        />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Eighty" />
+        <meta
+          property="og:title"
+          content={data?.lang === "es" ? SHARE_TITLE.es : SHARE_TITLE.en}
+        />
+        <meta
+          property="og:description"
+          content={data?.lang === "es" ? DESCRIPTION.es : DESCRIPTION.en}
+        />
+        <meta property="og:image" content={SHARE_IMAGE} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:alt"
+          content={data?.lang === "es" ? SHARE_ALT.es : SHARE_ALT.en}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={SHARE_IMAGE} />
         <Meta />
         <Links />
       </head>

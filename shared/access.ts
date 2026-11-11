@@ -67,6 +67,11 @@ export function staticFiles(): string[] {
   return [
     ...EXAMPLE_SAMPLE_FILES,
     "/favicon.svg",
+    "/favicon.ico",
+    "/apple-touch-icon.png",
+    "/og.png",
+    // The framework points every page at this fixed, empty rules file.
+    "/_agent-native/speculation-rules.json",
     "/icon-180.svg",
     "/robots.txt",
     "/sitemap.xml",

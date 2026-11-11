@@ -1,5 +1,5 @@
 import { callAction } from "@agent-native/core/client/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
 import { type EvidenceFields } from "../../shared/evidence";
@@ -68,6 +68,17 @@ export default function Evidence() {
   const [editing, setEditing] = useState<Line | "new" | null>(null),
     [documentId, setDocumentId] = useState(""),
     [view, setView] = useState<DocumentData | null>(null);
+  const formRef = useRef<HTMLElement>(null);
+  const editingKey =
+    editing === null ? "" : editing === "new" ? "new" : editing.id;
+  useEffect(() => {
+    if (!editingKey) return;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    formRef.current?.scrollIntoView({
+      behavior: calm ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [editingKey]);
   const [reading, setReading] = useState<Reading | null>(null);
   const [duplicate, setDuplicate] = useState<{
     id: string;
@@ -413,7 +424,7 @@ export default function Evidence() {
             </section>
           )}
           {(!reviewMode || editing) && (
-            <section className="card">
+            <section className="card" ref={formRef}>
               <h2>{es ? "Escribir una prueba" : "Type a proof line"}</h2>
               {!editing && (
                 <button

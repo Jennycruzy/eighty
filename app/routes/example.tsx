@@ -196,7 +196,7 @@ export default function ExampleMonthPage() {
         <p className="arrival" role="status">
           <span className="arrival-dot" aria-hidden="true" />
           <span>
-            {es ? "Nuevo desde tu teléfono: " : "New from your phone: "}
+            {es ? "Recién añadido: " : "Just added: "}
             <strong>
               {arrival.hours > 0
                 ? es
